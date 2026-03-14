@@ -34,6 +34,7 @@ INGEST_SCRIPTS = [
     "arm-gic-600.py",
     "arm-amba-axi.py",
     "linux-dvfs-eas.py",
+    "linux-suspend-hibernate.py",
     "common-failure-modes.py",
 ]
 

@@ -38,3 +38,4 @@ Thumbs.db
 # User-managed proprietary knowledge — never commit
 knowledge-graph/custom/*
 !knowledge-graph/custom/README.md
+note.txt

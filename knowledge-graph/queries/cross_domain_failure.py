@@ -18,6 +18,14 @@ _BASE_DB = os.path.join(_HERE, "..", "base", "bsp_base.db")
 
 sys.path.insert(0, _SCHEMA_DIR)
 
+# ---------------------------------------------------------------------------
+# Scoring constants
+# ---------------------------------------------------------------------------
+
+SYMPTOM_WEIGHT = 0.6
+ROOT_CAUSE_WEIGHT = 0.4
+MAX_RESULTS = 10
+
 
 def _open_db(db_path: str):
     import kuzu
@@ -87,8 +95,8 @@ def query_cross_domain_failure(
             "f.source, f.severity, f.namespace"
         )
         for row in _result_to_list(q):
-            score = _keyword_score(str(row[1]), symptom_keywords) * 0.6 + \
-                    _keyword_score(str(row[2]), symptom_keywords) * 0.4
+            score = _keyword_score(str(row[1]), symptom_keywords) * SYMPTOM_WEIGHT + \
+                    _keyword_score(str(row[2]), symptom_keywords) * ROOT_CAUSE_WEIGHT
             all_fms.append({
                 "name": row[0],
                 "symptom": row[1],
@@ -119,7 +127,7 @@ def query_cross_domain_failure(
         }]
 
     results = []
-    for fm in matches[:10]:  # top 10 matches
+    for fm in matches[:MAX_RESULTS]:  # top results capped by MAX_RESULTS
         affected: list[dict] = []
 
         # Step 3 — find root components via CAUSED_BY

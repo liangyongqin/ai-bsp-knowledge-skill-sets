@@ -27,6 +27,7 @@ Usage::
 import os
 import sys
 import logging
+from typing import Optional
 
 # ---------------------------------------------------------------------------
 # Path setup — must come before local package imports
@@ -127,7 +128,7 @@ def query_interrupt_path(irq_source: str) -> dict:
 
 
 @mcp.tool()
-def query_isp_pipeline(sensor_name: str = None) -> dict:
+def query_isp_pipeline(sensor_name: Optional[str] = None) -> dict:
     """Trace the ISP multimedia data path: Sensor → ISP → DMA-BUF → GPU/NPU.
 
     Parameters

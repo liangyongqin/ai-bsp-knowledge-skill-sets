@@ -52,7 +52,7 @@ def _load_script(script_path: str):
 def _count_nodes(db_path: str) -> int:
     """Return the total node count across all node tables."""
     import kuzu
-    import schema as _schema  # noqa: F401 — ensure tables exist
+    import schema as _schema  # noqa: F401 -- ensure tables exist
 
     db = kuzu.Database(db_path)
     conn = kuzu.Connection(db)

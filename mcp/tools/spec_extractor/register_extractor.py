@@ -25,6 +25,15 @@ from typing import Any
 logger = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------
+# Extraction constants
+# ---------------------------------------------------------------------------
+
+# Context window (in characters) after a register name mention within which
+# bit field description lines are searched.  A 2000-char window covers
+# approximately 20-30 lines of typical TRM text.
+BIT_FIELD_CONTEXT_WINDOW = 2000
+
+# ---------------------------------------------------------------------------
 # Regex patterns for heuristic detection
 # ---------------------------------------------------------------------------
 
@@ -184,7 +193,7 @@ def _merge_bit_fields(registers: list[dict], page_texts: dict[int, str]) -> list
         if text and reg["name"] in text:
             # Look for bit field lines after the register name mention
             idx = text.find(reg["name"])
-            snippet = text[idx: idx + 2000]
+            snippet = text[idx: idx + BIT_FIELD_CONTEXT_WINDOW]
             reg["bit_fields"] = _extract_bit_fields_from_text(snippet, reg["name"])
     return registers
 

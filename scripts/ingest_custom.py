@@ -35,6 +35,14 @@ _SPEC_EXTRACTOR_DIR = os.path.join(_REPO_ROOT, "mcp", "tools", "spec_extractor")
 sys.path.insert(0, _SCHEMA_DIR)
 sys.path.insert(0, _SPEC_EXTRACTOR_DIR)
 
+# ---------------------------------------------------------------------------
+# Constants
+# ---------------------------------------------------------------------------
+
+# Maximum length for description strings stored in the knowledge graph.
+# Longer descriptions are truncated to avoid exceeding graph storage limits.
+MAX_DESCRIPTION_LENGTH = 200
+
 
 def _detect_format(input_path: str) -> str:
     """Detect document format from file extension."""
@@ -175,7 +183,7 @@ def _persist_registers_to_graph(registers: list[dict], soc: str) -> None:
                     "size": int(reg.get("size", 32)),
                     "access": reg.get("access", "RW"),
                     "reset": reg.get("reset_value", "0x0"),
-                    "desc": reg.get("description", "")[:200],
+                    "desc": reg.get("description", "")[:MAX_DESCRIPTION_LENGTH],
                     "ns": "custom",
                     "comp": soc,
                 },

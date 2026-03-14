@@ -278,7 +278,7 @@ def parse_ipxact(path: str) -> dict[str, Any]:
     if tag_local not in ("component", "design", "catalog", "abstractionDefinition"):
         raise ValueError(
             f"Root element '{tag_local}' is not a recognised IP-XACT root. "
-            "Expected: component, design, catalog."
+            "Expected: component, design, catalog, abstractionDefinition."
         )
 
     components: list[dict] = []

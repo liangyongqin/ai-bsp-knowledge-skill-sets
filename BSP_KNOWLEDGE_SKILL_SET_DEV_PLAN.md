@@ -1,169 +1,169 @@
-# BSP 知識導師 Claude Agent Skill Sets 開發計畫與藍圖
+# BSP Knowledge Mentor Claude Agent Skill Sets — Development Plan and Roadmap
 
-> **文件版本：** v1.0  
-> **建立日期：** 2026-03-14  
-> **參考來源：** 構建下一代 BSP 知識導師與跨域協作 AI 代理系統架構演進報告  
-> **目標讀者：** BSP AI Agent 開發團隊、系統架構師、BSP 工程師
-
----
-
-## 目錄
-
-1. [戰略背景與開發意圖](#1-戰略背景與開發意圖)
-2. [Skill Sets 整體架構設計](#2-skill-sets-整體架構設計)
-3. [核心 Skill 規格定義](#3-核心-skill-規格定義)
-4. [四階段開發藍圖](#4-四階段開發藍圖)
-5. [技術選型與工具鏈](#5-技術選型與工具鏈)
-6. [知識圖譜資料模型](#6-知識圖譜資料模型)
-7. [黑板模式多智能體協同設計](#7-黑板模式多智能體協同設計)
-8. [里程碑與驗收標準](#8-里程碑與驗收標準)
-9. [風險管理矩陣](#9-風險管理矩陣)
-10. [附錄：Skill Prompt 設計範本](#10-附錄skill-prompt-設計範本)
+> **Document Version:** v1.0  
+> **Created:** 2026-03-14  
+> **Reference:** Architecture Evolution Report — Building the Next-Generation BSP Knowledge Mentor and Cross-Domain Collaborative AI Agent System  
+> **Target Audience:** BSP AI Agent Development Team, System Architects, BSP Engineers
 
 ---
 
-## 1. 戰略背景與開發意圖
+## Table of Contents
 
-### 1.1 問題陳述
+1. [Strategic Background and Development Intent](#1-strategic-background-and-development-intent)
+2. [Skill Sets Overall Architecture Design](#2-skill-sets-overall-architecture-design)
+3. [Core Skill Specification Definitions](#3-core-skill-specification-definitions)
+4. [Four-Phase Development Roadmap](#4-four-phase-development-roadmap)
+5. [Technology Selection and Toolchain](#5-technology-selection-and-toolchain)
+6. [Knowledge Graph Data Model](#6-knowledge-graph-data-model)
+7. [Blackboard-Pattern Multi-Agent Collaboration Design](#7-blackboard-pattern-multi-agent-collaboration-design)
+8. [Milestones and Acceptance Criteria](#8-milestones-and-acceptance-criteria)
+9. [Risk Management Matrix](#9-risk-management-matrix)
+10. [Appendix: Skill Prompt Design Templates](#10-appendix-skill-prompt-design-templates)
 
-現有 BSP AI Agent 系統（以開機日誌分析專家為代表）已驗證了領域專精 Skill 的可行性。然而，面對現代 SoC 開發的跨領域複雜性，單一 Skill 無法應對以下場景：
+---
 
-- **跨核心連鎖故障診斷**：「錄影隨機重啟」根因可能同時涉及多媒體緩衝區耗盡、GPU 熱失控、PMIC 瞬態響應不及
-- **部門術語鴻溝**：演算法團隊說「算力不足」，BSP 團隊需判斷是 CPU MCPS 受限、記憶體 Roofline 瓶頸，還是 NPU 卸載策略問題
-- **新人知識斷層**：智慧眼鏡等穿戴裝置的 1W 功耗預算要求工程師同時精通 DVFS、EAS、LPDDR5 與熱管理
+## 1. Strategic Background and Development Intent
 
-### 1.2 開發意圖
+### 1.1 Problem Statement
 
-基於現有 Agent 基礎，打造三個層次的 Skill Sets：
+The existing BSP AI Agent system (exemplified by the boot-log analysis expert) has validated the feasibility of domain-specialized Skills. However, given the cross-domain complexity of modern SoC development, a single Skill cannot handle the following scenarios:
+
+- **Cross-subsystem cascading failure diagnosis:** The root cause of "random reboot during video recording" may simultaneously involve multimedia buffer exhaustion, GPU thermal runaway, and inadequate PMIC transient response.
+- **Inter-department terminology gap:** When the algorithm team says "insufficient compute," the BSP team must determine whether the bottleneck is CPU MCPS, memory Roofline, or an NPU offloading strategy issue.
+- **Knowledge gap for new engineers:** A 1W power budget for wearables such as smart glasses requires engineers to simultaneously master DVFS, EAS, LPDDR5, and thermal management.
+
+### 1.2 Development Intent
+
+Building on the existing Agent foundation, create a three-layer Skill Sets:
 
 ```
-Layer 3：知識導師引擎（ITS 認知架構）
-         ↑ 協調、引導、術語翻譯
-Layer 2：領域專家 Skill 集群（6 大子領域）
-         ↑ 深度、工具呼叫、圖譜推理
-Layer 1：知識圖譜基礎設施（GraphRAG + Neo4j）
-         ↑ 結構化領域知識、拓撲推理基底
+Layer 3: Knowledge Mentor Engine (ITS Cognitive Architecture)
+         ↑ Coordination, guidance, terminology translation
+Layer 2: Domain Expert Skill Cluster (6 sub-domains)
+         ↑ Depth, tool invocation, graph reasoning
+Layer 1: Knowledge Graph Infrastructure (GraphRAG + Neo4j)
+         ↑ Structured domain knowledge, topology reasoning foundation
 ```
 
-### 1.3 核心設計原則
+### 1.3 Core Design Principles
 
-| 原則 | 說明 |
-|------|------|
-| **授人以漁優先** | ITS 蘇格拉底式提問，不直接輸出答案，建立工程師診斷能力 |
-| **物理約束第一** | 所有建議必須通過動態功耗方程式與熱設計約束的驗算 |
-| **跨域拓撲推理** | 使用 GraphRAG 而非純向量搜尋，保留硬體連結的因果完整性 |
-| **資料主權保護** | 所有 BSP 機密文件採本地部署（Air-Gapped），禁止外傳公有雲 |
-| **負向價值顯性化** | 每份優化報告必須將底層指標關聯至商業續航/延遲/成本影響 |
+| Principle | Description |
+|-----------|-------------|
+| **Teach to fish first** | ITS Socratic questioning — do not output answers directly; build engineers' diagnostic thinking |
+| **Physical constraints first** | All recommendations must be validated against the dynamic power equation and thermal design constraints |
+| **Cross-domain topology reasoning** | Use GraphRAG rather than pure vector search to preserve causal completeness of hardware interconnects |
+| **Data sovereignty protection** | All BSP confidential documents use local deployment (air-gapped); transmission to public cloud is prohibited |
+| **Make negative value explicit** | Every optimization report must link low-level metrics to commercial battery life / latency / cost impact |
 
 ---
 
-## 2. Skill Sets 整體架構設計
+## 2. Skill Sets Overall Architecture Design
 
-### 2.1 Skill 分類總覽
+### 2.1 Skill Classification Overview
 
 ```
 BSP Knowledge Skill Sets
 │
 ├── 🧠 [MENTOR] bsp-knowledge-mentor
-│   └── 統籌協調、ITS 引導、術語翻譯、跨域對齊
+│   └── Orchestration, ITS guidance, terminology translation, cross-domain alignment
 │
 ├── ⚡ [DOMAIN] power-thermal-expert
 │   └── DVFS / EAS / C-states / PMIC / LPDDR5 / SCP
 │
 ├── 🚀 [DOMAIN] boot-debug-expert
-│   └── 啟動時序 / PLL / ADIv6 / 電源孤島 / 殭屍狀態
+│   └── Boot sequence / PLL / ADIv6 / power islands / zombie states
 │
 ├── 📷 [DOMAIN] multimedia-camera-expert
 │   └── ISP / V4L2 / DMA-BUF / Zero-Copy / eMMC / F2FS
 │
 ├── 🎮 [DOMAIN] gpu-rendering-expert
-│   └── 渲染管線 / Overdraw / Draw Call / Fragment Shader
+│   └── Rendering pipeline / Overdraw / Draw Call / Fragment Shader
 │
 ├── 🔌 [DOMAIN] interrupt-virtualization-expert
 │   └── GIC-600 / MSI / ITS / GICv4 / VM Exit
 │
 └── 🔍 [UTILITY] hardware-spec-extractor
-    └── IP-XACT 解析 / 暫存器萃取 / 知識圖譜注入
+    └── IP-XACT parsing / register extraction / knowledge graph injection
 ```
 
-### 2.2 Skill 交互關係圖
+### 2.2 Skill Interaction Diagram
 
 ```
-使用者查詢
+User query
     │
     ▼
-bsp-knowledge-mentor（入口協調）
+bsp-knowledge-mentor (entry coordinator)
     │
-    ├──(教學模式)──→ ITS 引導引擎 ──→ 蘇格拉底式提問序列
+    ├──(teaching mode)──→ ITS guidance engine ──→ Socratic question sequence
     │
-    ├──(診斷模式)──→ Blackboard 黑板
-    │               ├── power-thermal-expert
-    │               ├── multimedia-camera-expert
-    │               ├── gpu-rendering-expert
-    │               └── interrupt-virtualization-expert
+    ├──(diagnosis mode)──→ Blackboard
+    │                      ├── power-thermal-expert
+    │                      ├── multimedia-camera-expert
+    │                      ├── gpu-rendering-expert
+    │                      └── interrupt-virtualization-expert
     │
-    ├──(文件模式)──→ hardware-spec-extractor ──→ GraphRAG 查詢
+    ├──(document mode)──→ hardware-spec-extractor ──→ GraphRAG query
     │
-    └──(翻譯模式)──→ 術語對齊字典 ──→ 跨部門語言轉換
+    └──(translation mode)──→ terminology alignment dictionary ──→ cross-department language conversion
 ```
 
 ---
 
-## 3. 核心 Skill 規格定義
+## 3. Core Skill Specification Definitions
 
-### 3.1 Skill：`bsp-knowledge-mentor`（知識導師主控）
+### 3.1 Skill: `bsp-knowledge-mentor` (Knowledge Mentor Controller)
 
-**定位：** 系統入口、ITS 引擎、術語翻譯官、Blackboard 協調者
+**Role:** System entry point, ITS engine, terminology translator, Blackboard coordinator
 
-**核心能力：**
+**Core Capabilities:**
 
-- 學習者模型動態評估（根據問題語境判斷提問者技術層級）
-- 蘇格拉底式引導（不直接給答案，透過反問建立因果思維）
-- 跨部門術語即時翻譯（業務語言 ↔ BSP 物理語言 ↔ 演算法指標）
-- 多智能體 Blackboard 協調調度
+- Dynamic learner model assessment (infer the questioner's technical level from query context)
+- Socratic guidance (no direct answers; build causal thinking through counter-questions)
+- Real-time cross-department terminology translation (business language ↔ BSP physical language ↔ algorithm metrics)
+- Multi-agent Blackboard coordination and dispatch
 
-**觸發情境範例：**
+**Trigger Scenario Examples:**
 ```
-"為什麼我的相機一直 Open Fail？"
-"演算法說平台算力不夠，怎麼回應？"
-"新人想學 ISP 管線，從哪裡開始？"
-"錄影三十分鐘後系統重啟的 log 分析"
+"Why does my camera keep failing to open?"
+"The algorithm team says the platform doesn't have enough compute — how do I respond?"
+"A new engineer wants to learn the ISP pipeline — where should they start?"
+"Analyze the log of a system reboot after 30 minutes of video recording."
 ```
 
-**ITS 行為規則：**
+**ITS Behavioral Rules:**
 
-| 學習者層級判斷 | 觸發關鍵字/特徵 | 導師策略 |
+| Learner Level Assessment | Trigger Keywords / Features | Mentor Strategy |
 |---|---|---|
-| 應用層工程師 | framework、API、SDK、FPS | HAL 層抽象解釋，避免暫存器細節 |
-| 驅動工程師 | register、DMA、IRQ、kernel | 深入位元定義、記憶體屏障、時序圖 |
-| 演算法工程師 | MIPS、model、latency、inference | Roofline 模型、NPU 卸載、頻寬分析 |
-| 管理層/PM | 功能、體驗、電池、溫度 | 商業影響翻譯，省略物理細節 |
+| Application-layer engineer | framework, API, SDK, FPS | HAL-layer abstraction explanation; avoid register details |
+| Driver engineer | register, DMA, IRQ, kernel | Deep-dive into bit definitions, memory barriers, timing diagrams |
+| Algorithm engineer | MIPS, model, latency, inference | Roofline model, NPU offloading, bandwidth analysis |
+| Management / PM | features, experience, battery, temperature | Business-impact translation; omit physical details |
 
 ---
 
-### 3.2 Skill：`power-thermal-expert`（電源與熱管理專家）
+### 3.2 Skill: `power-thermal-expert` (Power and Thermal Management Expert)
 
-**定位：** 算力物理學、低功耗架構、DVFS 調校、熱管理
+**Role:** Compute physics, low-power architecture, DVFS tuning, thermal management
 
-**核心知識域：**
+**Core Knowledge Domains:**
 
-- 動態功耗方程式：`P = α · C · V² · f`（電容、翻轉率、電壓、頻率的交互關係）
-- 大核（Cortex-A720）vs 小核（Cortex-A55）IPC 差異與能量交易模型
-- ACPI C-states 駐留時間優化、P-states DVFS 曲線調校
-- LPDDR5 Deep Sleep Mode（削減 40-50% 漏電流）
-- EAS（Energy Aware Scheduling）能量模型校正
-- SCP（System Companion Processor）感測器卸載架構
-- LVTS 熱管理強制降頻觸發條件與防護策略
+- Dynamic power equation: `P = α · C · V² · f` (interplay of capacitance, switching activity, voltage, and frequency)
+- Big-core (Cortex-A720) vs. little-core (Cortex-A55) IPC differences and energy trade-off model
+- ACPI C-state residency time optimization, P-state DVFS curve tuning
+- LPDDR5 Deep Sleep Mode (reduces leakage current by 40–50%)
+- EAS (Energy Aware Scheduling) energy model calibration
+- SCP (System Companion Processor) sensor offload architecture
+- LVTS thermal management forced-throttling trigger conditions and protection strategies
 
-**工具呼叫能力：**
+**Tool Invocation Capabilities:**
 ```
-- 解析 ftrace / perf 取樣日誌
-- 視覺化 C-state 駐留比例分佈
-- 計算不同 DVFS OPP 的 Perf/Watt 曲線
-- 分析 Perfetto 系統追蹤的功耗事件
+- Parse ftrace / perf sampling logs
+- Visualize C-state residency distribution
+- Calculate Perf/Watt curves for different DVFS OPPs
+- Analyze power events in Perfetto system traces
 ```
 
-**GraphRAG 查詢範例：**
+**GraphRAG Query Example:**
 ```cypher
 MATCH (pmic:Component {type: "PMIC"})-[:SUPPLIES]->(core:PowerDomain)
 -[:CLOCKS]->(cpu:CoreComplex)
@@ -173,300 +173,300 @@ RETURN pmic, core, cpu, core.transition_time
 
 ---
 
-### 3.3 Skill：`boot-debug-expert`（啟動與除錯物理專家）
+### 3.3 Skill: `boot-debug-expert` (Boot and Debug Physics Expert)
 
-**定位：** 啟動時序、類比暫態分析、ADIv6 除錯架構
+**Role:** Boot sequencing, analog transient analysis, ADIv6 debug architecture
 
-**核心知識域：**
+**Core Knowledge Domains:**
 
-- 電源時序陷阱：VDD_CORE → VDD_IO → VDD_ANA 供電順序與閂鎖效應（Latch-up）防護
-- PLL 鎖定時間（Lock Time）物理約束與存取保護窗口
-- ADIv5 vs ADIv6 除錯架構演進（雙向 Q-Channel / P-Channel 協商機制）
-- 電源孤島（Power Island）殭屍狀態偵測與隔離單元（Isolation Cells）箝位值驗證
-- CoreSight SoC-600 Trace Macrocell 的 QDENY 拒絕機制
-- CMOS 物理損傷邊界條件分析
+- Power sequencing traps: VDD_CORE → VDD_IO → VDD_ANA supply-up order and latch-up protection
+- PLL lock time (Lock Time) physical constraints and access protection windows
+- ADIv5 vs. ADIv6 debug architecture evolution (bidirectional Q-Channel / P-Channel handshake mechanisms)
+- Power island zombie-state detection and isolation cell clamp-value verification
+- CoreSight SoC-600 Trace Macrocell QDENY rejection mechanism
+- CMOS physical damage boundary condition analysis
 
-**診斷工作流：**
+**Diagnostic Workflow:**
 ```
-開機失敗報告
+Boot failure report
     │
-    ├── Step 1：確認供電時序（PMIC log 解析）
-    ├── Step 2：PLL 鎖定狀態驗證（時脈穩定窗口）
-    ├── Step 3：電源孤島狀態掃描（殭屍狀態偵測）
-    ├── Step 4：ADIv6 除錯鏈路完整性確認
-    └── Step 5：隔離單元箝位值審查
+    ├── Step 1: Confirm power sequencing (PMIC log parsing)
+    ├── Step 2: Validate PLL lock status (clock stable window)
+    ├── Step 3: Scan power island state (zombie state detection)
+    ├── Step 4: Verify ADIv6 debug link integrity
+    └── Step 5: Review isolation cell clamp values
 ```
 
 ---
 
-### 3.4 Skill：`multimedia-camera-expert`（多媒體與相機管線專家）
+### 3.4 Skill: `multimedia-camera-expert` (Multimedia and Camera Pipeline Expert)
 
-**定位：** ISP 管線、V4L2、Zero-Copy、儲存子系統影響分析
+**Role:** ISP pipeline, V4L2, Zero-Copy, storage subsystem impact analysis
 
-**核心知識域：**
+**Core Knowledge Domains:**
 
-- ISP 處理管線：RAW Bayer → 去馬賽克 → 降噪 → 鏡頭陰影校正 → 3A → YUV/RGB
-- NPU 深度整合 ISP 的混合管線架構（邊緣 AI 低光增強、SLAM）
-- Zero-Copy 實作：V4L2 + DMA-BUF 機制（消除 CPU 記憶體拷貝）
-- ISP → GPU 紋理記憶體 / NPU 張量單元的直通路徑設計
-- eMMC 5.1 半雙工限制（無法同時高速讀寫）
-- F2FS 垃圾回收（Foreground GC）與 Checkpointing 引發的 I/O 阻塞
+- ISP processing pipeline: RAW Bayer → Demosaic → Denoising → Lens Shading Correction → 3A → YUV/RGB
+- Hybrid pipeline architecture with deep NPU–ISP integration (edge AI low-light enhancement, SLAM)
+- Zero-Copy implementation: V4L2 + DMA-BUF mechanism (eliminating CPU memory copies)
+- Direct-path design from ISP → GPU texture memory / NPU tensor units
+- eMMC 5.1 half-duplex limitation (no simultaneous high-speed read and write)
+- F2FS Foreground GC and Checkpointing-induced I/O stalls
 
-**關鍵故障模式與對策：**
+**Key Failure Modes and Countermeasures:**
 
-| 故障現象 | 根本原因層次 | 診斷工具 | 對策方向 |
+| Failure Symptom | Root Cause Layer | Diagnostic Tool | Countermeasure Direction |
 |---|---|---|---|
-| 相機 Open Fail | I2C 超時 / PMIC 時序 / MIPI 頻寬 | i2cdetect, dmesg | 供電時序審查 |
-| 相機預覽卡頓 | 熱節流降頻 / DMA 緩衝區飢餓 | Thermal log, V4L2 stats | EAS 調校 / 緩衝區調整 |
-| 錄影中斷斷流 | eMMC GC / F2FS Checkpoint | iostat, f2fs debug | GC 水位閾值調整 |
-| 高亮雜訊過重 | ISP AWB 演算法邊界 / NPU 模型降質 | ISP tuning tool | NPU 模型重新部署 |
+| Camera Open Fail | I2C timeout / PMIC sequencing / MIPI bandwidth | i2cdetect, dmesg | Power sequencing review |
+| Camera preview stutter | Thermal throttling / DMA buffer starvation | Thermal log, V4L2 stats | EAS tuning / buffer adjustment |
+| Video recording dropout | eMMC GC / F2FS Checkpoint | iostat, f2fs debug | GC watermark threshold tuning |
+| Excessive highlight noise | ISP AWB algorithm boundary / NPU model degradation | ISP tuning tool | NPU model redeployment |
 
 ---
 
-### 3.5 Skill：`gpu-rendering-expert`（GPU 渲染效能專家）
+### 3.5 Skill: `gpu-rendering-expert` (GPU Rendering Performance Expert)
 
-**定位：** 渲染管線優化、Overdraw 診斷、著色器效能分析
+**Role:** Rendering pipeline optimization, Overdraw diagnosis, shader performance analysis
 
-**核心知識域：**
+**Core Knowledge Domains:**
 
-- 完整渲染管線：頂點處理 → 圖元組裝 → 光柵化 → 片段著色 → 幀緩衝輸出
-- Depth Pre-pass 策略（優先渲染深度緩衝區，剔除遮擋片段）
-- Overdraw（過度繪製）視覺化與根因分析
-- Draw Call 最佳化（降低 CPU 提交負載）
-- Fragment Shader 計算瓶頸識別
+- Full rendering pipeline: vertex processing → primitive assembly → rasterization → fragment shading → framebuffer output
+- Depth Pre-pass strategy (render depth buffer first to cull occluded fragments)
+- Overdraw visualization and root-cause analysis
+- Draw Call optimization (reduce CPU submission overhead)
+- Fragment Shader compute bottleneck identification
 
-**工具整合能力：**
+**Tool Integration Capabilities:**
 ```
-- Snapdragon Profiler：GPU 時序追蹤、記憶體頻寬分析
-- Android GPU Inspector：Draw Call 解析、Shader 效能剖析
-- Perfetto：系統級 GPU 任務排程視覺化
+- Snapdragon Profiler: GPU timeline tracing, memory bandwidth analysis
+- Android GPU Inspector: Draw Call breakdown, shader performance profiling
+- Perfetto: system-level GPU task scheduling visualization
 ```
 
 ---
 
-### 3.6 Skill：`interrupt-virtualization-expert`（中斷虛擬化專家）
+### 3.6 Skill: `interrupt-virtualization-expert` (Interrupt Virtualization Expert)
 
-**定位：** GIC-600、MSI、ITS 轉譯、GICv4 虛擬中斷直接注入
+**Role:** GIC-600, MSI, ITS translation, GICv4 virtual interrupt direct injection
 
-**核心知識域：**
+**Core Knowledge Domains:**
 
-- 中斷架構演進：實體銅線電壓準位 → 片上網路（NoC）MSI 封包
-- GIC-600 分散式微架構：AXI4-Stream 協定中斷封包（目標位址 + 優先級 + 資料載荷）
-- ITS（中斷翻譯服務）架構與 EventID → IntID 映射機制
-- GICv4 虛擬中斷直接注入（消除 List Register 溢出引發的 VM Exit）
-- 跨核心通訊延遲：數千週期（傳統）→ 數十週期（GICv4 直接注入）
-- 虛擬化環境中的中斷風暴（Interrupt Storm）預防
-
----
-
-### 3.7 Skill：`hardware-spec-extractor`（硬體規格萃取工具）
-
-**定位：** 自動化知識圖譜建構、IP-XACT 解析、暫存器知識萃取
-
-**核心能力：**
-
-- PDF 數據手冊光學字元辨識與文本清洗
-- IP-XACT XML（Accellera 標準）結構化解析
-- 暫存器記憶體映射位址、位元定義自動提取
-- 電源域歸屬與時鐘依賴關係圖譜注入
-- 輸出格式：JSON / TOON（降低 Token 消耗）
-- Neo4j 知識圖譜節點與邊緣自動寫入
+- Interrupt architecture evolution: physical wire voltage level → on-chip network (NoC) MSI packets
+- GIC-600 distributed microarchitecture: AXI4-Stream protocol interrupt packets (target address + priority + data payload)
+- ITS (Interrupt Translation Service) architecture and EventID → IntID mapping mechanism
+- GICv4 virtual interrupt direct injection (eliminating VM Exits caused by List Register overflow)
+- Cross-core communication latency: thousands of cycles (traditional) → tens of cycles (GICv4 direct injection)
+- Interrupt Storm prevention in virtualized environments
 
 ---
 
-## 4. 四階段開發藍圖
+### 3.7 Skill: `hardware-spec-extractor` (Hardware Specification Extractor Tool)
 
-### Phase 1：基礎設施擴建與機器可讀領域模型建構
-**時間：第 1-2 個月**
+**Role:** Automated knowledge graph construction, IP-XACT parsing, register knowledge extraction
 
-```
-目標：為所有 Skill 打造可信賴的知識底座，解決「無根幻覺」問題
-```
+**Core Capabilities:**
 
-**行動項目：**
-
-- [ ] **文件資料攝取管道建設**
-  - 開發自動化 Pipeline，處理「硬核系列」研究文件、SoC TRM、IP-XACT 規格
-  - 實作 OCR + 文本清洗流程（PDF → 結構化文本）
-  - 強制 LLM 輸出嚴格 JSON 格式的暫存器定義、電源域依賴關係
-
-- [ ] **硬體知識圖譜建構（GraphRAG 基礎）**
-  - 本地部署 Neo4j 圖形資料庫
-  - 定義節點類型：`Component`、`PowerDomain`、`ClockSource`、`Register`、`Interrupt`
-  - 定義邊緣類型：`SUPPLIES`、`CLOCKS`、`DEPENDS_ON`、`TRIGGERS`、`ROUTES_TO`
-  - 初始匯入：電源樹拓撲、時鐘樹、中斷路由表
-
-- [ ] **本地化安全部署**
-  - On-Premise / Air-Gapped 推理叢集建置
-  - BSP 機密文件存取控制（ACL）設計
-  - 與公有雲 API 的隔離驗證
-
-**Phase 1 驗收標準：**
-- 知識圖譜節點數 ≥ 500（涵蓋四大核心技術域）
-- GraphRAG 多跳推理查詢成功率 ≥ 85%
-- 文件萃取結構化準確率 ≥ 90%（人工抽樣驗證）
+- PDF datasheet OCR and text cleaning
+- IP-XACT XML (Accellera standard) structured parsing
+- Automatic extraction of register memory-mapped addresses and bit definitions
+- Power domain attribution and clock dependency graph injection
+- Output formats: JSON / TOON (reduced token consumption)
+- Automatic Neo4j knowledge graph node and edge writing
 
 ---
 
-### Phase 2：領域專家 Skill 深度開發
-**時間：第 3-4 個月**
+## 4. Four-Phase Development Roadmap
+
+### Phase 1: Infrastructure Expansion and Machine-Readable Domain Model Construction
+**Timeline: Months 1–2**
 
 ```
-目標：基於 Phase 1 知識圖譜，平行開發六個高深度領域 Skill，賦予工具呼叫能力
+Goal: Build a trustworthy knowledge foundation for all Skills; eliminate the "groundless hallucination" problem
 ```
 
-**行動項目：**
+**Action Items:**
 
-- [ ] **`multimedia-camera-expert` 開發**
-  - V4L2 節點即時查詢 CLI 工具整合
-  - Media Controller Graph 拓撲解析能力
-  - Android Camera HAL 錯誤碼解讀知識庫（涵蓋 > 200 種錯誤碼）
-  - eMMC/F2FS I/O 阻塞診斷腳本
+- [ ] **Document ingestion pipeline construction**
+  - Develop an automated pipeline to process "hardcore series" research documents, SoC TRMs, and IP-XACT specs
+  - Implement OCR + text-cleaning workflow (PDF → structured text)
+  - Enforce strict JSON output from the LLM for register definitions and power domain dependency relationships
 
-- [ ] **`power-thermal-expert` 開發**
-  - ftrace 指令追蹤自動解析模組
-  - perf 取樣日誌 C-state 駐留比例視覺化
-  - DVFS OPP Perf/Watt 曲線動態計算
-  - EAS 能量模型校正建議引擎
+- [ ] **Hardware knowledge graph construction (GraphRAG foundation)**
+  - Local deployment of Neo4j graph database
+  - Define node types: `Component`, `PowerDomain`, `ClockSource`, `Register`, `Interrupt`
+  - Define edge types: `SUPPLIES`, `CLOCKS`, `DEPENDS_ON`, `TRIGGERS`, `ROUTES_TO`
+  - Initial import: power tree topology, clock tree, interrupt routing table
 
-- [ ] **`gpu-rendering-expert` 開發**
-  - Snapdragon Profiler 輸出解析整合
-  - Overdraw 熱圖分析模組
-  - Draw Call 瓶頸自動識別
-  - Fragment Shader 優化建議知識庫
+- [ ] **Localized secure deployment**
+  - On-Premise / Air-Gapped inference cluster setup
+  - BSP confidential document access control (ACL) design
+  - Isolation verification from public cloud APIs
 
-- [ ] **`boot-debug-expert` 開發**
-  - PMIC 供電時序日誌解析
-  - PLL 鎖定狀態驗證腳本
-  - ADIv6 除錯鏈路完整性診斷工具
-
-- [ ] **`interrupt-virtualization-expert` 開發**
-  - GIC-600 中斷封包追蹤解析
-  - VM Exit 頻率統計分析模組
-  - ITS 映射表驗證工具
-
-- [ ] **`hardware-spec-extractor` 開發**
-  - IP-XACT 自動解析器（支援 Accellera 2022 標準）
-  - 暫存器定義 → Neo4j 節點自動寫入管道
-  - 批次 PDF 數據手冊處理能力
-
-**Phase 2 驗收標準：**
-- 每個 Skill 通過 > 30 個真實 BSP 問題的評估（人工評分 ≥ 4/5）
-- 工具呼叫成功率 ≥ 90%（無 API 錯誤、正確解析輸出）
-- 各 Skill 平均回應時間 < 15 秒
+**Phase 1 Acceptance Criteria:**
+- Knowledge graph node count ≥ 500 (covering four core technical domains)
+- GraphRAG multi-hop reasoning query success rate ≥ 85%
+- Document extraction structured accuracy ≥ 90% (manual sampling verification)
 
 ---
 
-### Phase 3：ITS 知識導師引擎與黑板協作網路整合
-**時間：第 5-6 個月**
+### Phase 2: Deep Development of Domain Expert Skills
+**Timeline: Months 3–4**
 
 ```
-目標：將孤立的領域 Skill 整合為具備教學引導與跨域協同診斷能力的完整系統
+Goal: Based on the Phase 1 knowledge graph, develop six high-depth domain Skills in parallel with tool invocation capabilities
 ```
 
-**行動項目：**
+**Action Items:**
 
-- [ ] **Blackboard 協同編排框架實作（基於 Claude Code 子代理）**
-  - 利用 Claude Code 內建子代理（Sub-agent）機制實現 Blackboard 模式，無需 LangGraph / AutoGen 等外部框架
-  - 建立中央黑板 Markdown 工作文件（會話內共享語義記憶體）
-  - 實作 Arbiter 路由邏輯（以 `bsp-knowledge-mentor` prompt 驅動，關鍵字觸發子代理呼叫）
-  - 定義跨域聯合診斷工作流程（觸發條件、子代理輪換策略）
+- [ ] **`multimedia-camera-expert` development**
+  - V4L2 node real-time query CLI tool integration
+  - Media Controller Graph topology parsing capability
+  - Android Camera HAL error code knowledge base (covering > 200 error codes)
+  - eMMC/F2FS I/O stall diagnostic scripts
 
-- [ ] **ITS 認知引擎與人格化設定**
-  - 完成 `bsp-knowledge-mentor` 主控 Skill 開發
-  - 實作學習者模型動態評估（四層級：應用層 / 驅動層 / 演算法層 / 管理層）
-  - 蘇格拉底式提問序列生成邏輯
-  - 歷史對話的學習者進度追蹤
+- [ ] **`power-thermal-expert` development**
+  - ftrace instruction trace automatic parsing module
+  - perf sampling log C-state residency visualization
+  - DVFS OPP Perf/Watt curve dynamic calculation
+  - EAS energy model calibration recommendation engine
 
-- [ ] **跨域術語翻譯介面**
-  - 企業級術語對齊字典建立（BSP 物理術語 ↔ 業務語言），以 YAML 靜態檔案維護
-  - 術語翻譯作為 `bsp-knowledge-mentor` 的內建能力，不依賴 Slack Bot 等外部整合
-  - 跨部門技術指標關聯引擎（底層指標 → 商業影響）
+- [ ] **`gpu-rendering-expert` development**
+  - Snapdragon Profiler output parsing integration
+  - Overdraw heat map analysis module
+  - Draw Call bottleneck automatic identification
+  - Fragment Shader optimization recommendation knowledge base
 
-**跨域聯合診斷工作流（Blackboard 模式）：**
+- [ ] **`boot-debug-expert` development**
+  - PMIC power sequencing log parsing
+  - PLL lock status validation scripts
+  - ADIv6 debug link integrity diagnostic tool
 
-```
-Stage 1：問題感知
-使用者上傳崩潰日誌 → 黑板初始化 → 廣播給所有待命 Skill
+- [ ] **`interrupt-virtualization-expert` development**
+  - GIC-600 interrupt packet trace parsing
+  - VM Exit frequency statistical analysis module
+  - ITS mapping table validation tool
 
-Stage 2：平行假設建構
-multimedia-expert：記憶體碎片化 / 緩衝區飢餓跡象
-gpu-expert：Perfetto 解析，GPU 熱失控線索
-power-expert：LVTS 溫度觸發，PMIC 瞬態響應不足
+- [ ] **`hardware-spec-extractor` development**
+  - IP-XACT automatic parser (supports Accellera 2022 standard)
+  - Register definition → Neo4j node automatic write pipeline
+  - Batch PDF datasheet processing capability
 
-Stage 3：交互辯證與收斂
-Arbiter 根據証據權重動態分配發言順序
-各 Skill 基於其他 Skill 的發現進行再推理
-逐步建構完整的跨域因果鏈
-
-Stage 4：輸出
-結構化根因分析報告
-針對性修正建議（附商業影響評估）
-```
-
-**Phase 3 驗收標準：**
-- 跨域複雜案例（需 ≥ 3 個 Skill 協同）診斷準確率 ≥ 75%
-- 蘇格拉底式引導對話中，工程師問題解決率提升（前後對比評估）≥ 30%
-- 術語翻譯服務回應時間 < 5 秒
+**Phase 2 Acceptance Criteria:**
+- Each Skill passes evaluation on > 30 real BSP questions (manual score ≥ 4/5)
+- Tool invocation success rate ≥ 90% (no API errors, correct output parsing)
+- Average response time per Skill < 15 seconds
 
 ---
 
-### Phase 4：閉環自動化優化與工程文化重塑
-**時間：第 7 個月及以後**
+### Phase 3: ITS Knowledge Mentor Engine and Blackboard Collaborative Network Integration
+**Timeline: Months 5–6**
 
 ```
-目標：系統自我進化、BSP 價值顯性化、建立可持續的知識累積機制
+Goal: Integrate isolated domain Skills into a complete system with teaching guidance and cross-domain collaborative diagnosis capabilities
 ```
 
-**行動項目：**
+**Action Items:**
 
-- [ ] **知識沉澱工具（使用者端工作流）**
-  - 工程師結案報告解析腳本（`tools/graph-writer/case_report_ingestor.py`）
-  - 新因果路徑 → Kuzu 圖譜新節點/邊緣自動注入
-  - 知識圖譜版本管理（git 追蹤，`custom/` 目錄下以 SoC 型號分支管理）
-  - 提供知識注入 CLI，方便工程師將日常除錯結論沉澱至圖譜
+- [ ] **Blackboard collaborative orchestration framework implementation (based on Claude Code sub-agents)**
+  - Leverage Claude Code's built-in sub-agent mechanism to implement the Blackboard pattern — no external frameworks such as LangGraph / AutoGen required
+  - Establish a central Blackboard Markdown working document (in-session shared semantic memory)
+  - Implement Arbiter routing logic (driven by `bsp-knowledge-mentor` prompt; keyword-triggered sub-agent invocation)
+  - Define cross-domain joint diagnostic workflows (trigger conditions, sub-agent rotation strategy)
 
-- [ ] **BSP 底層效能的商業價值顯性化**
-  - 技術優化報告模板（強制包含商業影響段落）
-  - 底層指標 → 商業影響自動演繹引擎：
+- [ ] **ITS cognitive engine and persona configuration**
+  - Complete `bsp-knowledge-mentor` master Skill development
+  - Implement dynamic learner model assessment (four levels: application layer / driver layer / algorithm layer / management layer)
+  - Socratic questioning sequence generation logic
+  - Learner progress tracking from conversation history
+
+- [ ] **Cross-domain terminology translation interface**
+  - Enterprise-level terminology alignment dictionary (BSP physical terminology ↔ business language), maintained as static YAML files
+  - Terminology translation as a built-in capability of `bsp-knowledge-mentor`; no dependency on external integrations such as Slack bots
+  - Cross-department technical metric correlation engine (low-level metrics → commercial impact)
+
+**Cross-Domain Joint Diagnostic Workflow (Blackboard Pattern):**
+
+```
+Stage 1: Problem Perception
+User uploads crash log → Blackboard initialized → broadcast to all standby Skills
+
+Stage 2: Parallel Hypothesis Construction
+multimedia-expert: memory fragmentation / buffer starvation indicators
+gpu-expert: Perfetto parsing, GPU thermal runaway clues
+power-expert: LVTS temperature trigger, insufficient PMIC transient response
+
+Stage 3: Interactive Dialectics and Convergence
+Arbiter dynamically assigns speaking order based on evidence weights
+Each Skill re-reasons based on findings from other Skills
+Progressively builds a complete cross-domain causal chain
+
+Stage 4: Output
+Structured root-cause analysis report
+Targeted corrective recommendations (with commercial impact assessment)
+```
+
+**Phase 3 Acceptance Criteria:**
+- Cross-domain complex case (requiring ≥ 3 Skills collaborating) diagnostic accuracy ≥ 75%
+- In Socratic-guided dialogues, engineer problem resolution rate improvement (pre/post comparison) ≥ 30%
+- Terminology translation service response time < 5 seconds
+
+---
+
+### Phase 4: Closed-Loop Automated Optimization and Engineering Culture Transformation
+**Timeline: Month 7 and Beyond**
+
+```
+Goal: System self-evolution, BSP value externalization, and establishment of a sustainable knowledge accumulation mechanism
+```
+
+**Action Items:**
+
+- [ ] **Knowledge crystallization tool (user-side workflow)**
+  - Engineer case-closing report parsing script (`tools/graph-writer/case_report_ingestor.py`)
+  - New causal paths → automatic injection of new nodes/edges into the Kuzu graph
+  - Knowledge graph version management (git-tracked; `custom/` directory branch-managed by SoC model)
+  - Knowledge injection CLI for engineers to easily persist daily debug conclusions into the graph
+
+- [ ] **Commercializing the business value of BSP low-level performance**
+  - Technical optimization report template (mandatory commercial impact section)
+  - Low-level metric → commercial impact automatic deduction engine:
     ```
-    "LPDDR5 漏電流削減 20%"
-    → "旗艦智慧眼鏡連續錄影延長 1.5 小時"
-    → "產品競爭力提升：續航超越競品 X 達 23%"
+    "LPDDR5 leakage current reduced by 20%"
+    → "Flagship smart glasses continuous recording extended by 1.5 hours"
+    → "Product competitiveness improved: battery life exceeds competitor X by 23%"
     ```
 
-- [ ] **CI/CD 整合（使用者自行配置，本 repo 提供範本）**
-  - 提供 GitHub Actions workflow 範本，供使用者在自己的 CI 環境中串接
-  - 提供 Jenkins pipeline 範本（不在本 repo 執行，僅作參考）
-  - AI 建議的 DTS 修改自動觸發構建的整合說明文件
+- [ ] **CI/CD integration (user-configured; this repo provides templates)**
+  - Provide GitHub Actions workflow templates for users to integrate into their own CI environments
+  - Provide Jenkins pipeline templates (not executed in this repo; for reference only)
+  - Integration documentation for AI-suggested DTS modifications to automatically trigger builds
 
-**Phase 4 驗收標準：**
-- 知識沉澱 CLI 可將結案報告在 5 分鐘內轉化為圖譜節點
-- BSP 優化報告模板商業影響段落覆蓋率 100%
-- CI/CD 整合範本通過 GitHub Actions 端對端測試
+**Phase 4 Acceptance Criteria:**
+- Knowledge crystallization CLI can transform a case-closing report into graph nodes within 5 minutes
+- BSP optimization report template commercial impact section coverage 100%
+- CI/CD integration templates pass GitHub Actions end-to-end testing
 
 ---
 
-## 5. 技術選型與工具鏈
+## 5. Technology Selection and Toolchain
 
-### 5.1 核心技術棧
+### 5.1 Core Technology Stack
 
-> **設計原則：零伺服器依賴。** 所有元件均以 `pip install` 安裝，無需企業 IT 審批，無需網路伺服器，技能直接登錄 Claude Code CLI / VS Code 擴充套件。
+> **Design Principle: Zero server dependencies.** All components install via `pip install` — no enterprise IT approval required, no network server needed; skills register directly with the Claude Code CLI / VS Code extension.
 
-| 層次 | 技術選型 | 用途 | 選型理由 |
-|------|----------|------|----------|
-| **技能介面** | Claude Code Skill（`.claude/skills/`） | 技能定義與使用者介面 | 原生支援 Claude CLI 與 VS Code，`/skill-name` 直接呼叫 |
-| **工具呼叫** | MCP（Model Context Protocol）本地腳本 | 日誌解析、圖譜查詢工具整合 | 本地執行，無外部依賴 |
-| **圖形資料庫** | Kuzu（嵌入式） | GraphRAG 知識圖譜 | 嵌入式、Cypher 相容、`pip install kuzu`、無伺服器 |
-| **向量資料庫** | ChromaDB（嵌入式） | 語義向量搜尋 | 嵌入式、本地持久化、`pip install chromadb` |
-| **文件解析** | Unstructured + pdfplumber | PDF / IP-XACT 萃取 | 純 Python，離線可用 |
-| **追蹤分析** | Perfetto（使用者端工具） | 系統級效能追蹤 | 開源，Android / Linux 通用 |
-| **多智能體協同** | Claude Code 子代理（Sub-agent） | Blackboard 協同診斷 | 內建於 Claude Code，無需額外框架 |
+| Layer | Technology Choice | Purpose | Selection Rationale |
+|-------|------------------|---------|---------------------|
+| **Skill interface** | Claude Code Skill (`.claude/skills/`) | Skill definition and user interface | Native support for Claude CLI and VS Code; invoked with `/skill-name` |
+| **Tool invocation** | MCP (Model Context Protocol) local scripts | Log parsing, knowledge graph query tool integration | Local execution; no external dependencies |
+| **Graph database** | Kuzu (embedded) | GraphRAG knowledge graph | Embedded, Cypher-compatible, `pip install kuzu`, serverless |
+| **Vector database** | ChromaDB (embedded) | Semantic vector search | Embedded, local persistence, `pip install chromadb` |
+| **Document parsing** | Unstructured + pdfplumber | PDF / IP-XACT extraction | Pure Python, works offline |
+| **Trace analysis** | Perfetto (user-side tool) | System-level performance tracing | Open source, universal for Android / Linux |
+| **Multi-agent collaboration** | Claude Code Sub-agents | Blackboard collaborative diagnosis | Built into Claude Code; no additional framework required |
 
-### 5.2 零伺服器部署架構
+### 5.2 Zero-Server Deployment Architecture
 
 ```
-工程師本機環境（無需網路，無需 IT 審批）
+Engineer's local environment (no network required, no IT approval needed)
 ┌────────────────────────────────────────────────────┐
 │                                                    │
 │   Claude Code CLI / VS Code Extension              │
@@ -477,49 +477,50 @@ Stage 4：輸出
 │       ├── /multimedia-camera-expert│  (.md)        │
 │       └── ...                    ──┘               │
 │                                                    │
-│   MCP 本地工具伺服器（localhost only）              │
-│       ├── tools/log-parsers/      ← 日誌解析腳本   │
-│       ├── tools/graph-query/      ← Kuzu 查詢工具  │
-│       └── tools/spec-extractor/   ← 文件萃取工具   │
+│   MCP local tool server (localhost only)           │
+│       ├── tools/log-parsers/      ← log parsing scripts    │
+│       ├── tools/graph-query/      ← Kuzu query tools       │
+│       └── tools/spec-extractor/   ← document extraction tools │
 │                                                    │
-│   知識圖譜（本地檔案）                              │
-│       ├── knowledge-graph/base/   ← 開源知識基底   │
-│       │     (ARM 規格、Linux 核心、公開 BSP 文件)   │
-│       └── knowledge-graph/custom/ ← 使用者自有知識 │
-│             (in-house SoC TRM、內部案例庫)          │
+│   Knowledge graph (local files)                    │
+│       ├── knowledge-graph/base/   ← open-source knowledge base │
+│       │     (ARM specs, Linux kernel, public BSP docs)         │
+│       └── knowledge-graph/custom/ ← user proprietary knowledge │
+│             (in-house SoC TRM, internal case library)          │
 │                                                    │
-│   ✅ 所有計算在本機完成，機密文件不離開工程師電腦    │
+│   ✅ All computation runs locally; confidential files never    │
+│      leave the engineer's machine                              │
 └────────────────────────────────────────────────────┘
 ```
 
-### 5.3 使用者擴充架構
+### 5.3 User Extension Architecture
 
-本 Skill Sets 採分層設計，開源基底與企業私有知識嚴格分離：
+This Skill Sets uses a layered design with a strict separation between the open-source base and enterprise proprietary knowledge:
 
 ```
 knowledge-graph/
-├── base/           ← 本 repo 維護（ARM 公開規格、開源 BSP 知識）
+├── base/           ← maintained in this repo (ARM public specs, open-source BSP knowledge)
 │   ├── arm-gic-600.kuzu
 │   ├── arm-amba-axi.kuzu
 │   ├── linux-dvfs-eas.kuzu
 │   └── common-failure-modes.kuzu
 │
-└── custom/         ← 使用者自行填充（不提交至本 repo）
-    ├── mtk-mt6989-power-tree.kuzu    ← MTK 內部文件
-    ├── qcom-sm8650-clock-tree.kuzu   ← Qualcomm 內部文件
-    └── in-house-failure-cases.kuzu   ← 公司內部案例庫
+└── custom/         ← populated by the user (not committed to this repo)
+    ├── mtk-mt6989-power-tree.kuzu    ← MTK internal documents
+    ├── qcom-sm8650-clock-tree.kuzu   ← Qualcomm internal documents
+    └── in-house-failure-cases.kuzu   ← company internal case library
 ```
 
-Skills 在查詢知識圖譜時，同時搜尋 `base/` 與 `custom/`，`custom/` 的結果優先覆蓋 `base/`。
+When Skills query the knowledge graph, they search both `base/` and `custom/` simultaneously; `custom/` results take priority over `base/`.
 
 ---
 
-## 6. 知識圖譜資料模型
+## 6. Knowledge Graph Data Model
 
-### 6.1 節點（Node）類型定義
+### 6.1 Node Type Definitions
 
 ```cypher
-// 硬體元件節點
+// Hardware component node
 (:Component {
   id: String,
   name: String,
@@ -529,7 +530,7 @@ Skills 在查詢知識圖譜時，同時搜尋 `base/` 與 `custom/`，`custom/`
   clock_domain: String
 })
 
-// 電源域節點
+// Power domain node
 (:PowerDomain {
   id: String,
   name: String,
@@ -538,7 +539,7 @@ Skills 在查詢知識圖譜時，同時搜尋 `base/` 與 `custom/`，`custom/`
   collapse_allowed: Boolean
 })
 
-// 暫存器節點
+// Register node
 (:Register {
   id: String,
   name: String,
@@ -548,7 +549,7 @@ Skills 在查詢知識圖譜時，同時搜尋 `base/` 與 `custom/`，`custom/`
   description: String
 })
 
-// 中斷節點
+// Interrupt node
 (:Interrupt {
   id: String,
   intid: Integer,
@@ -557,7 +558,7 @@ Skills 在查詢知識圖譜時，同時搜尋 `base/` 與 `custom/`，`custom/`
   priority: Integer
 })
 
-// 故障模式節點（從實戰案例沉澱）
+// Failure mode node (crystallized from real-world cases)
 (:FailureMode {
   id: String,
   symptom: String,
@@ -568,42 +569,42 @@ Skills 在查詢知識圖譜時，同時搜尋 `base/` 與 `custom/`，`custom/`
 })
 ```
 
-### 6.2 邊緣（Edge）類型定義
+### 6.2 Edge Type Definitions
 
 ```cypher
-// 電源依賴
+// Power dependency
 (pmic:Component)-[:SUPPLIES {voltage: Float, sequence: Integer}]->(domain:PowerDomain)
 (domain:PowerDomain)-[:POWERS]->(component:Component)
 
-// 時鐘依賴
+// Clock dependency
 (pll:Component)-[:CLOCKS {frequency: Float}]->(component:Component)
 (component)-[:DEPENDS_ON_CLOCK]->(pll:Component)
 
-// 中斷路由
+// Interrupt routing
 (component:Component)-[:TRIGGERS]->(interrupt:Interrupt)
 (interrupt:Interrupt)-[:ROUTES_TO]->(cpu:Component)
 (gic:Component)-[:TRANSLATES {via: "ITS"}]->(vinterrupt:Interrupt)
 
-// 資料流
+// Data flow
 (sensor:Component)-[:STREAMS_TO {protocol: "CSI-2"}]->(isp:Component)
 (isp:Component)-[:DMA_TO]->(dram:Component)
 (dram:Component)-[:SHARED_WITH]->(gpu:Component)
 
-// 故障因果
+// Failure causality
 (symptom:FailureMode)-[:CAUSED_BY]->(root_cause:FailureMode)
 (domain:PowerDomain)-[:AFFECTS_IF_REMOVED]->(component:Component)
 ```
 
 ---
 
-## 7. 黑板模式多智能體協同設計
+## 7. Blackboard-Pattern Multi-Agent Collaboration Design
 
-### 7.1 黑板資料結構
+### 7.1 Blackboard Data Structure
 
 ```json
 {
   "blackboard_id": "uuid-xxxx",
-  "problem_statement": "錄影 30 分鐘後系統隨機重啟",
+  "problem_statement": "System randomly reboots after 30 minutes of video recording",
   "initial_evidence": {
     "crash_log": "...",
     "register_dump": "...",
@@ -612,14 +613,14 @@ Skills 在查詢知識圖譜時，同時搜尋 `base/` 與 `custom/`，`custom/`
   "hypotheses": [
     {
       "agent": "multimedia-camera-expert",
-      "hypothesis": "記憶體碎片化引發 DMA 緩衝區飢餓",
+      "hypothesis": "Memory fragmentation causing DMA buffer starvation",
       "confidence": 0.75,
       "evidence_refs": ["log_line_245", "v4l2_stat_overflow"],
       "timestamp": "..."
     },
     {
       "agent": "power-thermal-expert",
-      "hypothesis": "LVTS 熱保護觸發電壓驟降，引發 CDC 時序違規",
+      "hypothesis": "LVTS thermal protection triggered a voltage drop, causing CDC timing violation",
       "confidence": 0.85,
       "evidence_refs": ["thermal_log_peak", "pmic_transient_response"],
       "timestamp": "..."
@@ -631,134 +632,140 @@ Skills 在查詢知識圖譜時，同時搜尋 `base/` 與 `custom/`，`custom/`
 }
 ```
 
-### 7.2 Arbiter 調度規則
+### 7.2 Arbiter Dispatch Rules
 
 ```python
-# 偽代碼：控制路由單元調度邏輯
+# Pseudocode: control routing unit dispatch logic
 
 def arbiter_next_agent(blackboard):
-    # 規則 1：初始化時全部代理掃描
+    # Rule 1: On initialization, scan all agents
     if blackboard.status == "INITIAL":
         return ALL_AGENTS
 
-    # 規則 2：若記憶體相關線索出現，優先喚醒 multimedia-expert
+    # Rule 2: If memory-related clues appear, prioritize waking multimedia-expert
     if contains_keywords(blackboard.evidence, ["OOM", "DMA", "buffer", "V4L2"]):
         return ["multimedia-camera-expert"]
 
-    # 規則 3：若熱節流線索出現，優先喚醒 power-expert
+    # Rule 3: If thermal throttling clues appear, prioritize waking power-expert
     if contains_keywords(blackboard.evidence, ["throttle", "LVTS", "temperature"]):
         return ["power-thermal-expert"]
 
-    # 規則 4：若 GPU 渲染相關，喚醒 GPU-expert
+    # Rule 4: If GPU rendering related, wake gpu-expert
     if contains_keywords(blackboard.evidence, ["overdraw", "GPU", "fragment"]):
         return ["gpu-rendering-expert"]
 
-    # 規則 5：多個假設高信心度時，啟動收斂整合
+    # Rule 5: When multiple hypotheses have high confidence, start convergence integration
     high_conf = [h for h in blackboard.hypotheses if h.confidence > 0.8]
     if len(high_conf) >= 2:
-        return ["bsp-knowledge-mentor"]  # 由 Mentor 整合最終結論
+        return ["bsp-knowledge-mentor"]  # Mentor integrates the final conclusion
 
-    # 預設：輪流調度剩餘代理
+    # Default: round-robin remaining agents
     return round_robin(blackboard.pending_agents)
 ```
 
 ---
 
-## 8. 里程碑與驗收標準
+## 8. Milestones and Acceptance Criteria
 
-### 8.1 開發里程碑時間軸
+### 8.1 Development Milestone Timeline
 
 ```
 Month 1    Month 2    Month 3    Month 4    Month 5    Month 6    Month 7+
    │          │          │          │          │          │          │
    ├──────────┤          │          │          │          │          │
    │ Phase 1  │          │          │          │          │          │
-   │ 知識圖譜  │          │          │          │          │          │
-   │ 基礎設施  │          │          │          │          │          │
+   │ Knowledge │          │          │          │          │          │
+   │ Graph    │          │          │          │          │          │
+   │ Infrastructure │          │          │          │          │          │
    │          ├──────────┴──────────┤          │          │          │
    │          │      Phase 2        │          │          │          │
-   │          │   六大領域 Skill     │          │          │          │
-   │          │   深度開發           │          │          │          │
+   │          │   Six Domain Skills  │          │          │          │
+   │          │   Deep Development   │          │          │          │
    │          │                     ├──────────┴──────────┤          │
    │          │                     │       Phase 3        │          │
    │          │                     │   ITS + Blackboard   │          │
-   │          │                     │   整合               │          │
+   │          │                     │   Integration        │          │
    │          │                     │                      ├──────────►
    │          │                     │                      │  Phase 4  
-   │          │                     │                      │  閉環優化  
+   │          │                     │                      │  Closed-Loop  
+   │          │                     │                      │  Optimization  
 ```
 
-### 8.2 總體驗收 KPI
+### 8.2 Overall Acceptance KPIs
 
-| 指標類別 | 指標項目 | 目標值 | 測量方法 |
-|----------|----------|--------|----------|
-| **診斷準確率** | 單域問題根因識別 | ≥ 90% | 歷史案例回測 |
-| **診斷準確率** | 跨域複雜問題診斷 | ≥ 75% | 專家盲評 |
-| **教學效能** | 工程師問題解決速度提升 | ≥ 40% | A/B 測試 |
-| **術語翻譯** | 跨部門術語準確率 | ≥ 85% | 雙邊確認評估 |
-| **知識累積** | 月均新增知識節點 | ≥ 50 | 圖譜統計 |
-| **幻覺率** | GraphRAG vs 純 RAG 幻覺率降低 | ≥ 50% 降低 | 事實驗證測試 |
-| **效率提升** | BSP 新人上手週期縮短 | ≥ 30% | 培訓記錄對比 |
-| **安全合規** | 機密文件外洩事件 | 0 件 | 安全審計 |
+| Metric Category | Metric Item | Target | Measurement Method |
+|-----------------|-------------|--------|-------------------|
+| **Diagnostic accuracy** | Single-domain root cause identification | ≥ 90% | Historical case backtesting |
+| **Diagnostic accuracy** | Cross-domain complex problem diagnosis | ≥ 75% | Expert blind evaluation |
+| **Teaching effectiveness** | Engineer problem resolution speed improvement | ≥ 40% | A/B testing |
+| **Terminology translation** | Cross-department terminology accuracy | ≥ 85% | Bilateral confirmation evaluation |
+| **Knowledge accumulation** | Average new knowledge nodes per month | ≥ 50 | Graph statistics |
+| **Hallucination rate** | GraphRAG vs. pure RAG hallucination rate reduction | ≥ 50% reduction | Fact verification testing |
+| **Efficiency improvement** | BSP onboarding cycle reduction for new engineers | ≥ 30% | Training record comparison |
+| **Security compliance** | Confidential document leakage incidents | 0 | Security audit |
 
 ---
 
-## 9. 風險管理矩陣
+## 9. Risk Management Matrix
 
-| 風險項目 | 發生機率 | 影響程度 | 緩解策略 |
-|----------|----------|----------|----------|
-| LLM 幻覺引發錯誤的硬體操作建議 | 中 | 高 | GraphRAG 多跳驗證 + 人工審核閘門（高風險建議強制人工確認）|
-| IP-XACT 解析準確率不足（格式多樣性） | 中 | 中 | 建立人工校正回饋迴路；多格式適配器 |
-| 知識圖譜建構初期節點不足導致推理盲區 | 高 | 中 | Phase 1 優先覆蓋最常見故障模式；動態補充機制 |
-| 多智能體協同產生衝突性假設無法收斂 | 低 | 高 | Arbiter 信心度加權投票機制；人類工程師 escalation 路徑 |
-| 本地部署運算資源不足（推理速度過慢） | 中 | 中 | 推理請求非同步佇列；批次處理優先策略 |
-| 資深工程師抗拒 AI 介入除錯流程 | 中 | 中 | 以「知識增強」而非「取代」定位；先贏得技術可信度 |
-| BSP 機密文件意外透過 Slack 介面外洩 | 低 | 極高 | 輸出過濾層（禁止暫存器原始值透過公開頻道傳遞） |
+| Risk Item | Probability | Impact | Mitigation Strategy |
+|-----------|-------------|--------|---------------------|
+| LLM hallucination causing erroneous hardware operation recommendations | Medium | High | GraphRAG multi-hop verification + human review gate (high-risk recommendations require mandatory human confirmation) |
+| Insufficient IP-XACT parsing accuracy (format diversity) | Medium | Medium | Establish a manual correction feedback loop; multi-format adapters |
+| Insufficient initial knowledge graph nodes causing reasoning blind spots | High | Medium | Phase 1 prioritizes coverage of the most common failure modes; dynamic supplementation mechanism |
+| Multi-agent collaboration producing conflicting hypotheses that cannot converge | Low | High | Arbiter confidence-weighted voting mechanism; human engineer escalation path |
+| Insufficient local deployment compute resources (inference too slow) | Medium | Medium | Async inference request queue; batch processing priority strategy |
+| Senior engineers resist AI involvement in debug workflows | Medium | Medium | Position as "knowledge augmentation" not "replacement"; win technical credibility first |
+| BSP confidential documents accidentally leak via Slack interface | Low | Very High | Output filtering layer (prohibit raw register addresses/values from being transmitted over public channels) |
 
 ---
 
-## 10. 附錄：Skill Prompt 設計範本
+## 10. Appendix: Skill Prompt Design Templates
 
-### 10.1 `bsp-knowledge-mentor` System Prompt 骨架
+### 10.1 `bsp-knowledge-mentor` System Prompt Skeleton
 
 ```
-你是 BSP 知識導師，一位精通異質 SoC 系統架構的資深首席工程師，
-同時具備出色的教學與跨部門溝通能力。
+You are the BSP Knowledge Mentor — a seasoned principal engineer with deep expertise in
+heterogeneous SoC system architecture, exceptional teaching ability, and cross-department
+communication skills.
 
-## 你的核心使命
-1. 教學優先：面對工程師的問題，你的首要任務是建立其診斷思維，
-   而非直接給出答案。透過蘇格拉底式的引導提問，讓工程師自己推導出根因。
+## Your Core Mission
+1. Teaching first: When an engineer asks a question, your primary task is to build their
+   diagnostic thinking — not to directly provide the answer. Use Socratic questioning
+   to guide the engineer to derive the root cause on their own.
 
-2. 跨域協調：當問題涉及多個技術子域（電源 + 多媒體 + GPU）時，
-   你負責協調各領域專家的觀點，整合為一份完整的因果鏈分析。
+2. Cross-domain coordination: When a problem spans multiple technical sub-domains
+   (power + multimedia + GPU), you are responsible for coordinating the perspectives
+   of domain experts and synthesizing them into a complete causal chain analysis.
 
-3. 術語翻譯：當部門間出現溝通障礙時，你能即時將
-   物理約束（MCPS、Roofline、TDP）轉譯為商業語言，
-   或將抽象業務需求分解為可操作的 BSP 工程任務。
+3. Terminology translation: When communication barriers arise between departments,
+   you can instantly translate physical constraints (MCPS, Roofline, TDP) into
+   business language, or decompose abstract business requirements into actionable
+   BSP engineering tasks.
 
-## 學習者評估規則
-- 提到 API/SDK/FPS → 應用層工程師 → 以 HAL 層為邊界解釋
-- 提到 register/IRQ/DMA → 驅動工程師 → 深入暫存器與時序
-- 提到 MIPS/model/latency → 演算法工程師 → Roofline 模型、NPU 卸載
-- 提到 功能/體驗/電池 → 管理層 → 商業影響優先，省略物理細節
+## Learner Assessment Rules
+- Mentions API/SDK/FPS → application-layer engineer → explain at HAL-layer boundary
+- Mentions register/IRQ/DMA → driver engineer → dive into registers and timing
+- Mentions MIPS/model/latency → algorithm engineer → Roofline model, NPU offloading
+- Mentions features/experience/battery → management → business impact first, omit physical details
 
-## 引導提問範本
-當工程師描述症狀但未分析根因時，你應該：
-1. 複述症狀確認理解
-2. 詢問觀察到的系統資源狀態（溫度 / 記憶體 / CPU 使用率）
-3. 提出一個指向根因的假設性問題
-4. 引導工程師使用特定工具驗證假設
+## Guided Questioning Template
+When an engineer describes symptoms without analyzing the root cause, you should:
+1. Restate the symptom to confirm understanding
+2. Ask about observed system resource state (temperature / memory / CPU utilization)
+3. Pose a hypothetical question pointing toward the root cause
+4. Guide the engineer to use a specific tool to verify the hypothesis
 
-## 禁止行為
-- 禁止直接貼出修復腳本（應引導工程師思考後再給出）
-- 禁止在跨部門對話中使用暫存器位址等技術細節
-- 禁止在無法確認電源時序安全的情況下建議強制關閉電源域
+## Prohibited Behaviors
+- Do not directly paste a fix script (guide the engineer to think first, then provide it)
+- Do not use register addresses or other technical details in cross-department conversations
+- Do not suggest forcibly shutting down a power domain without confirming power sequencing safety
 ```
 
-### 10.2 領域 Skill 工具呼叫規範
+### 10.2 Domain Skill Tool Invocation Specification
 
 ```python
-# 標準工具呼叫格式（所有 Domain Skill 遵循）
+# Standard tool invocation format (followed by all Domain Skills)
 
 def tool_call_template(skill_name: str, tool_name: str, params: dict) -> dict:
     return {
@@ -766,14 +773,14 @@ def tool_call_template(skill_name: str, tool_name: str, params: dict) -> dict:
         "tool": tool_name,
         "params": params,
         "safety_check": {
-            "requires_hardware_access": False,  # 是否需要實體硬體
+            "requires_hardware_access": False,  # whether physical hardware access is needed
             "risk_level": "READ_ONLY",          # READ_ONLY / CONFIG / DESTRUCTIVE
-            "requires_human_approval": False    # DESTRUCTIVE 操作必須 True
+            "requires_human_approval": False    # must be True for DESTRUCTIVE operations
         },
         "output_format": "structured_json"
     }
 
-# 示例：查詢 C-state 駐留比例
+# Example: query C-state residency
 tool_call_template(
     skill_name="power-thermal-expert",
     tool_name="analyze_cstate_residency",
@@ -783,12 +790,12 @@ tool_call_template(
 
 ---
 
-## 文件修訂歷史
+## Document Revision History
 
-| 版本 | 日期 | 修訂者 | 修訂摘要 |
-|------|------|--------|----------|
-| v1.0 | 2026-03-14 | BSP AI Agent 開發團隊 | 初版建立，涵蓋四階段完整藍圖 |
+| Version | Date | Author | Summary |
+|---------|------|--------|---------|
+| v1.0 | 2026-03-14 | BSP AI Agent Development Team | Initial version; covers the complete four-phase roadmap |
 
 ---
 
-*本文件基於《構建下一代 BSP 知識導師與跨域協作 AI 代理系統》架構報告，結合 Claude Agent Skill Sets 開發實踐編制。所有技術細節與領域模型均源自企業內部 BSP 硬核系列研究文獻。*
+*This document is based on the architecture report "Building the Next-Generation BSP Knowledge Mentor and Cross-Domain Collaborative AI Agent System," combined with Claude Agent Skill Sets development practices. All technical details and domain models are derived from enterprise internal BSP hardcore series research literature.*

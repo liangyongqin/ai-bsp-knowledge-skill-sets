@@ -13,7 +13,7 @@
 
 | Phase | Status | Progress |
 |-------|--------|----------|
-| Phase 1 — Knowledge Graph Infrastructure | ✅ Complete | 6/6 milestones done |
+| Phase 1 — Knowledge Graph Infrastructure | 🔄 In Progress | 5.5/6 milestones done (M1.3 needs `linux-suspend-hibernate.py`) |
 | Phase 2 — Domain Expert Skill Development | 🔄 In Progress | ~15% (scaffolding + safety gate + spec extractor; no `skill.md` files yet; log parsers pending) |
 | Phase 3 — ITS Mentor Engine & Blackboard | ⬜ Not Started | — |
 | Phase 4 — Knowledge Evolution & Extensibility | ⬜ Not Started | (CI/CD templates scaffolded as part of M1.1) |
@@ -157,12 +157,13 @@ description: <one-line description used by Claude Code to decide when to invoke>
 - [x] Write `knowledge-graph/schema/init_db.py` — create and initialize Kuzu DB
 - [x] Write `scripts/build_base_graph.py` — full base graph rebuild orchestrator
 
-### M1.3 — Open-Source Seed Knowledge Ingestion ✅
+### M1.3 — Open-Source Seed Knowledge Ingestion 🔄
 - [x] Write `knowledge-graph/base/arm-gic-600.py` — GIC-600, ITS, GICv4 nodes
 - [x] Write `knowledge-graph/base/arm-amba-axi.py` — AMBA AXI4, DMA-BUF interconnect nodes
 - [x] Write `knowledge-graph/base/linux-dvfs-eas.py` — CPUFreq OPP, EAS energy model, C-state nodes
 - [x] Write `knowledge-graph/base/common-failure-modes.py` — top 30 open-source documented failure patterns
 - [x] Write `knowledge-graph/custom/README.md`
+- [ ] Write `knowledge-graph/base/linux-suspend-hibernate.py` — STR/STD knowledge nodes; sources: Linux `Documentation/power/states.rst`, `Documentation/power/suspend-and-cpuhotplug.rst`, `Documentation/driver-api/pm/`, `Documentation/power/hibernation.rst`, ARM PSCI spec (DEN0022); covers: PM call chain (`dev_pm_ops` freeze/suspend/resume/restore), PSCI CPU/cluster power states, `wakeup_source` graph, STR vs STD distinction (Android S2R / embedded S4)
 - [ ] Verify: base graph ≥ 500 nodes (pending `build_base_graph.py` execution against a live DB)
 
 ### M1.4 — Document Ingestion Pipeline ✅
@@ -203,13 +204,18 @@ skills/<skill-name>/
 ```
 
 ### M2.1 — `power-thermal-expert` ⬜
-- [ ] Write `skills/power-thermal-expert/skill.md` — anchor to: P=αCV²f (ARM DynamIQ power model), Linux EAS energy model (`sched-energy.rst`), ACPI C-state spec, LPDDR5 JEDEC JESD79-5 deep sleep timing
-- [ ] Write `mcp/tools/log_parsers/ftrace_parser.py` — C-state residency from `trace-cmd` output
+- [ ] Write `skills/power-thermal-expert/skill.md` — anchor to: P=αCV²f (ARM DynamIQ power model), Linux EAS (`sched-energy.rst`), ACPI C-state spec, LPDDR5 JEDEC JESD79-5 deep sleep timing, Linux PM framework (`Documentation/power/states.rst`, `Documentation/driver-api/pm/`), ARM PSCI spec (DEN0022)
+- [ ] STR/STD knowledge scope in `skill.md`:
+  - **STR (Suspend to RAM / S2R):** full first-class coverage — `dev_pm_ops` suspend/resume callback chain, PSCI CPU cluster power-down, `wakeup_source` registration and tracking, `/sys/power/state` debug flow, wakeup IRQ identification; applies to all mobile targets
+  - **STD (Suspend to Disk / Hibernation):** framework-layer coverage — `dev_pm_ops` freeze/thaw/poweroff/restore callbacks, `swsusp` snapshot mechanism, bootloader hibernation image detection, hibernation image I/O (eMMC/F2FS write perf); note as not applicable to Android targets, relevant for embedded Linux
+  - MTK SPM / Qualcomm RPMH: prompt user to add platform-specific nodes to `knowledge-graph/custom/`
+- [ ] Write `mcp/tools/log_parsers/ftrace_parser.py` — C-state residency from `trace-cmd` output; include `power:suspend_resume` tracepoint parsing for STR/STD transitions
 - [ ] Write `mcp/tools/log_parsers/perf_parser.py` — parse `perf stat`, compute IPC per cluster
 - [ ] Write `mcp/tools/log_parsers/thermal_parser.py` — throttling events from `dmesg` / kernel thermal drivers
 - [ ] Write `mcp/tools/log_parsers/dvfs_opp_calc.py` — Perf/Watt efficiency frontier from OPP table
-- [ ] Register MCP tools: `analyze_cstate_residency`, `compute_dvfs_efficiency`, `parse_thermal_events`
-- [ ] Write ≥ 30 eval cases: DVFS misconfiguration, C-state stuck, LPDDR5 deep sleep failure, EAS calibration drift, PMIC transient response
+- [ ] Write `mcp/tools/log_parsers/suspend_resume_parser.py` — parse PM debug log (`pm_debug=1`), wakeup source log (`/sys/kernel/debug/wakeup_sources`), last wakeup IRQ (`/sys/power/pm_wakeup_irq`), STR entry/exit latency from `power:suspend_resume` ftrace events
+- [ ] Register MCP tools: `analyze_cstate_residency`, `compute_dvfs_efficiency`, `parse_thermal_events`, `parse_suspend_resume_log`
+- [ ] Write ≥ 30 eval cases: DVFS misconfiguration, C-state stuck, LPDDR5 deep sleep failure, EAS calibration drift, PMIC transient response, STR blocked by wakeup source, STR resume hang (driver failing to resume), STR wakeup latency regression, STD hibernation image write failure (eMMC full / F2FS GC), power rail not restored on resume
 
 ### M2.2 — `boot-debug-expert` ⬜
 - [ ] Write `skills/boot-debug-expert/skill.md` — anchor to: ARM CoreSight SoC-600 TRM (ADIv6), AMBA APB power sequencing spec, ARM latch-up prevention guidelines

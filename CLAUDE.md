@@ -159,7 +159,7 @@ Knowledge anchors in `skill.md` must cite specific open-source references (ARM T
 
 | Skill | Primary open-source references |
 |---|---|
-| `power-thermal-expert` | ARM DynamIQ power model, Linux `Documentation/scheduler/sched-energy.rst`, ACPI C-state spec, LPDDR5 JEDEC JESD79-5 |
+| `power-thermal-expert` | ARM DynamIQ power model, Linux `Documentation/scheduler/sched-energy.rst`, ACPI C-state spec, LPDDR5 JEDEC JESD79-5; **STR:** Linux `Documentation/power/states.rst`, `Documentation/driver-api/pm/` (`dev_pm_ops` callback chain), ARM PSCI spec DEN0022; **STD:** Linux `Documentation/power/hibernation.rst` (`swsusp` snapshot); STD annotated as not applicable to Android targets |
 | `boot-debug-expert` | ARM CoreSight SoC-600 TRM (ADIv6), AMBA APB spec, Linux `Documentation/driver-api/clk.rst` |
 | `multimedia-camera-expert` | Linux `Documentation/userspace-api/media/`, DMA-BUF kernel docs (`Documentation/driver-api/dma-buf.rst`), F2FS docs, MIPI CSI-2 open spec |
 | `gpu-rendering-expert` | Android GPU Inspector docs, Perfetto GPU counters, OpenGL ES 3.x spec, Vulkan render pass spec |

@@ -366,11 +366,11 @@ RETURN pmic, core, cpu, core.transition_time
 
 **行動項目：**
 
-- [ ] **Blackboard 協同編排框架實作**
-  - 選型並導入多智能體框架（LangGraph / AutoGen / MetaGPT）
-  - 建立中央黑板模組（全局共享語義記憶體）
-  - 實作語義事件驅動的控制路由單元（Arbiter）
-  - 定義跨域聯合診斷工作流程（觸發條件、代理輪換策略）
+- [ ] **Blackboard 協同編排框架實作（基於 Claude Code 子代理）**
+  - 利用 Claude Code 內建子代理（Sub-agent）機制實現 Blackboard 模式，無需 LangGraph / AutoGen 等外部框架
+  - 建立中央黑板 Markdown 工作文件（會話內共享語義記憶體）
+  - 實作 Arbiter 路由邏輯（以 `bsp-knowledge-mentor` prompt 驅動，關鍵字觸發子代理呼叫）
+  - 定義跨域聯合診斷工作流程（觸發條件、子代理輪換策略）
 
 - [ ] **ITS 認知引擎與人格化設定**
   - 完成 `bsp-knowledge-mentor` 主控 Skill 開發
@@ -379,8 +379,8 @@ RETURN pmic, core, cpu, core.transition_time
   - 歷史對話的學習者進度追蹤
 
 - [ ] **跨域術語翻譯介面**
-  - 企業級術語對齊字典建立（BSP 物理術語 ↔ 業務語言）
-  - Slack Bot 整合：即時介入對話進行術語翻譯
+  - 企業級術語對齊字典建立（BSP 物理術語 ↔ 業務語言），以 YAML 靜態檔案維護
+  - 術語翻譯作為 `bsp-knowledge-mentor` 的內建能力，不依賴 Slack Bot 等外部整合
   - 跨部門技術指標關聯引擎（底層指標 → 商業影響）
 
 **跨域聯合診斷工作流（Blackboard 模式）：**
@@ -420,17 +420,11 @@ Stage 4：輸出
 
 **行動項目：**
 
-- [ ] **編譯器在環自動化回饋（Compiler-in-the-Loop）**
-  - Jenkins CI/CD 與 LAVA 硬體測試平台深度整合
-  - AI 建議的 DTS 修改自動觸發構建與測試
-  - 編譯警告、崩潰日誌、Benchmark 結果自動回饋至 LLM 自省機制
-  - 基於執行結果的強化學習策略
-
-- [ ] **隱性實戰經驗自動沉澱**
-  - 工程師結案報告自動解析模組
-  - 新因果路徑 → 知識圖譜新節點/邊緣自動注入
-  - 知識圖譜版本管理（追蹤知識演進歷程）
-  - 資深人員異動的知識斷層預防機制
+- [ ] **知識沉澱工具（使用者端工作流）**
+  - 工程師結案報告解析腳本（`tools/graph-writer/case_report_ingestor.py`）
+  - 新因果路徑 → Kuzu 圖譜新節點/邊緣自動注入
+  - 知識圖譜版本管理（git 追蹤，`custom/` 目錄下以 SoC 型號分支管理）
+  - 提供知識注入 CLI，方便工程師將日常除錯結論沉澱至圖譜
 
 - [ ] **BSP 底層效能的商業價值顯性化**
   - 技術優化報告模板（強制包含商業影響段落）
@@ -440,12 +434,16 @@ Stage 4：輸出
     → "旗艦智慧眼鏡連續錄影延長 1.5 小時"
     → "產品競爭力提升：續航超越競品 X 達 23%"
     ```
-  - 季度 BSP 貢獻可視化儀表板
+
+- [ ] **CI/CD 整合（使用者自行配置，本 repo 提供範本）**
+  - 提供 GitHub Actions workflow 範本，供使用者在自己的 CI 環境中串接
+  - 提供 Jenkins pipeline 範本（不在本 repo 執行，僅作參考）
+  - AI 建議的 DTS 修改自動觸發構建的整合說明文件
 
 **Phase 4 驗收標準：**
-- 知識圖譜月均新增節點 ≥ 50（來自實戰案例沉澱）
-- BSP 優化報告商業影響轉譯覆蓋率 100%
-- CI/CD 自動化測試覆蓋率提升至 ≥ 70%
+- 知識沉澱 CLI 可將結案報告在 5 分鐘內轉化為圖譜節點
+- BSP 優化報告模板商業影響段落覆蓋率 100%
+- CI/CD 整合範本通過 GitHub Actions 端對端測試
 
 ---
 
@@ -453,37 +451,66 @@ Stage 4：輸出
 
 ### 5.1 核心技術棧
 
-| 層次 | 技術選型 | 用途 | 備選方案 |
+> **設計原則：零伺服器依賴。** 所有元件均以 `pip install` 安裝，無需企業 IT 審批，無需網路伺服器，技能直接登錄 Claude Code CLI / VS Code 擴充套件。
+
+| 層次 | 技術選型 | 用途 | 選型理由 |
 |------|----------|------|----------|
-| **LLM 推理** | Claude Sonnet（本地部署） | 主力推理引擎 | Llama-3 70B（完全離線） |
-| **向量資料庫** | Chroma / Qdrant | 語義向量搜尋 | FAISS（輕量） |
-| **圖形資料庫** | Neo4j Community | GraphRAG 知識圖譜 | ArangoDB |
-| **多智能體框架** | LangGraph | Blackboard 編排 | AutoGen / MetaGPT |
-| **工具呼叫** | MCP（Model Context Protocol） | Skill 工具整合 | LangChain Tools |
-| **追蹤分析** | Perfetto | 系統級效能追蹤 | — |
-| **CI/CD** | Jenkins + LAVA | 編譯器在環回饋 | GitHub Actions |
-| **文件解析** | LlamaParse / Unstructured | PDF/IP-XACT 萃取 | PDFMiner |
-| **Slack 整合** | Slack Bolt SDK | 術語翻譯介面 | — |
+| **技能介面** | Claude Code Skill（`.claude/skills/`） | 技能定義與使用者介面 | 原生支援 Claude CLI 與 VS Code，`/skill-name` 直接呼叫 |
+| **工具呼叫** | MCP（Model Context Protocol）本地腳本 | 日誌解析、圖譜查詢工具整合 | 本地執行，無外部依賴 |
+| **圖形資料庫** | Kuzu（嵌入式） | GraphRAG 知識圖譜 | 嵌入式、Cypher 相容、`pip install kuzu`、無伺服器 |
+| **向量資料庫** | ChromaDB（嵌入式） | 語義向量搜尋 | 嵌入式、本地持久化、`pip install chromadb` |
+| **文件解析** | Unstructured + pdfplumber | PDF / IP-XACT 萃取 | 純 Python，離線可用 |
+| **追蹤分析** | Perfetto（使用者端工具） | 系統級效能追蹤 | 開源，Android / Linux 通用 |
+| **多智能體協同** | Claude Code 子代理（Sub-agent） | Blackboard 協同診斷 | 內建於 Claude Code，無需額外框架 |
 
-### 5.2 本地部署安全架構
+### 5.2 零伺服器部署架構
 
 ```
-┌─────────────────────────────────────────────┐
-│           企業內部網路（Air-Gapped）           │
-│                                             │
-│  ┌──────────────┐    ┌──────────────────┐   │
-│  │  Claude Agent │    │   Neo4j GraphDB   │   │
-│  │  Skill Sets   │◄──►│  知識圖譜         │   │
-│  └──────────────┘    └──────────────────┘   │
-│          │                    │             │
-│  ┌──────────────┐    ┌──────────────────┐   │
-│  │  Vector Store │    │  File Storage    │   │
-│  │  (Qdrant)     │    │  BSP Docs/TRM    │   │
-│  └──────────────┘    └──────────────────┘   │
-│                                             │
-│  ✅ 所有 BSP 機密文件、晶片規格均不離開此邊界   │
-└─────────────────────────────────────────────┘
+工程師本機環境（無需網路，無需 IT 審批）
+┌────────────────────────────────────────────────────┐
+│                                                    │
+│   Claude Code CLI / VS Code Extension              │
+│       │                                            │
+│       ├── /bsp-knowledge-mentor  ──┐               │
+│       ├── /power-thermal-expert    │  Claude Code  │
+│       ├── /boot-debug-expert       │  Skill Files  │
+│       ├── /multimedia-camera-expert│  (.md)        │
+│       └── ...                    ──┘               │
+│                                                    │
+│   MCP 本地工具伺服器（localhost only）              │
+│       ├── tools/log-parsers/      ← 日誌解析腳本   │
+│       ├── tools/graph-query/      ← Kuzu 查詢工具  │
+│       └── tools/spec-extractor/   ← 文件萃取工具   │
+│                                                    │
+│   知識圖譜（本地檔案）                              │
+│       ├── knowledge-graph/base/   ← 開源知識基底   │
+│       │     (ARM 規格、Linux 核心、公開 BSP 文件)   │
+│       └── knowledge-graph/custom/ ← 使用者自有知識 │
+│             (in-house SoC TRM、內部案例庫)          │
+│                                                    │
+│   ✅ 所有計算在本機完成，機密文件不離開工程師電腦    │
+└────────────────────────────────────────────────────┘
 ```
+
+### 5.3 使用者擴充架構
+
+本 Skill Sets 採分層設計，開源基底與企業私有知識嚴格分離：
+
+```
+knowledge-graph/
+├── base/           ← 本 repo 維護（ARM 公開規格、開源 BSP 知識）
+│   ├── arm-gic-600.kuzu
+│   ├── arm-amba-axi.kuzu
+│   ├── linux-dvfs-eas.kuzu
+│   └── common-failure-modes.kuzu
+│
+└── custom/         ← 使用者自行填充（不提交至本 repo）
+    ├── mtk-mt6989-power-tree.kuzu    ← MTK 內部文件
+    ├── qcom-sm8650-clock-tree.kuzu   ← Qualcomm 內部文件
+    └── in-house-failure-cases.kuzu   ← 公司內部案例庫
+```
+
+Skills 在查詢知識圖譜時，同時搜尋 `base/` 與 `custom/`，`custom/` 的結果優先覆蓋 `base/`。
 
 ---
 

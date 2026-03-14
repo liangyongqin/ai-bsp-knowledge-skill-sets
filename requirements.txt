@@ -1,0 +1,17 @@
+# Core graph database (embedded, no server required)
+kuzu
+
+# Embedded vector store (no server required)
+chromadb
+
+# PDF text extraction
+unstructured[pdf]
+
+# Structured PDF table/layout parsing
+pdfplumber
+
+# MCP server SDK
+mcp
+
+# Eval runner and unit tests
+pytest

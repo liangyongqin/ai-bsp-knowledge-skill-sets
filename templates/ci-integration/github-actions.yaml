@@ -1,0 +1,49 @@
+# templates/ci-integration/github-actions.yaml
+# Reference GitHub Actions workflow template for BSP Knowledge Skill Sets CI/CD integration.
+# Copy this file into your own repository's .github/workflows/ and adapt paths as needed.
+#
+# This workflow is a TEMPLATE — it will not run directly in this repository.
+# See docs/ci-integration.md (Phase 4, M4.3) for the full integration guide.
+
+name: BSP AI Skill CI
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  eval-regression:
+    name: Run eval regression suite
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Initialise knowledge graph
+        run: python knowledge-graph/schema/init_db.py
+
+      - name: Build base knowledge graph
+        run: python scripts/build_base_graph.py
+
+      - name: Start MCP server (background)
+        run: python mcp/server.py &
+
+      - name: Run eval suite
+        run: pytest evals/run_evals.py --tb=short -q
+
+      - name: Upload scorecards
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-scorecards
+          path: evals/scorecards/

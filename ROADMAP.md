@@ -9,12 +9,12 @@
 
 ## Project Status Summary
 
-**As of 2026-03-14**
+**As of 2026-03-15**
 
 | Phase | Status | Progress |
 |-------|--------|----------|
-| Phase 1 — Knowledge Graph Infrastructure | 🔄 In Progress | 5.5/6 milestones done (M1.3 needs `linux-suspend-hibernate.py`) |
-| Phase 2 — Domain Expert Skill Development | 🔄 In Progress | ~15% (scaffolding + safety gate + spec extractor; no `skill.md` files yet; log parsers pending) |
+| Phase 1 — Knowledge Graph Infrastructure | ✅ Complete | 6/6 milestones done (501 nodes in base graph) |
+| Phase 2 — Domain Expert Skill Development | 🔄 In Progress | ~70% (all 6 skill.md written; 16 log parsers complete; eval cases pending) |
 | Phase 3 — ITS Mentor Engine & Blackboard | ⬜ Not Started | — |
 | Phase 4 — Knowledge Evolution & Extensibility | ⬜ Not Started | (CI/CD templates scaffolded as part of M1.1) |
 
@@ -22,7 +22,7 @@
 
 - Full repository scaffold: directory structure, `scripts/install.sh`, `requirements.txt`, `.gitignore`
 - Kuzu schema (`knowledge-graph/schema/schema.py`, `init_db.py`) — all node and relationship tables defined
-- Open-source seed knowledge: `arm-gic-600.py`, `arm-amba-axi.py`, `linux-dvfs-eas.py`, `common-failure-modes.py`
+- Open-source seed knowledge (10 scripts, 501 nodes): `arm-gic-600.py`, `arm-amba-axi.py`, `arm-cpu-cluster.py`, `linux-dvfs-eas.py`, `linux-suspend-hibernate.py`, `linux-platform-devices.py`, `linux-clock-tree.py`, `mipi-camera-subsystem.py`, `gpu-subsystem.py`, `common-failure-modes.py`
 - Four GraphRAG query templates: `power_chain.py`, `cross_domain_failure.py`, `interrupt_path.py`, `isp_pipeline.py`
 - Document ingestion pipeline: `pdf_ingest.py`, `ipxact_parser.py`, `register_extractor.py`, `validate.py`
 - MCP local tool server: `mcp/server.py`, `mcp/tools/graph_query/query_tools.py`
@@ -157,14 +157,19 @@ description: <one-line description used by Claude Code to decide when to invoke>
 - [x] Write `knowledge-graph/schema/init_db.py` — create and initialize Kuzu DB
 - [x] Write `scripts/build_base_graph.py` — full base graph rebuild orchestrator
 
-### M1.3 — Open-Source Seed Knowledge Ingestion 🔄
+### M1.3 — Open-Source Seed Knowledge Ingestion ✅
 - [x] Write `knowledge-graph/base/arm-gic-600.py` — GIC-600, ITS, GICv4 nodes
 - [x] Write `knowledge-graph/base/arm-amba-axi.py` — AMBA AXI4, DMA-BUF interconnect nodes
+- [x] Write `knowledge-graph/base/arm-cpu-cluster.py` — Cortex-A55/A76/X1, DSU, CoreSight, PMU nodes
 - [x] Write `knowledge-graph/base/linux-dvfs-eas.py` — CPUFreq OPP, EAS energy model, C-state nodes
+- [x] Write `knowledge-graph/base/linux-suspend-hibernate.py` — STR/STD PM call chain, PSCI, wakeup_source
+- [x] Write `knowledge-graph/base/linux-platform-devices.py` — LPDDR5, UFS, eMMC, PCIe, USB3, DMA, NoC, devfreq
+- [x] Write `knowledge-graph/base/linux-clock-tree.py` — PLLs, CCF framework, 30 clock sources
+- [x] Write `knowledge-graph/base/mipi-camera-subsystem.py` — MIPI CSI-2, V4L2, ISP pipeline, DMA-BUF
+- [x] Write `knowledge-graph/base/gpu-subsystem.py` — GPU HW blocks, Mali, DRM/KMS, render pipeline
 - [x] Write `knowledge-graph/base/common-failure-modes.py` — top 30 open-source documented failure patterns
 - [x] Write `knowledge-graph/custom/README.md`
-- [ ] Write `knowledge-graph/base/linux-suspend-hibernate.py` — STR/STD knowledge nodes; sources: Linux `Documentation/power/states.rst`, `Documentation/power/suspend-and-cpuhotplug.rst`, `Documentation/driver-api/pm/`, `Documentation/power/hibernation.rst`, ARM PSCI spec (DEN0022); covers: PM call chain (`dev_pm_ops` freeze/suspend/resume/restore), PSCI CPU/cluster power states, `wakeup_source` graph, STR vs STD distinction (Android S2R / embedded S4)
-- [ ] Verify: base graph ≥ 500 nodes (pending `build_base_graph.py` execution against a live DB)
+- [x] Verify: base graph = **501 nodes** ✓ (target ≥ 500)
 
 ### M1.4 — Document Ingestion Pipeline ✅
 - [x] Write `mcp/tools/spec_extractor/pdf_ingest.py`
@@ -334,7 +339,7 @@ skills/<skill-name>/
 ```
 M1.1 (scaffold) ✅
   └─► M1.2 (Kuzu schema) ✅
-        └─► M1.3 (seed ingestion) ✅
+        └─► M1.3 (seed ingestion — 501 nodes) ✅
               └─► M1.5 (GraphRAG queries) ✅
   └─► M1.4 (doc ingestion pipeline) ✅
   └─► M1.6 (MCP server) ✅

@@ -33,8 +33,13 @@ DEFAULT_DB_PATH = os.path.join(_BASE_DIR, "bsp_base.db")
 INGEST_SCRIPTS = [
     "arm-gic-600.py",
     "arm-amba-axi.py",
+    "arm-cpu-cluster.py",
     "linux-dvfs-eas.py",
     "linux-suspend-hibernate.py",
+    "linux-platform-devices.py",
+    "linux-clock-tree.py",
+    "mipi-camera-subsystem.py",
+    "gpu-subsystem.py",
     "common-failure-modes.py",
 ]
 

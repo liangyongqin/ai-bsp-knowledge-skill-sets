@@ -34,7 +34,11 @@ Registered tools (log parsers — interrupt/virtualization domain):
   - parse_vm_exit_stats        — KVM VM Exit frequency by reason
   - validate_its_table         — GIC-600 ITS EventID→IntID→CPU consistency
 
-All tools are READ_ONLY and enforced by the safety gate.
+Registered tools (business impact translation — CONFIG):
+  - translate_to_business_impact — convert BSP metric delta to PM/management language
+
+All read-only tools are enforced by the safety gate at READ_ONLY level.
+translate_to_business_impact is CONFIG level (output communicated externally).
 
 Environment variables:
   MCP_HOST   — bind host (default: 127.0.0.1)
@@ -63,11 +67,13 @@ _QUERIES_DIR = os.path.join(_REPO_ROOT, "knowledge-graph", "queries")
 _TOOLS_DIR = os.path.join(_HERE, "tools")
 _GRAPH_QUERY_DIR = os.path.join(_TOOLS_DIR, "graph_query")
 _LOG_PARSERS_DIR = os.path.join(_TOOLS_DIR, "log_parsers")
+_IMPACT_TRANSLATOR_DIR = os.path.join(_TOOLS_DIR, "impact_translator")
 
 sys.path.insert(0, _QUERIES_DIR)
 sys.path.insert(0, _TOOLS_DIR)
 sys.path.insert(0, _GRAPH_QUERY_DIR)
 sys.path.insert(0, _LOG_PARSERS_DIR)
+sys.path.insert(0, _IMPACT_TRANSLATOR_DIR)
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -429,6 +435,50 @@ def validate_its_table(log_path: str) -> dict:
     check_approval("validate_its_table")
     from its_validator import validate_its_table as _validate
     return _validate(log_path)
+
+
+# ---------------------------------------------------------------------------
+# Business impact translator tool registration
+# ---------------------------------------------------------------------------
+
+@mcp.tool()
+def translate_to_business_impact(
+    component: str,
+    metric: str,
+    delta: float,
+    unit: str,
+    product_type: str = "smartphone",
+) -> dict:
+    """Translate a BSP physical metric change into business-language impact for PM / management communication.
+
+    Parameters
+    ----------
+    component:
+        BSP component name, e.g. ``"LPDDR5"``, ``"GPU"``, ``"ISP"``,
+        ``"CPUFreq"``, ``"eMMC"``, ``"GIC"``, ``"PMIC"``, ``"thermal"``,
+        ``"DVFS"``, ``"NPU"``.
+    metric:
+        The physical metric being changed, e.g. ``"leakage_current_ma"``,
+        ``"dvfs_opp_step"``, ``"frame_time_ms"``, ``"isp_latency_ms"``,
+        ``"irq_latency_us"``, ``"throttle_duration_ms"``.
+    delta:
+        The numeric change in the metric. Positive = increase / worsening.
+        Negative = decrease / improvement.
+    unit:
+        Unit string for *delta*, e.g. ``"mA"``, ``"ms"``, ``"µs"``, ``"%"``.
+    product_type:
+        One of ``"smartphone"``, ``"tablet"``, ``"wearable"``,
+        ``"automotive"``, ``"iot"``. Defaults to ``"smartphone"``.
+    """
+    check_approval("translate_to_business_impact")
+    from bsp_to_business import translate_to_business_impact as _translate
+    return _translate(
+        component=component,
+        metric=metric,
+        delta=delta,
+        unit=unit,
+        product_type=product_type,
+    )
 
 
 # ---------------------------------------------------------------------------

@@ -1,0 +1,8 @@
+{
+  "id": "case_192",
+  "skill": "bsp-knowledge-mentor",
+  "input": "The ISP pipeline drops frames sporadically (roughly 1 in every 200 frames) and the drops are always preceded by a PLL unlock event in the kernel log:\n\n  [  234.112] clk: mtk-clk-mt6989: mmsys_pll: unlock event detected (jitter threshold exceeded)\n  [  234.113] clk: mtk-clk-mt6989: mmsys_pll: re-locking... done in 18us\n  [  234.114] mtk-csi: csi0: MIPI D-PHY clock lane: byte_clk error, cnt=1\n  [  234.115] mtk-isp: pipe_1: input underrun: no data from CSI during frame 4412\n  [  234.116] mtk-isp: pipe_1: dropping frame 4412 (underrun)\n\nThe PLL re-locks in 18 us, but during that 18 us window the MIPI CSI-2 byte clock is disrupted, causing an input underrun on the ISP. The mmsys_pll drives both the CSI byte clock and the ISP pixel clock. I believe the jitter threshold is being exceeded due to NoC load spikes when other subsystems initiate high-bandwidth DMA. How do I confirm that NoC load is the cause of PLL jitter, and what is the recommended mitigation for decoupling PLL stability from bus load?",
+  "expected_topics": ["PLL unlock", "MIPI CSI-2", "byte clock", "ISP underrun", "clock jitter", "mmsys_pll", "NoC bandwidth", "frame drop"],
+  "min_score": 4,
+  "tags": ["cross-domain", "blackboard", "boot-debug", "multimedia-camera"]
+}

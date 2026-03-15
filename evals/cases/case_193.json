@@ -1,0 +1,8 @@
+{
+  "id": "case_193",
+  "skill": "bsp-knowledge-mentor",
+  "input": "When running GPU rendering and ISP camera capture simultaneously, both subsystems miss their real-time deadlines, but they are fine individually. A perf stat run shows DRAM bandwidth saturation:\n\n  $ perf stat -e ddr_bw/read_bw/,ddr_bw/write_bw/ -- sleep 5\n  ddr_bw/read_bw/:  49.8 GB/s  (limit: 51.2 GB/s)\n  ddr_bw/write_bw/: 38.1 GB/s  (limit: 38.4 GB/s)\n\n  [  556.221] drm/msm: adreno: gpu: deadlock: waiting for DRAM > 10ms (frame 7821)\n  [  556.224] mtk-isp: pipe_0: DRAM read latency p95=14.2ms (budget: 4ms)\n  [  556.225] mtk-isp: pipe_0: dropping frame 7821 (deadline miss)\n\nThe NoC bandwidth monitor confirms both the GPU and ISP are simultaneously saturating the DRAM bus. GPU is doing shadow map reads (high BW), ISP is writing RAW10 capture data (high BW). Neither has QoS priority configured. How should NoC QoS priorities be set between GPU and ISP, and what are the trade-offs if one is given strict priority over the other?",
+  "expected_topics": ["NoC bandwidth", "DRAM saturation", "QoS priority", "GPU DMA", "ISP DMA", "deadline miss", "adreno", "memory bandwidth"],
+  "min_score": 4,
+  "tags": ["cross-domain", "blackboard", "gpu-rendering", "multimedia-camera"]
+}

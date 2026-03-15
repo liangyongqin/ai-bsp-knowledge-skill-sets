@@ -73,6 +73,8 @@ TOOL_RISK_LEVELS: dict[str, RiskLevel] = {
     "ingest_custom_pdf": RiskLevel.CONFIG,
     "ingest_custom_ipxact": RiskLevel.CONFIG,
     "update_custom_graph": RiskLevel.CONFIG,
+    # Business impact translator — CONFIG because output is communicated externally
+    "translate_to_business_impact": RiskLevel.CONFIG,
     # Destructive / hardware-state-modifying operations
     "flash_firmware": RiskLevel.DESTRUCTIVE,
     "set_register_value": RiskLevel.DESTRUCTIVE,

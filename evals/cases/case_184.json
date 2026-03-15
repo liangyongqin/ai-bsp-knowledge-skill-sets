@@ -1,0 +1,8 @@
+{
+  "id": "case_184",
+  "skill": "bsp-knowledge-mentor",
+  "input": "We see audio glitches and V4L2 frame drops occurring simultaneously on our QCS8550-based platform. The /proc/interrupts output shows a suspicious spike on one IRQ line:\n\n  [  312.005] IRQ 168: CPU0=48219312 CPU1=48 CPU2=51 CPU3=44\n  [  312.006] genirq: irq_check_affinity: IRQ 168 (UART2) CPU0 load 99%\n  [  312.007] msm-pcm-dsp: xrun detected on pcm0p: hw_ptr=1024 appl_ptr=2560\n  [  312.009] v4l2-cap: qsd8gen3-cam: frame drop on pipe_3, pending_bufs=0\n\nIRQ 168 appears to be a UART interrupt (likely debug logging) that is flooding CPU0 at ~48 million interrupts since boot — far more than the other CPUs. The audio PCM driver and V4L2 camera pipeline both have their interrupt handlers pinned to CPU0 via irq affinity. Is the root cause IRQ affinity misconfiguration causing CPU0 starvation, or is there a hardware source generating spurious UART IRQs? What tools and steps isolate the two hypotheses?",
+  "expected_topics": ["IRQ storm", "IRQ affinity", "CPU starvation", "audio xrun", "V4L2 frame drop", "GIC", "spurious interrupt", "irqbalance"],
+  "min_score": 4,
+  "tags": ["cross-domain", "blackboard", "interrupt-virtualization", "multimedia-camera"]
+}

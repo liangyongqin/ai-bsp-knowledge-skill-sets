@@ -1,0 +1,8 @@
+{
+  "id": "case_186",
+  "skill": "bsp-knowledge-mentor",
+  "input": "Boot fails after an OTA update that included a new PMIC firmware blob. The device gets stuck at the PMIC init stage. U-Boot log (captured via UART):\n\n  [PMIC] mt6363: probe start\n  [PMIC] mt6363: reading HWCID... 0x63\n  [PMIC] mt6363: sending LDO_VAUD18 enable seq\n  [PMIC] mt6363: LDO_VAUD18 timeout: expected ready in 500us, waited 2ms\n  [PMIC] mt6363: BUCK_VCORE power-good timeout (PGOOD=0 after 5ms)\n  [PMIC] ERROR: voltage sequencing failure, halting\n  [WDT] System watchdog expired, issuing reset\n\nThe OTA diff changed `/vendor/firmware/mt6363.bin` from v2.1.3 to v2.2.0. In the old firmware, LDO_VAUD18 enables before BUCK_VCORE, which is correct for our board. The new firmware appears to have reordered the voltage ramp sequence. Is this a PMIC firmware ordering regression or a board-level power sequencing constraint violation? What is the safest way to bisect the PMIC firmware change and confirm which sequence step is causing BUCK_VCORE PGOOD to fail?",
+  "expected_topics": ["PMIC firmware", "voltage sequencing", "LDO", "BUCK", "power-good", "OTA regression", "U-Boot", "PGOOD"],
+  "min_score": 4,
+  "tags": ["cross-domain", "blackboard", "boot-debug", "power-thermal"]
+}

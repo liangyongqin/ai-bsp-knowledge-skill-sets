@@ -1,0 +1,8 @@
+{
+  "id": "case_199",
+  "skill": "bsp-knowledge-mentor",
+  "input": "Linux SMMU fault is triggered intermittently during concurrent UFS host controller DMA and PCIe endpoint DMA operations on our QCS8550 platform. The system log shows:\n\n  [  445.221] arm-smmu-v3 arm-smmu-v3.0: event=0x10 (TRANSLATION_FAULT) sid=0x0080 ssid=0x0 va=0xffff888012340000\n  [  445.222] arm-smmu-v3 arm-smmu-v3.0: CMD_SYNC timeout: evtq_prod=0x40 evtq_cons=0x3f\n  [  445.223] ufs: ufshcd0: DMA error: IOMMU fault on read, addr=0xffff888012340000\n  [  445.224] pcie: pcie0: DMA write completed: iova=0x8012340000 len=4096\n  [  445.225] arm-smmu-v3 arm-smmu-v3.0: IOMMU context fault: stream=0x0080 (ufshcd0)\n\nThe IOMMU fault stream ID 0x0080 maps to ufshcd0. The fault address `0xffff888012340000` looks like a kernel virtual address, not a valid IOVA — suggesting the UFS driver is mapping a virtual address directly instead of an IOVA obtained from dma_map_sg(). However, the fault only occurs during concurrent PCIe DMA, leading me to suspect a race in the IOMMU TLB invalidation path. How do I determine whether this is a driver bug (wrong address type) or a hardware race (TLB shootdown timing)?",
+  "expected_topics": ["SMMU fault", "IOMMU IOVA", "TLB invalidation", "UFS DMA", "PCIe DMA", "arm-smmu-v3", "stream ID", "dma_map_sg"],
+  "min_score": 4,
+  "tags": ["cross-domain", "blackboard", "boot-debug", "interrupt-virtualization"]
+}

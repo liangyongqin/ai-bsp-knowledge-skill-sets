@@ -1,0 +1,8 @@
+{
+  "id": "case_194",
+  "skill": "bsp-knowledge-mentor",
+  "input": "Battery drain on our MT6989-based wearable increased from 12 mA to 38 mA at idle after enabling an always-on 1 fps camera preview feature. The power regression is far larger than expected from the sensor power spec (OV2740: 8 mA active). PMIC current log and DRAM state log:\n\n  $ cat /sys/class/power_supply/battery/current_now\n  -38200  (uA, negative = discharge)\n\n  $ cat /sys/kernel/debug/ddr/self_refresh_state\n  not_in_self_refresh  (expected: self_refresh)\n\n  [  idle path] mtk-isp: pipe_0: streaming at 1fps, DMA active\n  [  idle path] ddr: self_refresh_blocked_by: ISP_DMA (reason: outstanding_transaction)\n\nThe LPDDR5 is not entering self-refresh because the ISP DMA engine holds an outstanding transaction at all times, even between frames at 1 fps. LPDDR5 in active mode consumes approximately 25 mA more than in self-refresh on our JEDEC JESD79-5 characterization. How should the ISP DMA be gated between frames to allow LPDDR5 self-refresh entry, and what latency budget is acceptable for the DMA wake-up on the next 1 fps trigger?",
+  "expected_topics": ["LPDDR5 self-refresh", "ISP DMA gating", "battery drain", "always-on camera", "JEDEC JESD79-5", "power regression", "DRAM active mode", "DMA outstanding transaction"],
+  "min_score": 4,
+  "tags": ["cross-domain", "blackboard", "multimedia-camera", "power-thermal"]
+}

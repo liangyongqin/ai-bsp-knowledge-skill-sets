@@ -1,0 +1,1133 @@
+# BSP Knowledge Mentor — Terminology Translation Dictionary
+# Bidirectional: BSP physical term <-> business language <-> algorithm metrics
+# version: 1.0
+#
+# Fields:
+#   bsp_term         — the hardware/kernel engineer's term
+#   algo_term        — the algorithm/ML engineer's equivalent concept
+#   business_term    — the product manager / business stakeholder's equivalent concept
+#   translation_note — concrete translation with numbers and real-world impact
+#
+# Coverage: 120+ entries across 6 domains
+
+terms:
+
+  # ===========================================================================
+  # DOMAIN 1: POWER AND THERMAL (DVFS, C-states, PMIC, LPDDR5, TDP, leakage)
+  # ===========================================================================
+
+  - bsp_term: "DVFS OPP step"
+    algo_term: "compute budget"
+    business_term: "sustained performance headroom"
+    translation_note: >
+      Moving from OPP-6 (max) to OPP-4 reduces peak compute by ~30% to stay within thermal TDP.
+      For an algorithm engineer: your model's sustained throughput (TOPS) is capped at the OPP.
+      For a PM: the device cannot maintain peak benchmark performance for more than 30 seconds
+      in a warm room.
+
+  - bsp_term: "thermal throttle event"
+    algo_term: "sustained throughput degradation"
+    business_term: "inconsistent user experience under load"
+    translation_note: >
+      When the LVTS junction temperature exceeds the throttle trip point (e.g., 85°C),
+      the DVFS governor steps down to a lower OPP. For an algorithm engineer: inference
+      latency increases by 20–50% after 60 seconds of sustained load. For a PM: users
+      experience lag during extended camera, gaming, or navigation sessions.
+
+  - bsp_term: "TDP (Thermal Design Power)"
+    algo_term: "power budget for compute"
+    business_term: "maximum sustainable device performance"
+    translation_note: >
+      TDP is the maximum sustained power dissipation the thermal solution can handle without
+      exceeding the junction temperature limit. Algorithm engineers must budget their model's
+      power draw within TDP minus idle-state overhead. PMs: TDP determines the performance tier
+      marketed on the product page.
+
+  - bsp_term: "leakage current"
+    algo_term: "static power floor"
+    business_term: "standby battery drain"
+    translation_note: >
+      At room temperature, CMOS leakage increases exponentially with temperature (IOFF ∝ e^(T/T0)).
+      A 10°C rise roughly doubles leakage current. For algorithm engineers: running a warm NPU
+      at idle still draws 50–200mW from leakage alone. For PMs: this is the "always-on" battery
+      cost that limits standby time.
+
+  - bsp_term: "C-state residency"
+    algo_term: "idle time fraction"
+    business_term: "battery efficiency during light usage"
+    translation_note: >
+      C-state residency is the fraction of time the CPU spends in a low-power idle state.
+      Higher residency (> 90% in C3/C4) translates directly to better battery life during
+      browsing or standby. For algorithm engineers: background inference tasks that prevent
+      deep C-states cost more total energy than the compute itself.
+
+  - bsp_term: "PMIC (Power Management IC)"
+    algo_term: "power delivery subsystem"
+    business_term: "battery-to-chip power supply"
+    translation_note: >
+      The PMIC converts battery voltage to the multiple regulated rails required by the SoC
+      (VDD_CPU, VDD_GPU, LPDDR5_VDD). Efficiency losses in PMIC DC-DC converters are
+      typically 3–8%. For algorithm engineers: peak current spikes from an NPU burst can cause
+      PMIC voltage droop, which triggers an OCP event if the rail is undersized.
+
+  - bsp_term: "PMIC OCP (overcurrent protection)"
+    algo_term: "peak current exceedance"
+    business_term: "unexpected device reboot under heavy load"
+    translation_note: >
+      When a SoC rail's current demand exceeds the PMIC's current limit (typically set with
+      regulator-max-microamp in device tree), the PMIC asserts OCP and cuts the rail.
+      The SoC reboots. For algorithm engineers: simultaneous peak compute on CPU + NPU + DRAM
+      may cause this. For PMs: this appears as a random reboot during video or gaming.
+
+  - bsp_term: "voltage droop"
+    algo_term: "IR drop causing compute errors"
+    business_term: "intermittent device instability under load"
+    translation_note: >
+      Voltage droop = ΔV = I × R_PDN (power distribution network resistance). A sudden
+      current surge from the CPU cluster can drop VDD_CPU below Vmin, causing timing
+      violations and data corruption. Droop events appear as random crashes without a
+      clear software root cause.
+
+  - bsp_term: "LPDDR5 bandwidth"
+    algo_term: "memory-bound model throughput"
+    business_term: "data-processing speed limit"
+    translation_note: >
+      LPDDR5 peak bandwidth is typically 50–85 GB/s per 64-bit channel pair on flagship SoCs.
+      If a model's arithmetic intensity (FLOPS/byte) is lower than GPU FLOPS / DRAM BW,
+      it is memory-bound and adding more compute cores does not help. For PMs: a
+      memory-bound workload cannot be accelerated by upgrading the NPU alone.
+
+  - bsp_term: "LPDDR5 self-refresh (SR)"
+    algo_term: "DRAM idle power mode"
+    business_term: "memory standby power saving"
+    translation_note: >
+      When no DRAM accesses occur for a programmable idle timer duration, the DRAM controller
+      enters self-refresh, cutting current draw by ~80% (from IDD3N to IDD6 per JEDEC JESD79-5).
+      For algorithm engineers: any background polling task that prevents SR entry has
+      disproportionate battery impact.
+
+  - bsp_term: "EAS (Energy Aware Scheduling)"
+    algo_term: "task-to-core allocation for energy efficiency"
+    business_term: "battery life during mixed workloads"
+    translation_note: >
+      EAS selects the CPU cluster (LITTLE, big, prime) and OPP that minimizes energy for
+      a given task utilization. Mistuned EAS (e.g., wrong capacity values or missing energy
+      model) wastes 10–20% battery by placing tasks on higher-power cores unnecessarily.
+      Reference: Linux Documentation/scheduler/sched-energy.rst.
+
+  - bsp_term: "regulator coupling"
+    algo_term: "shared power rail interference"
+    business_term: "one feature degrading another's performance"
+    translation_note: >
+      When two IPs share a power rail, a voltage droop caused by one (e.g., ISP DMA burst)
+      can transiently affect the other (e.g., CPU frequency stability). This is invisible in
+      single-component testing but emerges in real-world scenarios where camera and gaming
+      run simultaneously.
+
+  - bsp_term: "PSCI CPU_SUSPEND"
+    algo_term: "deep CPU idle entry"
+    business_term: "the system's ability to aggressively save power between tasks"
+    translation_note: >
+      PSCI CPU_SUSPEND is the ARM-standardized mechanism for entering cluster-level power
+      collapse (all CPUs off, cache flushed to DRAM). Achieving cluster power collapse
+      requires all CPUs in the cluster to be idle simultaneously — a single background timer
+      prevents it. Reference: ARM DEN0022D, section 5.4.
+
+  # ===========================================================================
+  # DOMAIN 2: BOOT AND DEBUG (PLL, power sequencing, isolation, ADIv6, CoreSight)
+  # ===========================================================================
+
+  - bsp_term: "PLL lock time"
+    algo_term: "compute availability delay after wake"
+    business_term: "app launch latency after deep sleep"
+    translation_note: >
+      PLLs require 20–100 µs to lock after enable. During this window, no clocked logic
+      in the downstream clock domain can operate. For algorithm engineers: the NPU cannot
+      begin inference until its PLL has locked — this adds latency to the first inference
+      after an idle period. For PMs: contributes to perceived app responsiveness.
+
+  - bsp_term: "power sequencing"
+    algo_term: "initialization dependency graph"
+    business_term: "boot reliability and manufacturing yield"
+    translation_note: >
+      Incorrect power-on sequencing (enabling a downstream rail before its upstream
+      dependency) can permanently damage level shifters or cause the SoC to boot into
+      an undefined state. Even a 1ms timing violation can reduce manufacturing yield
+      or cause field returns that appear as random "won't boot" units.
+
+  - bsp_term: "isolation cell"
+    algo_term: "domain boundary buffer"
+    business_term: "power gate interlock"
+    translation_note: >
+      Isolation cells clamp outputs of a powered-down domain to a safe logic level
+      to prevent indeterminate voltages from corrupting adjacent powered-on domains.
+      Releasing isolation before the supply ramps to Vmin causes metastability.
+      This is a "zombie state" bug invisible to software — the IP appears powered on
+      but is non-functional.
+
+  - bsp_term: "CoreSight ADIv6 trace"
+    algo_term: "hardware execution trace"
+    business_term: "post-mortem crash reconstruction"
+    translation_note: >
+      CoreSight ETM captures a complete instruction-level trace of CPU execution.
+      When a kernel panic leaves no useful stack trace, ADIv6 trace reconstructs
+      the exact code path leading to the crash. For PMs: this is the difference
+      between a 2-week debugging cycle and a 2-day root cause.
+
+  - bsp_term: "ATF (ARM Trusted Firmware) EL3"
+    algo_term: "secure monitor layer"
+    business_term: "secure enclave and TEE boot infrastructure"
+    translation_note: >
+      EL3 code runs at the highest ARM privilege level, manages PSCI calls from the OS,
+      and controls secure world / normal world switching. A bug in ATF can cause a system
+      hang during resume from deep sleep that is impossible to debug from the kernel alone.
+
+  - bsp_term: "boot ROM"
+    algo_term: "immutable first-stage loader"
+    business_term: "factory provisioning anchor and secure boot root"
+    translation_note: >
+      The boot ROM is mask-programmed silicon that cannot be updated. It validates the
+      first-stage bootloader signature before executing it. A bug in boot ROM cannot be
+      patched — it requires a silicon respin. For PMs: a boot ROM bug is a P0 product
+      defect with no software workaround.
+
+  - bsp_term: "JTAG (Joint Test Action Group)"
+    algo_term: "hardware debugger interface"
+    business_term: "last-resort debug access for pre-production hardware"
+    translation_note: >
+      JTAG allows read/write access to CPU registers, memory, and hardware registers
+      without any software running. Required for debugging pre-DRAM boot hangs where
+      serial console is unavailable. JTAG access is typically disabled in production
+      fuse configuration for security.
+
+  - bsp_term: "pstore / ramoops"
+    algo_term: "persistent crash log buffer"
+    business_term: "automatic crash evidence capture"
+    translation_note: >
+      pstore/ramoops reserves a region of RAM that survives a warm reboot and captures
+      the kernel panic log from the previous boot. Without it, random reboots leave no
+      evidence. For PMs: enabling ramoops in production images directly reduces MTTR
+      for field returns.
+
+  - bsp_term: "device tree (DTS)"
+    algo_term: "hardware configuration database"
+    business_term: "board-specific hardware description"
+    translation_note: >
+      The device tree describes the hardware topology (clocks, regulators, IRQ assignments,
+      peripheral addresses) to the kernel in a platform-independent format. A wrong device
+      tree entry (e.g., incorrect I2C address for an image sensor) silently prevents a
+      driver from probing, appearing to a PM as a "missing feature" rather than a
+      configuration bug.
+
+  - bsp_term: "power island"
+    algo_term: "hardware compute block with independent power control"
+    business_term: "feature block that can be independently powered off to save battery"
+    translation_note: >
+      Power islands allow the SoC to power off unused functional blocks (ISP, NPU, GPU)
+      completely. Correct power island management is the primary mechanism for achieving
+      target battery life in standby and light-use scenarios.
+
+  - bsp_term: "efuse / OTP (One-Time Programmable)"
+    algo_term: "permanent device configuration"
+    business_term: "factory-programmed device identity and calibration"
+    translation_note: >
+      Efuses store calibration data (thermal sensor offsets, PLL trim, security keys)
+      that are burned during production test. Incorrect efuse programming causes
+      thermal sensor miscalibration (manifesting as premature throttling) or PLL
+      instability that appears in a small percentage of production units.
+
+  # ===========================================================================
+  # DOMAIN 3: MULTIMEDIA / CAMERA (ISP, V4L2, DMA-BUF, Zero-Copy, MIPI CSI-2, eMMC GC)
+  # ===========================================================================
+
+  - bsp_term: "V4L2 (Video4Linux2)"
+    algo_term: "camera pipeline kernel API"
+    business_term: "the software interface that connects camera hardware to the app"
+    translation_note: >
+      V4L2 is the Linux kernel framework for video capture devices. Camera HAL communicates
+      with camera drivers through V4L2 ioctls. A V4L2 configuration error (wrong format,
+      wrong buffer count) manifests to the app as a CameraService exception and to the
+      user as "camera failed to open."
+
+  - bsp_term: "DMA-BUF"
+    algo_term: "zero-copy inter-processor buffer sharing"
+    business_term: "camera-to-display pipeline efficiency"
+    translation_note: >
+      DMA-BUF allows a buffer captured by the ISP to be shared directly with the GPU or
+      display without CPU-side copy. Without DMA-BUF zero-copy, each camera frame requires
+      a memcpy that consumes ~100MB/s of DRAM bandwidth and adds 2–5ms latency.
+      Reference: Linux Documentation/driver-api/dma-buf.rst.
+
+  - bsp_term: "zero-copy pipeline"
+    algo_term: "buffer reference passing without serialization"
+    business_term: "low-latency camera preview"
+    translation_note: >
+      Zero-copy means the camera frame buffer is accessed by multiple hardware units
+      (ISP → GPU → display) via DMA-BUF file descriptors without any CPU memcpy.
+      Breaking zero-copy (e.g., forcing a format conversion in the HAL) doubles DRAM
+      bandwidth usage and increases preview latency by 5–15ms — visible as "laggy camera."
+
+  - bsp_term: "MIPI CSI-2 lane"
+    algo_term: "camera sensor data channel"
+    business_term: "camera sensor data throughput capacity"
+    translation_note: >
+      Each MIPI CSI-2 lane provides ~1–2.5 Gbps of raw sensor data bandwidth. A 4-lane
+      CSI-2 at 2.5 Gbps/lane delivers ~10 Gbps — sufficient for 4K 60fps RAW10.
+      Fewer lanes or lower lane speed limits the maximum resolution and frame rate.
+      For algorithm engineers: the CSI-2 bandwidth is the first bottleneck in the
+      image processing pipeline.
+
+  - bsp_term: "ISP (Image Signal Processor)"
+    algo_term: "image preprocessing accelerator"
+    business_term: "the hardware that makes camera photos look good"
+    translation_note: >
+      The ISP applies noise reduction, demosaicing, tone mapping, and sharpening to raw
+      sensor data in real time. A bug in the ISP pipeline (wrong register configuration)
+      causes image quality defects visible to users. ISP bandwidth is a key limiting
+      factor for multi-camera simultaneous recording.
+
+  - bsp_term: "eMMC GC (Garbage Collection)"
+    algo_term: "storage write amplification event"
+    business_term: "intermittent recording glitch or storage slowdown"
+    translation_note: >
+      eMMC NAND flash GC occurs when the device moves valid data to consolidate free blocks
+      for future writes. During GC, write latency spikes from ~1ms to >500ms. This causes
+      video recording dropouts if the encoder output buffer cannot absorb the stall.
+      For PMs: appears as a periodic 1-second freeze during video recording.
+
+  - bsp_term: "F2FS GC (File System Garbage Collection)"
+    algo_term: "filesystem write amplification management"
+    business_term: "storage performance consistency over device lifetime"
+    translation_note: >
+      F2FS (Flash-Friendly File System) implements its own GC on top of eMMC GC.
+      Poor GC timing (too infrequent) causes free space exhaustion and write stalls.
+      F2FS GC urgent mode can be triggered proactively before recording to avoid
+      stalls. Reference: Linux Documentation/filesystems/f2fs.rst.
+
+  - bsp_term: "V4L2 M2M (Memory-to-Memory)"
+    algo_term: "hardware video codec interface"
+    business_term: "hardware-accelerated video encoding/decoding"
+    translation_note: >
+      V4L2 M2M provides a standardized interface for hardware video encoder/decoder access.
+      An application sends raw YUV frames to the M2M encoder and receives H.264/H.265
+      bitstream buffers. If the M2M output queue depth is insufficient, the encoder stalls
+      waiting for an output buffer, causing frame drops.
+
+  - bsp_term: "frame synchronization"
+    algo_term: "multi-sensor temporal alignment"
+    business_term: "dual-camera 3D or bokeh accuracy"
+    translation_note: >
+      Hardware frame sync (via FSIN/FSYNC GPIO between sensors) ensures both cameras
+      capture at exactly the same moment. Without frame sync, multi-frame parallax
+      causes ghost artifacts in bokeh processing. For algorithm engineers: misalignment
+      > 0.5 frame period degrades depth map quality below acceptable thresholds.
+
+  - bsp_term: "sensor exposure time"
+    algo_term: "integration window for photon capture"
+    business_term: "low-light photo quality"
+    translation_note: >
+      Exposure time (set via V4L2 VIDIOC_S_CTRL / V4L2_CID_EXPOSURE) controls the duration
+      each pixel integrates photons. Longer exposure improves SNR in low light but introduces
+      motion blur. The ISP 3A (Auto-Exposure, Auto-Focus, Auto-White-Balance) algorithm
+      must balance these within the VSync period constraint.
+
+  - bsp_term: "DMA-BUF fence"
+    algo_term: "GPU-ISP synchronization primitive"
+    business_term: "camera-to-display frame timing accuracy"
+    translation_note: >
+      DMA-BUF fences (sync_file) signal when a buffer is ready for the next pipeline stage.
+      If the ISP fence is not properly signaled before the GPU reads the buffer, the GPU
+      reads stale data, causing a "corrupted frame" visual artifact. Missing fence handling
+      is a common root cause of camera preview corruption.
+
+  # ===========================================================================
+  # DOMAIN 4: GPU RENDERING (overdraw, draw calls, fragment shader, tile-based, Vulkan)
+  # ===========================================================================
+
+  - bsp_term: "overdraw"
+    algo_term: "redundant fragment computation"
+    business_term: "wasted GPU work causing frame drops"
+    translation_note: >
+      Overdraw occurs when multiple fragments are rendered to the same pixel. An overdraw
+      factor of 3x means 3x the fragment shader work for the same visible output.
+      TBDR GPUs mitigate overdraw with tile-based deferred rendering, but transparent
+      layers bypass this optimization. For PMs: high overdraw causes frame rate drops
+      in complex UI scenes.
+
+  - bsp_term: "tile-based deferred rendering (TBDR)"
+    algo_term: "on-chip memory rendering architecture"
+    business_term: "power-efficient GPU rendering model"
+    translation_note: >
+      TBDR (used on ARM Mali, Apple GPU) splits the screen into tiles and renders each
+      tile entirely in on-chip memory (tile buffer) before writing to DRAM. This reduces
+      DRAM bandwidth by 5–10x compared to immediate-mode rendering. Violating TBDR
+      (e.g., VK_ATTACHMENT_LOAD_OP_LOAD) forces a tile flush and defeats the optimization.
+
+  - bsp_term: "draw call"
+    algo_term: "GPU command submission unit"
+    business_term: "rendering work unit overhead"
+    translation_note: >
+      Each draw call has CPU-side submission overhead (~5–50µs on ARM). Scenes with
+      > 2000 draw calls per frame become CPU-bound rather than GPU-bound. For algorithm
+      engineers: batching draw calls (instancing) reduces this overhead; for PMs,
+      it is the difference between 60 FPS and 45 FPS in complex scenes.
+
+  - bsp_term: "Vulkan render pass"
+    algo_term: "explicit GPU pipeline description"
+    business_term: "GPU efficiency configuration"
+    translation_note: >
+      Vulkan render passes explicitly describe input/output attachments and their load/store
+      operations. Using VK_ATTACHMENT_LOAD_OP_DONT_CARE and VK_ATTACHMENT_STORE_OP_DONT_CARE
+      where applicable tells the GPU to skip unnecessary DRAM reads/writes, saving
+      10–30% bandwidth on tile-based architectures.
+
+  - bsp_term: "GPU frequency (gpuclk)"
+    algo_term: "GPU compute rate"
+    business_term: "graphics performance ceiling"
+    translation_note: >
+      GPU frequency is managed by the GPU DVFS governor (kgsl on Qualcomm, panfrost/mali
+      on ARM). A thermally throttled GPU runs at a lower OPP, reducing fragment throughput
+      proportionally to the frequency ratio. For algorithm engineers: GPU inference
+      throughput scales linearly with frequency within the same OPP family.
+
+  - bsp_term: "fragment shader occupancy"
+    algo_term: "GPU thread utilization"
+    business_term: "how efficiently the GPU is being used"
+    translation_note: >
+      Fragment shader occupancy is the ratio of active shader threads to the GPU's maximum
+      warp capacity. Low occupancy (< 50%) means the GPU is waiting on memory or texture
+      fetches rather than computing. For algorithm engineers: increasing register pressure
+      or using large local arrays reduces occupancy by limiting concurrent warps.
+
+  - bsp_term: "L2 cache miss rate (GPU)"
+    algo_term: "DRAM bandwidth pressure from textures"
+    business_term: "GPU memory bottleneck"
+    translation_note: >
+      A high GPU L2 cache miss rate means the GPU is frequently fetching texture data
+      from DRAM rather than cache. This increases DRAM bandwidth consumption and competes
+      with the CPU and ISP for LPDDR5 bandwidth. Use compressed texture formats (ASTC)
+      to improve cache efficiency.
+
+  - bsp_term: "Vulkan subpass"
+    algo_term: "intra-pass dependency chaining"
+    business_term: "GPU rendering efficiency for deferred shading"
+    translation_note: >
+      Vulkan subpasses allow G-buffer output from a geometry pass to be read by a lighting
+      pass entirely within tile memory, without a DRAM round-trip. Deferred shading
+      implemented with subpasses uses 40–60% less bandwidth than with separate render passes.
+      This is the primary optimization for complex 3D scene rendering on mobile GPUs.
+
+  - bsp_term: "GPU VS/FS balance"
+    algo_term: "vertex vs. fragment pipeline bottleneck"
+    business_term: "3D scene rendering performance characteristic"
+    translation_note: >
+      If vertex shader (VS) utilization >> fragment shader (FS) utilization, the scene
+      is geometry-bound (too many vertices). If FS >> VS, it is fill-rate bound (too many
+      fragments from overdraw or large quads). The optimization strategy is opposite for
+      each: reduce triangle count for VS-bound, reduce overdraw for FS-bound.
+
+  - bsp_term: "EGL surface"
+    algo_term: "GPU rendering target interface"
+    business_term: "the connection between the GPU and the display"
+    translation_note: >
+      EGL manages the connection between the GPU rendering context (OpenGL ES / Vulkan)
+      and the display surface (SurfaceFlinger). An EGL surface misconfiguration (wrong
+      color format, wrong sRGB setting) causes display color shift or black frame artifacts
+      that appear as a display bug but originate in the GPU driver.
+
+  - bsp_term: "GPU timeline semaphore (Vulkan)"
+    algo_term: "explicit GPU-CPU synchronization primitive"
+    business_term: "frame timing coordination mechanism"
+    translation_note: >
+      Timeline semaphores allow the CPU to signal the GPU and vice versa with monotonically
+      increasing counter values. Misuse (e.g., waiting on a semaphore that is never signaled)
+      causes a GPU hang that appears as a system freeze or ANR in the app.
+
+  # ===========================================================================
+  # DOMAIN 5: INTERRUPT / VIRTUALIZATION (IRQ, GIC, ITS, MSI, VM Exit, vCPU, EL2)
+  # ===========================================================================
+
+  - bsp_term: "IRQ (Interrupt Request)"
+    algo_term: "hardware event signal to processor"
+    business_term: "hardware notification mechanism"
+    translation_note: >
+      An IRQ signals the CPU that a hardware event requires attention (data ready, error,
+      timer expiry). High IRQ rates (> 100,000/s) from a single device can consume
+      significant CPU time in interrupt handling, reducing available compute for applications.
+
+  - bsp_term: "GIC-600 (Generic Interrupt Controller)"
+    algo_term: "centralized interrupt routing hardware"
+    business_term: "the hardware that routes device signals to the right CPU core"
+    translation_note: >
+      The GIC-600 supports up to 960 SPIs (Shared Peripheral Interrupts) and implements
+      GICv4.1 for direct injection of virtual interrupts into VMs without hypervisor
+      involvement. Misconfigured affinity routing (GICD_IROUTER) sends interrupts to the
+      wrong CPU cluster, increasing interrupt latency by the inter-cluster routing delay.
+
+  - bsp_term: "ITS (Interrupt Translation Service)"
+    algo_term: "MSI interrupt demultiplexer"
+    business_term: "scalable interrupt delivery for PCIe and SoC peripherals"
+    translation_note: >
+      The ITS translates MSI (Message Signaled Interrupt) writes into LPI (Locality-specific
+      Peripheral Interrupt) events routed through the GIC redistributors to specific vCPUs.
+      ITS is required for PCIe MSI-X and for GICv4 direct vLPI injection.
+      Reference: ARM GICv3/v4 Architecture Specification, chapter 5.
+
+  - bsp_term: "MSI (Message Signaled Interrupt)"
+    algo_term: "in-band interrupt signaling via memory write"
+    business_term: "high-performance device notification without dedicated interrupt wires"
+    translation_note: >
+      MSI replaces dedicated interrupt wires with a memory write to a special address.
+      MSI-X allows up to 2048 independent interrupt vectors per PCIe device, enabling
+      per-queue interrupt affinity for high-bandwidth devices. Without MSI-X affinity,
+      all PCIe interrupts land on a single CPU core.
+
+  - bsp_term: "VM Exit"
+    algo_term: "hypervisor mode switch from guest to host"
+    business_term: "virtualization overhead"
+    translation_note: >
+      A VM Exit occurs when a guest VM performs an operation that requires the hypervisor
+      (EL2) to intervene — e.g., accessing a virtual device register or handling a virtual
+      interrupt. Each VM Exit costs 5–20µs. A guest OS that triggers 50,000 VM Exits/s
+      wastes 100–1000ms/s of vCPU time, appearing to the guest as a 10–50% performance penalty.
+
+  - bsp_term: "vCPU (virtual CPU)"
+    algo_term: "virtualized compute thread"
+    business_term: "virtual machine compute resource"
+    translation_note: >
+      A vCPU is a software abstraction of a physical CPU core running inside a VM.
+      vCPU scheduling by the hypervisor can introduce latency that physical CPUs do not
+      have — a real-time task in a VM cannot assume hard interrupt latency bounds without
+      vCPU pinning and priority configuration.
+
+  - bsp_term: "EL2 (Exception Level 2)"
+    algo_term: "hypervisor privilege level"
+    business_term: "the isolation boundary between virtual machines"
+    translation_note: >
+      ARM defines four exception levels: EL0 (user), EL1 (kernel), EL2 (hypervisor),
+      EL3 (secure monitor). EL2 is where KVM / Xen run on ARM. Code at EL2 controls
+      memory virtualization (Stage 2 translation) and virtual interrupt injection.
+      A bug at EL2 can break guest OS security isolation.
+
+  - bsp_term: "GICv4 direct vLPI injection"
+    algo_term: "hypervisor-bypass interrupt delivery"
+    business_term: "low-latency virtual device interrupt delivery"
+    translation_note: >
+      GICv4 allows the ITS to inject virtual LPIs directly into a vCPU without a VM Exit
+      to the hypervisor. This reduces interrupt delivery latency from ~20µs (via hypervisor)
+      to ~2µs (direct). Required for high-performance virtual NVMe or virtual NIC devices.
+
+  - bsp_term: "IRQ affinity (smp_affinity)"
+    algo_term: "interrupt-to-core binding"
+    business_term: "interrupt load balancing across CPU cores"
+    translation_note: >
+      smp_affinity controls which CPU cores can handle a given IRQ. Binding a high-rate
+      IRQ (e.g., network or camera) to a single LITTLE core saturates that core.
+      Distributing IRQs across cores (irqbalance) improves throughput but may increase
+      cache miss rates if the handling core differs from the consuming thread's core.
+
+  - bsp_term: "SMMU (System Memory Management Unit)"
+    algo_term: "peripheral address translation unit"
+    business_term: "hardware memory safety for device DMA"
+    translation_note: >
+      The SMMU provides Stage 1 and Stage 2 address translation for DMA-capable peripherals,
+      preventing a compromised peripheral from accessing arbitrary physical memory.
+      An SMMU fault (invalid DMA address) causes a bus error that terminates the
+      peripheral's DMA transfer, appearing as a driver hang or camera timeout.
+
+  - bsp_term: "IRQ domain"
+    algo_term: "interrupt number namespace"
+    business_term: "hardware interrupt assignment management"
+    translation_note: >
+      Linux irq domains map hardware interrupt numbers to Linux virtual IRQ numbers.
+      A missing irq_domain mapping causes a driver's request_irq() to fail silently or
+      map to the wrong hardware interrupt, resulting in a driver that never receives
+      its interrupt and appears to hang.
+
+  # ===========================================================================
+  # DOMAIN 6: CROSS-DOMAIN (EAS, QoS, NoC bandwidth, SMMU, DMA contention)
+  # ===========================================================================
+
+  - bsp_term: "EAS (Energy Aware Scheduling)"
+    algo_term: "task placement optimizer for energy vs. performance"
+    business_term: "the OS algorithm that balances battery life and responsiveness"
+    translation_note: >
+      EAS uses an energy model (per-core capacity, per-OPP power) to place tasks on the
+      most energy-efficient CPU+OPP combination. Miscalibrated energy model parameters
+      cause EAS to place tasks on high-power cores unnecessarily, wasting 10–20% battery.
+      Reference: Linux Documentation/scheduler/sched-energy.rst.
+
+  - bsp_term: "QoS (Quality of Service) request"
+    algo_term: "resource performance guarantee"
+    business_term: "minimum performance floor for a feature"
+    translation_note: >
+      Linux PM QoS allows drivers to request a minimum performance level from a resource
+      (e.g., maximum IRQ latency, minimum CPU frequency). Conflicting QoS requests from
+      multiple drivers can prevent power savings (if a latency constraint blocks C-states)
+      or degrade performance (if a bandwidth floor is not set for a streaming workload).
+
+  - bsp_term: "NoC (Network-on-Chip) bandwidth"
+    algo_term: "on-chip data transfer capacity"
+    business_term: "the internal data highway of the SoC"
+    translation_note: >
+      The NoC is the interconnect fabric connecting CPU, GPU, ISP, NPU, and DRAM controllers.
+      NoC bandwidth contention occurs when multiple high-bandwidth masters (GPU + ISP + CPU)
+      compete simultaneously. For algorithm engineers: NoC QoS configuration determines
+      which master gets priority during contention. For PMs: poor NoC QoS causes camera
+      stutter during gaming.
+
+  - bsp_term: "DMA contention"
+    algo_term: "shared memory bus saturation"
+    business_term: "one feature degrading another's performance"
+    translation_note: >
+      DMA contention occurs when multiple peripherals (ISP, GPU, audio codec) simultaneously
+      issue DMA transfers that saturate DRAM bandwidth or NoC throughput. The result is
+      increased DMA latency for all consumers. During simultaneous camera + gaming,
+      ISP DMA can starve GPU texture fetches, causing frame drops.
+
+  - bsp_term: "DDR frequency scaling (DDRFREQ)"
+    algo_term: "DRAM operating point selection"
+    business_term: "memory speed vs. power tradeoff"
+    translation_note: >
+      DRAM frequency can be scaled between a low-power LP mode (e.g., 800MHz) and peak
+      throughput (e.g., 3200MHz) based on bandwidth demand. Aggressive down-scaling saves
+      ~300–800mW but adds 10–20% latency to memory-bound workloads. The DDRFREQ governor
+      must balance battery vs. latency for each use case.
+
+  - bsp_term: "bandwidth monitor (BWMon)"
+    algo_term: "DRAM utilization sampler"
+    business_term: "memory usage tracker for performance tuning"
+    translation_note: >
+      BWMon samples DRAM read/write throughput at configurable intervals (typically 10ms)
+      and feeds the measurement to the DDRFREQ governor to select the appropriate OPP.
+      Under-sampled BWMon causes the DDRFREQ governor to react too slowly to bandwidth
+      bursts, causing momentary memory stalls.
+
+  - bsp_term: "interconnect (ICC) vote"
+    algo_term: "on-chip bus bandwidth request"
+    business_term: "hardware resource reservation for a feature"
+    translation_note: >
+      Drivers vote for minimum interconnect bandwidth via the Linux interconnect API
+      (icc_set_bw()). If the ISP driver does not vote for sufficient NoC bandwidth before
+      starting a DMA transfer, the hardware may throttle the transfer, causing frame drops.
+      Reference: Linux Documentation/driver-api/interconnect.rst.
+
+  - bsp_term: "SMMU fault"
+    algo_term: "DMA address translation failure"
+    business_term: "hardware security violation blocking a device"
+    translation_note: >
+      An SMMU fault occurs when a peripheral tries to DMA to a physical address not
+      mapped in its SMMU page table. This can happen if a DMA-BUF is freed before the
+      hardware finishes accessing it (use-after-free in the DMA path). The SMMU blocks
+      the access and asserts a fault interrupt, which the driver must handle to recover.
+
+  - bsp_term: "Roofline model"
+    algo_term: "compute vs. bandwidth performance ceiling"
+    business_term: "the fundamental limit on what the hardware can achieve for a workload"
+    translation_note: >
+      The Roofline model characterizes a workload by its arithmetic intensity (FLOPS/byte).
+      If intensity × DRAM BW > peak FLOPS, the workload is compute-bound; otherwise it is
+      memory-bound. For algorithm engineers: a memory-bound NPU workload cannot be improved
+      by adding more MAC units — only reducing memory accesses (tiling, reuse) helps.
+
+  - bsp_term: "CPU capacity (PELT)"
+    algo_term: "effective compute availability signal"
+    business_term: "how much CPU headroom is available for new workloads"
+    translation_note: >
+      PELT (Per-Entity Load Tracking) computes a per-CPU running average utilization signal
+      used by EAS and the DVFS governor. Inaccurate PELT signals (due to high-frequency
+      burst tasks that alias with the PELT decay window) cause the scheduler to
+      underestimate load, leading to insufficient OPP selection and jank.
+
+  - bsp_term: "DMA-BUF heap"
+    algo_term: "shared memory allocator for hardware pipeline"
+    business_term: "memory allocation system for camera and media features"
+    translation_note: >
+      DMA-BUF heaps (system heap, CMA heap, secure heap) provide memory pools optimized
+      for specific DMA use cases. The CMA (Contiguous Memory Allocator) heap provides
+      physically contiguous memory required by peripherals that lack SMMU support.
+      Insufficient CMA reservation causes camera open() to fail with ENOMEM at runtime.
+
+  - bsp_term: "CMA (Contiguous Memory Allocator)"
+    algo_term: "physically contiguous DMA buffer pool"
+    business_term: "memory reservation for camera and video hardware"
+    translation_note: >
+      CMA reserves a contiguous physical memory region at boot for use by DMA-capable
+      hardware that requires physically contiguous buffers. If CMA is undersized for the
+      camera + video use case, the camera HAL will fail to allocate DMA-BUF buffers,
+      appearing to the user as "camera failed to open."
+
+  - bsp_term: "IOMMU (Input-Output Memory Management Unit)"
+    algo_term: "peripheral virtual address space"
+    business_term: "hardware memory isolation for device security"
+    translation_note: >
+      The IOMMU (ARM SMMU) gives each peripheral its own virtual address space, preventing
+      a compromised device from accessing physical memory outside its allocation. IOMMU
+      enables DMA-BUF sharing between CPU and GPU by mapping the same physical page into
+      both address spaces simultaneously.
+
+  - bsp_term: "clock gating"
+    algo_term: "dynamic power reduction via clock disable"
+    business_term: "fine-grained power saving within active mode"
+    translation_note: >
+      Clock gating disables the clock to an unused hardware block (e.g., an ISP sub-block
+      not needed for the current pipeline configuration) without powering it off.
+      Clock gating saves dynamic power (P = α × C × V² × f) proportional to the
+      gated block's capacitance and frequency. It is the fastest-acting power reduction
+      mechanism, taking effect within one clock cycle.
+
+  - bsp_term: "power gating"
+    algo_term: "complete power removal from a hardware block"
+    business_term: "maximum power saving for inactive features"
+    translation_note: >
+      Power gating removes supply voltage from an entire IP block (GPU, ISP, VPU) to
+      eliminate both dynamic and leakage power. Recovery from power gating requires full
+      power sequencing (isolation release, reset de-assert, re-initialization), taking
+      typically 1–10ms. Power gating is appropriate for blocks inactive for > 100ms.
+
+  - bsp_term: "frequency scaling governor"
+    algo_term: "OPP selection policy"
+    business_term: "the algorithm that decides how fast the CPU or GPU runs"
+    translation_note: >
+      The DVFS governor (schedutil for CPU, simple_ondemand for GPU) selects the operating
+      frequency/voltage pair (OPP) based on measured utilization. schedutil uses the PELT
+      utilization signal directly for CPU-frequency selection, providing tighter latency
+      than the older ondemand governor. Misconfigured governor parameters cause either
+      excess power consumption (too aggressive) or jank (too conservative).
+
+  - bsp_term: "thermal throttle trip point"
+    algo_term: "temperature threshold for compute reduction"
+    business_term: "the temperature at which the device slows down to protect itself"
+    translation_note: >
+      A thermal trip point is a temperature threshold at which the thermal framework
+      activates a cooling action (frequency reduction, screen brightness reduction).
+      Passive trip points apply graduated cooling; critical trip points trigger emergency
+      shutdown. Miscalibrated trip points either cause unnecessary throttling (user
+      dissatisfaction) or thermal runaway (product safety issue).
+
+  - bsp_term: "regulator (Linux kernel)"
+    algo_term: "power rail software abstraction"
+    business_term: "software-controlled voltage supply"
+    translation_note: >
+      The Linux regulator framework abstracts PMIC voltage rails as software-controllable
+      resources. Drivers call regulator_enable() and regulator_set_voltage() to request
+      power. Reference counting ensures rails stay on as long as any consumer is active.
+      A missing regulator_disable() call at driver remove() causes a power rail to remain
+      on after the peripheral is unused, increasing idle power draw.
+
+  - bsp_term: "clock tree"
+    algo_term: "frequency distribution hierarchy"
+    business_term: "the chain of clocks that feeds every chip function"
+    translation_note: >
+      The clock tree distributes a root clock (typically 26MHz XTAL) through PLLs and
+      dividers to every peripheral on the SoC. A clock tree programming error (wrong
+      PLL M/N/P coefficients) produces an incorrect frequency that causes downstream
+      peripherals to operate out-of-spec, manifesting as data corruption or device hangs.
+
+  - bsp_term: "devfreq"
+    algo_term: "generic frequency scaling for non-CPU devices"
+    business_term: "dynamic performance tuning for GPU, DRAM, and other chips"
+    translation_note: >
+      devfreq is the Linux framework for dynamic frequency scaling of non-CPU devices
+      (GPU, DRAM controller, NoC). It mirrors cpufreq's governor model (simple_ondemand,
+      performance, powersave). A misconfigured devfreq governor for DRAM can cause
+      under-frequency during camera burst, increasing DMA latency.
+
+  - bsp_term: "sysfs regulator path"
+    algo_term: "power state introspection interface"
+    business_term: "tool to check which power rails are active"
+    translation_note: >
+      /sys/kernel/debug/regulator/regulator_summary provides a real-time view of all
+      power rails, their enable counts, and current voltage levels. This is the first
+      tool to check when an IP block is unresponsive — a disabled regulator is the
+      most common silent failure mode.
+
+  - bsp_term: "LPDDR5 ODT (On-Die Termination)"
+    algo_term: "signal integrity tuning parameter"
+    business_term: "DRAM reliability configuration"
+    translation_note: >
+      ODT provides impedance matching to minimize signal reflections on the LPDDR5 data
+      bus at high data rates. Incorrect ODT values (wrong in PHY training or device tree)
+      cause data bus errors at high DRAM frequencies, appearing as random memory corruption
+      or ECC errors that are difficult to reproduce.
+
+  - bsp_term: "PCIe link training"
+    algo_term: "high-speed serial link initialization"
+    business_term: "external device connection establishment"
+    translation_note: >
+      PCIe link training negotiates link speed (Gen1/2/3/4) and width (x1/x2/x4) between
+      the SoC root complex and the endpoint device. Training failure (link not reaching
+      the programmed speed) causes the link to fall back to Gen1, reducing bandwidth by
+      4–16x. The failure root cause is usually incorrect reference clock or SerDes
+      equalization settings.
+
+  - bsp_term: "retimer (PCIe/USB)"
+    algo_term: "signal conditioning repeater"
+    business_term: "cable length extender for external connectivity"
+    translation_note: >
+      A retimer reshapes and re-times a PCIe or USB4 signal to extend the reach across
+      longer cables or board traces. A retimer powered down before the link is trained
+      will cause link training failure, appearing as the external device not being detected.
+
+  - bsp_term: "DTS / DSDT (ACPI)"
+    algo_term: "platform hardware description table"
+    business_term: "hardware configuration manifest"
+    translation_note: >
+      For ARM SoCs without ACPI, Device Tree Source (DTS) serves the same role as ACPI's
+      DSDT: describing hardware topology, resource assignments, and power management
+      capabilities to the OS. An incorrect DTS entry is functionally equivalent to a
+      hardware bug from the kernel's perspective.
+
+  - bsp_term: "mmap (memory-mapped I/O)"
+    algo_term: "register-space direct access"
+    business_term: "the mechanism that lets software control hardware"
+    translation_note: >
+      ioremap() / mmap() maps hardware register space into the kernel's virtual address
+      space. Accessing an unmapped register address causes a Data Abort exception (EL1).
+      Accessing a register while the peripheral's clock is gated causes the AXI bus to
+      hang waiting for an acknowledge that never comes — a classic "bus timeout" hang.
+
+  - bsp_term: "SIGKILL / SIGSEGV"
+    algo_term: "process termination signal"
+    business_term: "app crash"
+    translation_note: >
+      A SIGSEGV (segmentation fault) occurs when user-space accesses an unmapped address.
+      In BSP context, this often happens when a HAL library tries to mmap a device node
+      that was removed due to a driver failure. For PMs: the user sees "App has stopped"
+      — the root cause is a BSP driver issue, not an app bug.
+
+  - bsp_term: "hardirq / softirq"
+    algo_term: "two-tier interrupt processing"
+    business_term: "interrupt handling efficiency mechanism"
+    translation_note: >
+      Linux splits interrupt handling into a fast hardirq (runs with interrupts disabled,
+      must be < 50µs) and a deferred softirq (runs with interrupts enabled). Network and
+      storage drivers do bulk data processing in softirq. If softirq processing is too
+      slow (> 1ms), later interrupts are delayed, causing audio underruns or camera frame drops.
+
+  - bsp_term: "memory barrier (dmb, dsb, isb)"
+    algo_term: "hardware instruction ordering fence"
+    business_term: "correctness guarantee for multi-core shared memory"
+    translation_note: >
+      ARM memory barriers (DMB: data memory barrier, DSB: data synchronization barrier,
+      ISB: instruction synchronization barrier) enforce ordering of memory accesses across
+      multiple CPU cores or between the CPU and a DMA device. A missing DSB before an
+      interrupt enable can cause a DMA transfer to start before its descriptor is visible
+      to the hardware, causing data corruption.
+
+  - bsp_term: "coherency domain"
+    algo_term: "cache-coherent shared memory scope"
+    business_term: "the set of processors that see the same memory state"
+    translation_note: >
+      ARM DynamIQ clusters provide hardware cache coherency within the cluster (inner
+      shareable domain). Peripherals outside the coherency domain (non-coherent DMA masters)
+      require explicit cache maintenance (cache flush + invalidate) before and after DMA
+      transfers. Omitting cache maintenance causes the CPU to read stale cached data
+      after a DMA write.
+
+  - bsp_term: "cache maintenance"
+    algo_term: "explicit cache flush or invalidate operation"
+    business_term: "ensuring CPU and hardware see the same data"
+    translation_note: >
+      Cache maintenance operations (cache_flush_range, dma_sync_single_for_device) ensure
+      that data written by the CPU is visible to a DMA master (flush) and that data written
+      by a DMA master is visible to the CPU (invalidate). Missing cache maintenance is a
+      common source of subtle data corruption bugs in camera and audio drivers.
+
+  - bsp_term: "ASLR (Address Space Layout Randomization)"
+    algo_term: "memory address randomization for security"
+    business_term: "kernel security feature"
+    translation_note: >
+      ASLR randomizes the base addresses of kernel and user-space allocations to make
+      exploit development harder. Some legacy BSP drivers use hardcoded physical addresses
+      that conflict with ASLR, causing crashes that are difficult to reproduce because
+      they depend on the random address layout of a particular boot.
+
+  - bsp_term: "OOM (Out of Memory)"
+    algo_term: "memory allocator failure"
+    business_term: "system runs out of memory and kills processes"
+    translation_note: >
+      The Linux OOM killer terminates processes when physical memory plus swap is exhausted.
+      In BSP context, OOM is often triggered by DMA-BUF allocations from CMA that are not
+      released promptly (e.g., camera buffers held by a crashed app). For PMs: OOM events
+      appear as unexpected process restarts during camera or media playback.
+
+  - bsp_term: "pinctrl (pin control)"
+    algo_term: "GPIO and pin function configuration"
+    business_term: "hardware signal routing to peripherals"
+    translation_note: >
+      The pinctrl subsystem configures the function (GPIO, I2C, SPI, UART, MIPI) and
+      electrical properties (drive strength, pull-up/down) of SoC pins. A wrong pinctrl
+      state (e.g., I2C pins left as GPIO after probe) causes the peripheral's communication
+      to fail silently — the driver sends I2C commands but receives no response.
+
+  - bsp_term: "devmem / ioremap"
+    algo_term: "direct hardware register access"
+    business_term: "low-level hardware diagnostic tool"
+    translation_note: >
+      devmem2 (user-space) and ioremap() (kernel) allow reading and writing hardware
+      registers directly. Direct register access bypasses driver abstraction — useful for
+      rapid hardware diagnosis but dangerous in production code. A write to the wrong
+      register address can irreversibly alter hardware state.
+
+  - bsp_term: "ftrace"
+    algo_term: "kernel function and event tracer"
+    business_term: "detailed system performance recorder"
+    translation_note: >
+      ftrace is the Linux kernel's built-in tracing framework. trace-cmd provides a
+      user-space interface. ftrace captures: function call graphs, IRQ entry/exit,
+      scheduler events, power state transitions. It is the primary tool for diagnosing
+      latency spikes, IRQ storms, and power management regressions without requiring
+      external hardware.
+
+  - bsp_term: "perf (perf_events)"
+    algo_term: "hardware performance counter interface"
+    business_term: "CPU and memory performance profiling tool"
+    translation_note: >
+      perf accesses hardware performance counters (PMU) to measure cache misses, branch
+      mispredictions, CPU stall cycles, and DRAM bandwidth. For algorithm engineers:
+      perf stat on an NPU driver workload reveals whether the bottleneck is compute-bound
+      (high IPC) or memory-bound (high cache miss rate).
+
+  - bsp_term: "kprobes / eBPF"
+    algo_term: "dynamic kernel instrumentation"
+    business_term: "production-safe kernel observability"
+    translation_note: >
+      kprobes and eBPF allow attaching lightweight programs to arbitrary kernel functions
+      at runtime without recompilation. Used for diagnosing latency issues in production
+      kernels where adding printk() would disturb timing. eBPF programs must be verified
+      by the kernel verifier and cannot crash the kernel.
+
+  - bsp_term: "UART (serial console)"
+    algo_term: "debug output channel"
+    business_term: "the most reliable debug window during early boot"
+    translation_note: >
+      The serial console (UART) is the only reliable debug output channel available from
+      power-on before the kernel initializes networking or display. Early boot hang diagnosis
+      without UART access requires JTAG or pstore. For PMs: investing in UART access on
+      development hardware directly reduces early-boot debug cycle time.
+
+  - bsp_term: "dmesg"
+    algo_term: "kernel ring buffer log"
+    business_term: "system event log for hardware and driver activity"
+    translation_note: >
+      dmesg contains the kernel ring buffer log from boot, including driver probe results,
+      hardware errors, thermal events, and OOM kills. It is the first log to check for any
+      BSP issue. dmesg timestamps can be cross-referenced with user-visible events to
+      identify the kernel-side root cause of app failures.
+
+  - bsp_term: "sysfs / debugfs"
+    algo_term: "kernel state export interface"
+    business_term: "real-time hardware status dashboard"
+    translation_note: >
+      sysfs (/sys/) exports kernel object attributes readable/writable from user-space.
+      debugfs (/sys/kernel/debug/) exports debug-only information. Together, they provide
+      the primary interface for runtime inspection of clock states, regulator voltages,
+      thermal zone temperatures, interrupt counts, and driver statistics without
+      requiring kernel recompilation.
+
+  - bsp_term: "panic_on_warn"
+    algo_term: "kernel warning escalation to crash"
+    business_term: "aggressive bug detection mode for testing"
+    translation_note: >
+      Setting panic_on_warn=1 causes kernel WARN() macros to trigger a kernel panic,
+      producing a full stack trace and pstore capture. This converts warnings (normally
+      silent in production) into actionable crash reports during testing.
+      Not appropriate for production but essential for catching driver bugs early.
+
+  - bsp_term: "lockdep"
+    algo_term: "lock ordering verifier"
+    business_term: "deadlock prevention tool"
+    translation_note: >
+      lockdep is a kernel runtime lock dependency checker that detects potential deadlocks
+      by tracking lock acquisition order. A lockdep splat (detected cycle) indicates
+      that two code paths acquire the same locks in opposite order, which will eventually
+      deadlock under specific scheduling conditions. Fix before shipping.
+
+  - bsp_term: "KASAN (Kernel Address Sanitizer)"
+    algo_term: "dynamic memory safety checker"
+    business_term: "memory corruption bug detector"
+    translation_note: >
+      KASAN detects out-of-bounds accesses and use-after-free bugs in kernel memory in
+      real time. Enabling KASAN on a BSP driver test build catches memory corruption bugs
+      that would otherwise appear as intermittent crashes in production. KASAN has ~2x
+      memory overhead and ~1.5x performance overhead — not for production images.
+
+  - bsp_term: "task_struct"
+    algo_term: "process control block"
+    business_term: "operating system's representation of a running application"
+    translation_note: >
+      Each process and kernel thread has a task_struct containing scheduling parameters,
+      memory mappings, file descriptors, and signal state. BSP engineers inspect
+      task_struct via /proc/<pid>/ to diagnose driver threads stuck in an uninterruptible
+      sleep (D state) waiting for a hardware resource.
+
+  - bsp_term: "D state (TASK_UNINTERRUPTIBLE)"
+    algo_term: "blocking wait for hardware resource"
+    business_term: "process stuck waiting for a hardware response"
+    translation_note: >
+      A process in D state is blocked waiting for a hardware operation (disk I/O, DMA
+      completion, hardware register response). D-state processes cannot be killed with
+      SIGKILL — they must wait until the hardware responds or the kernel times out.
+      A camera driver in D state (waiting for ISP DMA) causes the entire camera
+      service thread to appear frozen.
+
+  - bsp_term: "workqueue"
+    algo_term: "deferred kernel work queue"
+    business_term: "background hardware task processor"
+    translation_note: >
+      Linux workqueues allow interrupt handlers and drivers to defer time-consuming work
+      to a kernel thread that runs with interrupts enabled. If a workqueue becomes backlogged
+      (work items enqueued faster than processed), subsequent work items are delayed,
+      causing increased latency for the associated hardware function.
+
+  - bsp_term: "deferred probe"
+    algo_term: "dependency-ordered driver initialization"
+    business_term: "driver startup ordering mechanism"
+    translation_note: >
+      When a driver's probe() returns -EPROBE_DEFER, the kernel re-tries probe after
+      all other pending drivers have initialized. This handles cross-driver dependencies
+      (e.g., a sensor driver waiting for its regulator driver). An infinite defer loop
+      (two drivers each deferring for the other) causes neither to ever initialize —
+      appearing as a missing feature rather than a boot error.
+
+  - bsp_term: "GIC Redistributor (GICR)"
+    algo_term: "per-CPU interrupt delivery endpoint"
+    business_term: "per-core interrupt routing hardware"
+    translation_note: >
+      Each CPU core in a GICv3 system has its own Redistributor block that delivers
+      SGIs (software-generated interrupts), PPIs (per-CPU private interrupts), and LPIs
+      to that specific core. Misconfigured Redistributor affinity causes interrupts
+      to land on the wrong core, increasing interrupt latency by the inter-core
+      communication penalty.
+
+  - bsp_term: "LPI (Locality-specific Peripheral Interrupt)"
+    algo_term: "scalable message-based interrupt type"
+    business_term: "high-count interrupt type for PCIe and SoC peripherals"
+    translation_note: >
+      LPIs are GICv3 interrupts configured via in-memory tables rather than MMIO registers,
+      enabling support for thousands of interrupt sources without expanding the GIC register
+      space. LPIs are used for MSI-X devices and are required for GICv4 direct vLPI injection.
+      Reference: ARM GICv3 Architecture Specification, chapter 5.
+
+  - bsp_term: "WFI / WFE (Wait For Interrupt / Event)"
+    algo_term: "CPU idle instruction"
+    business_term: "the CPU's 'sleep until something happens' mechanism"
+    translation_note: >
+      WFI suspends the CPU pipeline until an interrupt or event wakes it. The cpuidle
+      governor issues WFI as the shallowest idle action. WFE is used for spinlock
+      arbitration between cores. A CPU spinning in a tight loop instead of issuing WFI
+      wastes power and blocks the core from deeper C-states.
+
+  - bsp_term: "DRAM rank interleaving"
+    algo_term: "DRAM parallelism for bandwidth"
+    business_term: "memory subsystem throughput configuration"
+    translation_note: >
+      Interleaving DRAM accesses across multiple ranks or channels hides DRAM row open/close
+      latency by keeping one rank active while another is precharging. Incorrect interleaving
+      configuration (disabled or misconfigured in the DRAM controller) reduces effective
+      DRAM bandwidth by 30–50% without any visible error — only lower throughput.
+
+  - bsp_term: "DVFS latency"
+    algo_term: "frequency transition delay"
+    business_term: "responsiveness delay when workload changes"
+    translation_note: >
+      DVFS latency is the time required to transition between OPPs (typically 100–500µs
+      for CPU, longer for GPU). During this window, the CPU runs at neither the source nor
+      the destination OPP. If transition latency exceeds the cpufreq governor's sampling
+      interval, frequency hunting (oscillating between OPPs) occurs, wasting power and
+      causing jitter.
+
+  - bsp_term: "NPU (Neural Processing Unit)"
+    algo_term: "fixed-function ML inference accelerator"
+    business_term: "the chip that runs AI features without draining battery"
+    translation_note: >
+      The NPU executes matrix multiply and convolution operations at high TOPS/W efficiency.
+      Offloading inference from the CPU to the NPU reduces active power by 3–10x for
+      supported operators. Operators not supported by the NPU fall back to CPU execution,
+      negating the power benefit. NPU driver bugs often manifest as incorrect inference
+      results rather than crashes.
+
+  - bsp_term: "VPU (Video Processing Unit)"
+    algo_term: "hardware video codec accelerator"
+    business_term: "the chip that encodes and decodes video efficiently"
+    translation_note: >
+      The VPU handles H.264/H.265/AV1 encode and decode in hardware, consuming 1/10th the
+      power of software codecs on the CPU. A VPU driver bug (wrong bitstream output) causes
+      corrupted video that appears to the user as "blocky" or "frozen" video frames.
+      VPU and ISP can share DMA-BUF buffers for zero-copy video recording pipelines.
+
+  - bsp_term: "secure boot"
+    algo_term: "cryptographic boot chain verification"
+    business_term: "protection against unauthorized software on the device"
+    translation_note: >
+      Secure boot verifies each bootloader stage's digital signature before execution,
+      using keys burned into efuse. A secure boot failure (key mismatch or signature error)
+      halts the boot process — the device displays a warning or refuses to boot.
+      For PMs: secure boot is a regulatory and carrier requirement in most markets.
+
+  - bsp_term: "AXI / ACE protocol"
+    algo_term: "on-chip data transfer protocol"
+    business_term: "the communication standard between chip blocks"
+    translation_note: >
+      AXI (AMBA eXtensible Interface) and ACE (AXI Coherency Extensions) are ARM's
+      standard on-chip bus protocols. AXI carries non-coherent DMA traffic; ACE adds
+      cache coherency for CPU clusters. An AXI timeout (no response within the configured
+      timeout window) generates a bus error interrupt and typically triggers a kernel panic.
+
+  - bsp_term: "trace buffer (ETB / ETR)"
+    algo_term: "hardware instruction trace capture buffer"
+    business_term: "crash evidence recorder"
+    translation_note: >
+      CoreSight ETB (Embedded Trace Buffer) and ETR (Embedded Trace Router) capture
+      the CPU's ETM instruction trace stream. ETB stores trace on-chip; ETR routes
+      trace to DRAM for larger captures. Captured traces allow post-mortem reconstruction
+      of the exact instruction sequence leading to a hang or crash.
+
+  - bsp_term: "STD (Suspend To Disk / hibernation)"
+    algo_term: "DRAM-to-storage checkpoint"
+    business_term: "hibernate mode — saves battery when device is off for extended period"
+    translation_note: >
+      STD (Linux hibernation / swsusp) snapshots all DRAM content to storage and powers
+      off the device completely. Resume reads the snapshot back into DRAM and restores
+      system state. STD is not commonly used on Android targets (swap is typically
+      disabled) but is relevant for automotive and embedded Linux platforms.
+      Reference: Linux Documentation/power/hibernation.rst.
+
+  - bsp_term: "MCPS (Mega Cycles Per Second)"
+    algo_term: "algorithm compute cost in CPU cycles"
+    business_term: "how much CPU capacity an algorithm consumes"
+    translation_note: >
+      MCPS quantifies algorithm compute cost as millions of CPU clock cycles per second
+      of output. An algorithm requiring 200 MCPS on a 1GHz core needs 20% of that core's
+      capacity. For BSP engineers: MCPS determines which OPP is needed to run the algorithm
+      in real time. For PMs: higher MCPS means higher power and potentially shorter battery life.
+
+  - bsp_term: "TOPS (Tera Operations Per Second)"
+    algo_term: "NPU throughput rating"
+    business_term: "AI performance marketing figure"
+    translation_note: >
+      TOPS measures NPU throughput for INT8 MAC operations. Marketing TOPS figures are
+      measured under ideal conditions (maximum operand reuse, no memory stalls). Real-world
+      inference achieves 30–70% of peak TOPS due to irregular model shapes, operator
+      fallback to CPU, and DRAM bandwidth constraints. For algorithm engineers: validate
+      actual TOPS with your specific model, not the datasheet peak.
+
+  - bsp_term: "arithmetic intensity"
+    algo_term: "FLOPS per byte of memory traffic"
+    business_term: "how compute-heavy a workload is relative to its memory needs"
+    translation_note: >
+      Arithmetic intensity = total FLOPS / total bytes accessed from DRAM. High arithmetic
+      intensity (> GPU FLOPS / DRAM BW) means the workload is compute-bound; low intensity
+      means it is memory-bound. For BSP engineers: compute-bound workloads benefit from
+      higher NPU/GPU OPPs; memory-bound workloads benefit from higher DRAM frequency.
+
+  - bsp_term: "memory bandwidth utilization"
+    algo_term: "DRAM bus occupancy fraction"
+    business_term: "memory system load percentage"
+    translation_note: >
+      Memory bandwidth utilization = actual bandwidth / peak DRAM bandwidth. When utilization
+      exceeds 70–80%, DRAM row conflicts become frequent and average latency increases
+      non-linearly. For algorithm engineers: running multiple high-bandwidth models
+      simultaneously on CPU + NPU can push DRAM utilization past the 80% threshold,
+      causing both models to slow down more than proportionally.

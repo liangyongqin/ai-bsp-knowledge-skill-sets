@@ -1,0 +1,8 @@
+{
+  "id": "case_183",
+  "skill": "bsp-knowledge-mentor",
+  "input": "System hangs during STR (Suspend-to-RAM) resume when an active MIPI CSI-2 stream was open at suspend time. The dmesg on resume shows:\n\n  [  482.001] PM: suspend entry (deep)\n  [  482.003] v4l2-subdev: ov64a40 0-0010: runtime_suspend called with active stream\n  [  482.005] mtk-csi: csi0: phy_power_off: MIPI PHY lanes not idle, forcing shutdown\n  [  482.009] PM: suspend exit\n  [  545.221] PM: resume entry\n  [  545.224] mtk-csi: csi0: phy_power_on: timeout waiting for MIPI PLL lock (500ms)\n  [  546.225] mtk-csi: csi0: phy_power_on: ETIMEDOUT\n  [  546.226] v4l2-subdev: ov64a40: s_stream(1) failed: -110\n  [  546.227] camera HAL: open_camera: stream start failed, aborting\n\nThe camera sensor is OV64A40. The PHY PLL does not relock after resume. I believe the dev_pm_ops callback order between the MIPI PHY driver and the CSI host driver is wrong — the PHY is being powered off before the CSI host quiesces the lanes. How do I verify the callback ordering and fix the STR sequence?",
+  "expected_topics": ["STR resume", "dev_pm_ops", "MIPI PHY", "PLL lock", "runtime_suspend", "CSI host", "power domain ordering", "PSCI"],
+  "min_score": 4,
+  "tags": ["cross-domain", "blackboard", "power-thermal", "multimedia-camera"]
+}

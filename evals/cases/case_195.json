@@ -1,0 +1,8 @@
+{
+  "id": "case_195",
+  "skill": "bsp-knowledge-mentor",
+  "input": "We are using CoreSight ETR (Embedded Trace Router) for continuous trace capture during camera stress testing. The system stalls reproducibly about 90 seconds into a 4K capture session. ETR and ISP logs show:\n\n  [   92.441] coresight-tmc-etr etr0: FFCR.FOnFlIn set: formatter flush stall\n  [   92.442] coresight-tmc-etr etr0: ETR DMA buffer full, stalling trace pipeline\n  [   92.443] mtk-isp: pipe_1: DMA allocator: no free slot (all 8 slots in flight)\n  [   92.444] mtk-isp: pipe_1: dropping frame 2741 (allocator exhausted)\n  [   92.445] coresight: trace loss: ETR buffer overrun\n\nThe ETR uses a 64 MB contiguous DMA buffer allocated at boot via CMA. The ISP uses 8 DMA slots each of 32 MB (RAW10 full-res). When both run simultaneously the CMA region is exhausted and the ISP allocator fails. I believe the ETR DMA region overlaps with or competes against the ISP CMA pool. How should CMA regions be partitioned between CoreSight and ISP to prevent this contention, and what device tree properties control the CMA region assignment?",
+  "expected_topics": ["CoreSight ETR", "CMA region", "DMA contention", "ISP DMA slot", "device tree CMA", "trace pipeline stall", "formatter flush", "memory pressure"],
+  "min_score": 4,
+  "tags": ["cross-domain", "blackboard", "boot-debug", "multimedia-camera"]
+}

@@ -1,0 +1,8 @@
+{
+  "id": "case_187",
+  "skill": "bsp-knowledge-mentor",
+  "input": "GPU rendering artifacts (single-pixel glitches and occasionally a full-screen color corruption) appear intermittently under sustained GPU load. The artifacts correlate with LPDDR5 error counter increments in sysfs:\n\n  $ cat /sys/devices/platform/ddr_monitor/ecc_ce_count\n  1473\n  $ cat /sys/devices/platform/ddr_monitor/ecc_ue_count\n  2\n\n  [  887.312] drm/msm: gpu: VBIF timeout, core_clk=700MHz ddr_freq=3200MT\n  [  887.314] drm/msm: RB_RENDER_CONTROL: underrun detected (frame 5541)\n  [  887.315] drm/msm: gpu: fault addr=0x... iova=0x... (read), ctx=kgsl-3d0\n\nThe ECC correctable error rate is roughly 2 per minute under GPU load, but zero at idle. Our LPDDR5 is running at 1.05 V nominal. The GPU DVFS is reaching 700 MHz which is the top OPP. My hypothesis is that LPDDR5 voltage margin is tight at high frequency, and the GPU DMA bursts are pushing the DRAM out of spec transiently. How do I determine whether the LPDDR5 supply rail (not the GPU rail) is sagging under load?",
+  "expected_topics": ["LPDDR5 ECC", "voltage margin", "GPU DVFS", "VBIF timeout", "drm/msm", "DRAM voltage sag", "OPP", "render artifacts"],
+  "min_score": 4,
+  "tags": ["cross-domain", "blackboard", "gpu-rendering", "power-thermal"]
+}

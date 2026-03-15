@@ -1,0 +1,8 @@
+{
+  "id": "case_185",
+  "skill": "bsp-knowledge-mentor",
+  "input": "NPU inference throughput degrades from ~45 TOPS to ~18 TOPS after 10 minutes of sustained load. Thermal logs and ftrace show the NPU thermal zone trips but the degradation is worse than expected from frequency alone:\n\n  [  603.101] thermal thermal_zone5: npu_cluster: Trip 1 crossed. capping freq 1000000 -> 700000 kHz\n  [  603.104] mtk-npu: dma_complete latency p99=4.2ms (was 1.1ms at boot)\n  [  603.106] mtk-npu: inference_submit: waiting on DMA completion fence, slot_util=62%\n  [  612.881] thermal thermal_zone5: npu_cluster: Trip 2 crossed. capping freq 700000 -> 500000 kHz\n\nThe DMA completion latency jumped from 1.1 ms to 4.2 ms — a 4x increase not explained by the 30% frequency reduction. I suspect the DRAM thermal throttle is serializing DMA transactions. The NPU uses an internal DMA engine whose interrupt is routed through the GIC-600. Could the thermal mitigation be inadvertently slowing the interrupt path or causing DMA backpressure? How do I separate the DMA latency component from the frequency scaling component?",
+  "expected_topics": ["NPU throttle", "DMA latency", "thermal zone", "GIC-600", "DRAM bandwidth", "cpufreq", "interrupt latency", "DMA fence"],
+  "min_score": 4,
+  "tags": ["cross-domain", "blackboard", "power-thermal", "interrupt-virtualization"]
+}

@@ -1,0 +1,8 @@
+{
+  "id": "case_191",
+  "skill": "bsp-knowledge-mentor",
+  "input": "Under a combined workload of GPU gaming + front-camera preview + display at 144 Hz, the display refresh rate is automatically capped to 60 Hz by the kernel. Individually, none of the three workloads triggers the cap. The thermal and DRM logs show:\n\n  [  901.551] thermal thermal_zone0: big_cluster: temp=89C trip_type=hot\n  [  901.552] thermal thermal_zone4: gpu_cluster: temp=84C trip_type=hot\n  [  901.553] thermal thermal_zone6: isp_cluster: temp=81C trip_type=hot\n  [  901.554] drm/dsi: dsi_display_set_mode: reducing refresh 144Hz -> 60Hz (thermal budget)\n  [  901.555] cpufreq: schedutil: cpu4: throttled to 1612800 due to thermal\n  [  901.556] mali: dvfs: throttled to OPP2 (700MHz) due to thermal\n  [  901.557] mtk-isp: pipe_0: framerate reduced 30fps -> 15fps (thermal budget)\n\nThe combined thermal budget across all three subsystems is exhausted even though no single subsystem is individually over-temperature. Our current thermal policy has no cross-domain budget coordinator — each subsystem throttles independently. How should a cross-domain thermal budget coordinator be designed, and what data does each domain need to share to enable coordinated throttling?",
+  "expected_topics": ["thermal budget", "cross-domain throttle", "display refresh rate", "GPU DVFS", "ISP framerate", "thermal zone", "power budget coordination", "DRM DSI"],
+  "min_score": 4,
+  "tags": ["cross-domain", "blackboard", "gpu-rendering", "multimedia-camera", "power-thermal"]
+}

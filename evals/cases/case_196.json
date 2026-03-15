@@ -1,0 +1,8 @@
+{
+  "id": "case_196",
+  "skill": "bsp-knowledge-mentor",
+  "input": "In our Android-on-KVM setup, audio dropout occurs approximately every 20-30 seconds. The audio thread in the VM reports underruns, and the host shows vCPU scheduling stalls correlated with DVFS transitions:\n\n  [host]  [  341.112] kvm: vCPU 1: preempted for 18ms (schedutil DVFS transition on CPU3)\n  [host]  [  341.113] cpufreq: schedutil: cpu3: 1612800 -> 1804800 kHz, latency=16ms\n  [host]  [  341.114] kvm: vCPU 1: resumed after 18ms stall\n  [guest] [  341.115] ALSA: pcm0p: xrun (underrun): hw_ptr fell behind appl_ptr by 384 frames\n  [guest] [  341.116] AudioFlinger: underrun on thread 0x7f3a (HAL latency=18ms)\n\nThe vCPU scheduling stall of 18 ms corresponds exactly to the cpufreq DVFS transition latency on the host physical CPU. The audio thread requires < 5 ms scheduling jitter for 48 kHz / 256-frame buffers. The host DVFS latency violates this budget. Should the fix be (1) pinning the vCPU's physical CPU to a fixed frequency, (2) using a faster cpufreq governor, or (3) enlarging the audio buffer in the guest? What are the power trade-offs of option 1?",
+  "expected_topics": ["vCPU preemption", "DVFS latency", "KVM scheduling", "audio xrun", "cpufreq schedutil", "ALSA underrun", "real-time jitter", "power trade-off"],
+  "min_score": 4,
+  "tags": ["cross-domain", "blackboard", "interrupt-virtualization", "power-thermal"]
+}

@@ -1,0 +1,8 @@
+{
+  "id": "case_189",
+  "skill": "bsp-knowledge-mentor",
+  "input": "Camera open fails after the device resumes from sleep (STR), but works perfectly on cold boot and after a warm reboot. The HAL error and kernel log on resume:\n\n  [  621.003] PM: resume entry (deep S3)\n  [  621.044] mtk-camsys: cam_domain: power_on: MMSYS power domain enable timeout 100ms\n  [  621.045] mtk-camsys: cam_domain: scpsys_power_on failed: -ETIMEDOUT\n  [  621.046] v4l2: mtkcam-isp7: open: power domain not ready\n  [  621.047] camera2 HAL3: ICameraDevice::open FAILED: error=-5 (EIO)\n  [  621.048] CameraService: connect: open failed for camera id=0\n\nOn cold boot, `cat /sys/kernel/debug/scpsys/cam_domain/state` shows `on`. After failed resume it shows `off`. The MMSYS power domain is supposed to be restored by the scp_suspend/scp_resume callbacks in `drivers/soc/mediatek/mtk-scpsys.c`. Our power domain driver does appear to call `scpsys_power_on` during resume, but it times out. I suspect the parent supply (VCAM_IO from the PMIC) is not yet stable when the cam_domain enable is attempted. How do I verify the parent domain sequencing on STR resume?",
+  "expected_topics": ["STR resume", "power domain", "MMSYS", "scpsys", "VCAM_IO", "PMIC supply", "dev_pm_ops", "camera open failure"],
+  "min_score": 4,
+  "tags": ["cross-domain", "blackboard", "multimedia-camera", "power-thermal"]
+}

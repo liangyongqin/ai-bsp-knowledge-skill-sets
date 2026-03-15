@@ -1,0 +1,8 @@
+{
+  "id": "case_200",
+  "skill": "bsp-knowledge-mentor",
+  "input": "We are porting an ISP tuning library from MT6989 to QCS8550. The identical ISP pipeline configuration produces 18% lower throughput on QCS8550 despite the QCS8550 having a higher nominal clock. After ingesting both SoC IP-XACT register maps, the knowledge graph shows a register-level difference. Relevant graph query output:\n\n  MT6989  ISP_RDMA_CTRL @ 0x15220010: field BURST_LEN[7:4] default=0xF (16-beat burst)\n  QCS8550 ISP_RDMA_CTRL @ 0x0A810010: field BURST_LEN[7:4] default=0x4 (4-beat burst)\n\n  MT6989  ISP_WB_GAIN   @ 0x15220100: field FRAC_BITS[3:2]  = 0b10 (12.4 fixed-point)\n  QCS8550 ISP_WB_GAIN   @ 0x0A810100: field FRAC_BITS[3:2]  = 0b01 (12.2 fixed-point, less precision)\n\nThe QCS8550 ISP RDMA is defaulting to 4-beat bursts instead of 16-beat bursts, which would dramatically reduce DRAM read throughput for the ISP. Additionally, the white-balance gain precision differs, which may affect image quality. How do I safely override the QCS8550 BURST_LEN default to 0xF at driver init without breaking the existing RDMA arbitration, and what regression tests should cover the precision change in WB_GAIN?",
+  "expected_topics": ["IP-XACT register comparison", "ISP RDMA burst length", "cross-platform porting", "DRAM throughput", "register default override", "white balance precision", "fixed-point format", "ISP tuning"],
+  "min_score": 4,
+  "tags": ["cross-domain", "blackboard", "hardware-spec-extractor", "multimedia-camera"]
+}

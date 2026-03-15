@@ -1,0 +1,8 @@
+{
+  "id": "case_197",
+  "skill": "bsp-knowledge-mentor",
+  "input": "While ingesting the SoC IP-XACT register map into the knowledge graph using `scripts/ingest_custom.py`, the extractor flagged a potential address collision between two different IP blocks. The relevant excerpt from the IP-XACT file:\n\n  <memoryMap name=\"PMIC_MT6363_MAP\">\n    <addressBlock>\n      <baseAddress>0x10060000</baseAddress>\n      <range>0x1000</range>\n      <usage>registers</usage>\n      <!-- LDO_VMIPI control registers -->\n    </addressBlock>\n  </memoryMap>\n  <memoryMap name=\"MIPI_PHY_D_MAP\">\n    <addressBlock>\n      <baseAddress>0x10060000</baseAddress>\n      <range>0x800</range>\n      <usage>registers</usage>\n      <!-- MIPI PHY D-PHY configuration -->\n    </addressBlock>\n  </memoryMap>\n\nBoth PMIC_MT6363_MAP and MIPI_PHY_D_MAP claim base address 0x10060000. This cannot be correct — one of them must have a wrong address in the XML. Accessing the wrong address at boot has caused the MIPI PHY initialization to corrupt PMIC registers in a previous incident. How should I use the IP-XACT extractor and knowledge graph to detect and flag such address collision before they cause hardware damage, and what is the correct way to report this back to the hardware team?",
+  "expected_topics": ["IP-XACT address collision", "PMIC register", "MIPI PHY", "register map validation", "baseAddress conflict", "knowledge graph", "hardware damage prevention", "memoryMap"],
+  "min_score": 4,
+  "tags": ["cross-domain", "blackboard", "hardware-spec-extractor", "boot-debug", "multimedia-camera"]
+}

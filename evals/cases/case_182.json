@@ -1,0 +1,8 @@
+{
+  "id": "case_182",
+  "skill": "bsp-knowledge-mentor",
+  "input": "Camera preview stutters to ~10 fps whenever a GPU-intensive game is running in the background on our MT6989 device. When the game is not running, preview is smooth at 30 fps. Relevant ftrace output:\n\n  mali0-3      [003] d... 4521.113: mali_dvfs_set_freq: util=91% new_freq=848000\n  v4l2-cap0    [001] d... 4521.119: dma_fence_wait: fence=stream:1041 wait=18ms\n  mali0-3      [003] d... 4521.121: mali_dvfs_set_freq: util=97% new_freq=1024000\n  v4l2-cap0    [001] d... 4521.138: dma_fence_wait: fence=stream:1042 wait=36ms TIMEOUT\n\nThe fence wait timeout on the ISP output buffer is 36 ms, which pushes past our 33 ms frame deadline. I suspect DMA-BUF fence contention between the Mali GPU and the ISP, but I'm not sure whether the bottleneck is DVFS latency, bandwidth saturation, or fence dependency ordering. How should I approach this?",
+  "expected_topics": ["DMA-BUF", "fence contention", "DVFS", "Mali GPU", "ISP", "bandwidth", "v4l2", "dma_fence_wait"],
+  "min_score": 4,
+  "tags": ["cross-domain", "blackboard", "multimedia-camera", "gpu-rendering"]
+}

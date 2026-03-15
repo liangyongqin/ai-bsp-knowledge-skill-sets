@@ -1,0 +1,8 @@
+{
+  "id": "case_190",
+  "skill": "bsp-knowledge-mentor",
+  "input": "In our KVM-based Android VM setup on a QCS8550 host, the VM guest reports intermittent IRQ delivery failures for a passthrough PCIe device (NVMe SSD). The host dmesg shows:\n\n  [  744.112] GIC: LPI 8448 pending in ITS command queue, not forwarded to VCPU 3\n  [  744.113] kvm-vgic-its: lpi_write_pending: ITS DevID=0x12 EventID=0x0: ITTE not valid\n  [  744.114] kvm-vgic: vgic_validate_injection: LPI 8448 not mapped in vPE table\n  [  744.115] arm-gic-v3-its: cmd_queue: MAPTI failed for DevID=0x12 LPI=8448\n\nThe guest ITS driver issues MAPTI commands to map the PCIe device's MSI-X LPIs to vCPU interrupts. The `ITTE not valid` error suggests the ITS Translation Table Entry for DevID=0x12 is either not mapped or was cleared. This happens approximately once every 10 minutes under NVMe I/O load. I suspect either (1) the host ITS command queue is overflowing and dropping MAPTI commands, or (2) the vPE table in DRAM is being corrupted. How do I read the ITS register state to distinguish between the two hypotheses?",
+  "expected_topics": ["GIC LPI", "ITS", "MAPTI", "vPE table", "KVM vGIC", "MSI-X", "ITS command queue", "DevID ITTE"],
+  "min_score": 4,
+  "tags": ["cross-domain", "blackboard", "interrupt-virtualization", "hardware-spec-extractor"]
+}

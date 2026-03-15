@@ -1,0 +1,8 @@
+{
+  "id": "case_188",
+  "skill": "bsp-knowledge-mentor",
+  "input": "During 4K video recording to internal eMMC, we observe two simultaneous failures: (1) MediaRecorder reports a dropped frame approximately every 45 seconds, and (2) the system freezes completely about 3 minutes into recording and requires a hard reboot. The dmesg captured before freeze shows:\n\n  [  183.441] mmc0: Timeout waiting for hardware interrupt\n  [  183.442] mmc0: CMD25 response timeout after 2000ms\n  [  183.443] mmc0: reset controller: SDHCI_RESET_ALL\n  [  183.451] mtk-mmc mmc0: mmc_request_done: CMD25 ETIMEDOUT\n  [  183.452] f2fs: write_cache_pages: writeback error -110\n  [  183.453] f2fs: checkpoint failed: -110\n  [  183.458] watchdog: BUG: soft lockup - CPU#2 stuck for 26s! [kworker:2]\n\nThe eMMC is a Samsung KLUCG8UHDB-B0E1 (256 GB UFS-2.1 mis-labeled as eMMC in our BSP — actually UFS). The CMD25 timeout suggests the device is busy during a background garbage collection or a cache flush. How do I determine whether this is a UFS device-side issue (GC timing) or a host controller driver bug, and why would a write stall cause the watchdog to fire?",
+  "expected_topics": ["eMMC CMD timeout", "UFS garbage collection", "watchdog reset", "f2fs checkpoint", "writeback", "mmc_request_done", "soft lockup", "video recording dropout"],
+  "min_score": 4,
+  "tags": ["cross-domain", "blackboard", "multimedia-camera", "boot-debug"]
+}

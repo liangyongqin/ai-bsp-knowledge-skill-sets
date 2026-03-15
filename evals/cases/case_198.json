@@ -1,0 +1,8 @@
+{
+  "id": "case_198",
+  "skill": "bsp-knowledge-mentor",
+  "input": "Display freezes (black screen, no vsync signals) occur only when GPU overdraw AND thermal throttle are both present simultaneously. Individually, high overdraw does not freeze the display, and thermal throttle alone does not freeze the display. The freeze requires both conditions. The DRM and thermal logs at the moment of freeze:\n\n  [  712.331] thermal thermal_zone4: gpu_cluster: Trip 2 crossed. throttling to OPP1 (400MHz)\n  [  712.332] drm/msm: adreno: submit: queue_depth=127/128 (near full)\n  [  712.333] drm/msm: adreno: fence: ring_retired stalled: waiting for CP_DRAW_INDIRECT completion\n  [  712.334] drm/dsi: dsi0: vsync_handler: missed 3 consecutive vsyncs\n  [  712.335] drm/dsi: dsi0: panel_timeout: no vsync for 150ms, issuing panel reset\n  [  712.336] drm/dsi: dsi0: panel reset failed: timeout\n\nMy hypothesis: when GPU is throttled from 700 MHz to 400 MHz mid-frame, in-flight draw calls take longer, the submit queue saturates, and the ring buffer stalls. Under normal (non-throttled) conditions the queue drains fast enough that vsync is not missed. How do I confirm the throttle-to-queue-saturation causation chain, and is there a queue depth watermark that should trigger earlier throttle intervention to prevent the stall?",
+  "expected_topics": ["GPU overdraw", "thermal throttle", "submit queue saturation", "vsync miss", "ring buffer stall", "drm/msm", "compound failure", "OPP"],
+  "min_score": 4,
+  "tags": ["cross-domain", "blackboard", "gpu-rendering", "power-thermal"]
+}

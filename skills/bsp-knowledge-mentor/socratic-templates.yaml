@@ -1,0 +1,950 @@
+# BSP Knowledge Mentor — Socratic Questioning Templates
+# Each template defines a 4-step guided inquiry sequence for a specific problem class.
+# The mentor selects the closest matching template based on symptom keywords.
+# version: 1.0
+#
+# Fields:
+#   id                  — unique template ID
+#   name                — human-readable problem name
+#   trigger_keywords    — keywords in the engineer's message that activate this template
+#   learner_levels      — which learner levels this template applies to
+#   blackboard_domains  — which sub-agent skills to invoke if Blackboard mode triggers
+#   steps               — 4-step Socratic sequence
+#     step              — step number (1–4)
+#     action            — one of: confirm_symptom, probe_resource_state, form_hypothesis, verify_or_pivot
+#     tool_hint         — sysfs/debugfs path or command to collect evidence (step 2 only)
+#     physics_anchor    — physical law, equation, or kernel doc reference explaining the mechanism
+#     verification_command — exact command to confirm or falsify (step 4 only)
+#     prompt            — the question the mentor asks the engineer at this step
+
+templates:
+
+  # ---------------------------------------------------------------------------
+  # POWER DOMAIN
+  # ---------------------------------------------------------------------------
+
+  - id: PWR-001
+    name: "DVFS regression — frequency not scaling up under load"
+    trigger_keywords:
+      - "frequency not scaling"
+      - "stuck at low freq"
+      - "performance regression"
+      - "cpu freq"
+      - "OPP"
+      - "DVFS not working"
+      - "scaling governor"
+      - "cpufreq"
+    learner_levels: [driver, algorithm]
+    blackboard_domains: [power-thermal-expert]
+    steps:
+      - step: 1
+        action: confirm_symptom
+        prompt: >
+          Let me make sure I understand the symptom: you are seeing the CPU frequency stay
+          below the load-appropriate OPP even during sustained compute load.
+          Does the frequency stay low continuously, or does it briefly hit the target OPP and
+          then drop back — suggesting the scheduler is requesting the frequency but something
+          is capping it?
+
+      - step: 2
+        action: probe_resource_state
+        tool_hint: |
+          cat /sys/devices/system/cpu/cpufreq/policy0/scaling_cur_freq
+          cat /sys/devices/system/cpu/cpufreq/policy0/scaling_max_freq
+          cat /sys/devices/system/cpu/cpufreq/policy0/cpuinfo_max_freq
+          cat /sys/kernel/debug/clk/clk_summary | grep cpu
+          cat /sys/class/thermal/thermal_zone*/temp
+          cat /sys/devices/system/cpu/cpu*/cpufreq/stats/time_in_state
+        prompt: >
+          Please run the commands in the tool_hint above and share the output.
+          I need to see: (1) the current vs. allowed max frequency, (2) whether the hardware
+          clock is actually capped below the OPP table maximum, and (3) the thermal zone
+          temperatures, since a thermal cap is the most common silent ceiling.
+
+      - step: 3
+        action: form_hypothesis
+        physics_anchor: >
+          EAS (Energy Aware Scheduling) uses the CPU's capacity × utilization signal to select
+          an OPP. If the thermal driver enforces a freq_qos_update_request() cap via the
+          cpufreq cooling device, scaling_max_freq drops below the scheduler's requested OPP.
+          This cap is invisible to the application but visible in scaling_max_freq vs.
+          cpuinfo_max_freq. Reference: Linux Documentation/scheduler/sched-energy.rst,
+          drivers/thermal/cpu_cooling.c.
+        prompt: >
+          My hypothesis: the thermal framework has silently applied a frequency cap via the
+          cpufreq cooling device, reducing scaling_max_freq below the OPP needed to satisfy
+          load. This would explain why the frequency appears "stuck" — the scheduler is
+          requesting correctly, but the thermal ceiling is lower than the request.
+          Does scaling_max_freq equal cpuinfo_max_freq in your output? If not, this
+          hypothesis is confirmed.
+
+      - step: 4
+        action: verify_or_pivot
+        verification_command: |
+          # Confirm thermal cap
+          cat /sys/class/thermal/cooling_device*/cur_state
+          cat /sys/class/thermal/cooling_device*/max_state
+          trace-cmd record -e thermal:thermal_zone_trip_add \
+            -e power:cpu_frequency -p nop -- sleep 5
+          # After fix: verify OPP reaches maximum
+          cat /sys/devices/system/cpu/cpufreq/policy0/scaling_cur_freq
+        prompt: >
+          Check the cooling_device cur_state — if it is > 0, the thermal framework is actively
+          throttling. If that is confirmed, the fix path is: (1) audit the thermal zone
+          trip_point temperature values in device tree or ACPI DSDT, (2) check whether the
+          LVTS sensor calibration offset is correct, (3) verify the cooling map.
+          If scaling_max_freq equals cpuinfo_max_freq and the frequency is still low, pivot:
+          the issue is in the governor's load calculation — share the output of
+          /proc/schedstat and we will examine utilization signal accuracy.
+
+  # ---------------------------------------------------------------------------
+
+  - id: PWR-002
+    name: "C-state wrong-state trap — system not entering deep idle"
+    trigger_keywords:
+      - "idle"
+      - "C-state"
+      - "power consumption"
+      - "CPU not sleeping"
+      - "deep sleep"
+      - "cpuidle"
+      - "wakeup latency"
+      - "residency"
+    learner_levels: [driver]
+    blackboard_domains: [power-thermal-expert]
+    steps:
+      - step: 1
+        action: confirm_symptom
+        prompt: >
+          I want to confirm: you are seeing higher-than-expected idle power consumption,
+          and you suspect the CPU is not reaching the deepest idle state (e.g., cluster power
+          collapse) even when all tasks are quiesced.
+          Does the system fail to enter the deep C-state at all, or does it enter briefly and
+          wake up immediately — suggesting a spurious wakeup source?
+
+      - step: 2
+        action: probe_resource_state
+        tool_hint: |
+          cat /sys/devices/system/cpu/cpu0/cpuidle/state*/name
+          cat /sys/devices/system/cpu/cpu0/cpuidle/state*/usage
+          cat /sys/devices/system/cpu/cpu0/cpuidle/state*/time
+          cat /sys/devices/system/cpu/cpu0/cpuidle/state*/rejected
+          cat /proc/interrupts | sort -k2 -rn | head -20
+          powertop --time=10 --csv=/tmp/powertop.csv
+        prompt: >
+          Run the commands above and share the output. I need to see: (1) the residency
+          time per C-state — is the deepest state getting any entries at all? (2) the
+          rejected count — a high rejected value means a latency constraint is blocking
+          the deep state. (3) the top interrupt sources, which may be causing premature
+          wakeups.
+
+      - step: 3
+        action: form_hypothesis
+        physics_anchor: >
+          cpuidle uses the latency requirement from PM QoS (pm_qos_request) to gate C-state
+          selection. If any subsystem holds a PM QoS latency constraint tighter than the
+          target C-state's exit latency, the governor will select a shallower state.
+          C-state entry also requires all CPUs in the cluster to be idle simultaneously for
+          cluster-level power collapse (ARM DynamIQ power model, CPU_SUSPEND PSCI call,
+          DEN0022D section 5.4). A single active timer or IRQ on any cluster CPU blocks
+          cluster collapse.
+        prompt: >
+          My hypothesis: a PM QoS latency constraint tighter than the deep C-state's exit
+          latency is blocking state selection. This could come from a driver holding a
+          latency request, an audio subsystem timer, or a network driver polling loop.
+          Is the 'rejected' count for the deepest state high? If yes, this hypothesis is
+          likely correct. Which driver do you suspect might be holding a PM QoS request?
+
+      - step: 4
+        action: verify_or_pivot
+        verification_command: |
+          cat /sys/kernel/debug/pm_qos/cpu_dma_latency
+          cat /sys/kernel/debug/wakeup_sources
+          trace-cmd record -e power:cpu_idle -e irq:irq_handler_entry \
+            -p nop -- sleep 10
+          # Look for wakeup patterns at fixed intervals
+        prompt: >
+          Check /sys/kernel/debug/pm_qos/cpu_dma_latency — if the value is lower than the
+          deep C-state exit latency (typically < 1000 µs), a driver is blocking it. Use
+          ftrace to identify which driver is the source. If PM QoS is not the issue (latency
+          is unconstrained), pivot to examining wakeup_sources for frequent wakeup patterns —
+          a timer firing at a fixed interval will prevent cluster power collapse.
+
+  # ---------------------------------------------------------------------------
+
+  - id: PWR-003
+    name: "Thermal throttling — LVTS forced throttle"
+    trigger_keywords:
+      - "thermal throttle"
+      - "LVTS"
+      - "temperature"
+      - "overheating"
+      - "performance drops under load"
+      - "sustained performance"
+      - "thermal zone"
+      - "trip point"
+    learner_levels: [driver, algorithm]
+    blackboard_domains: [power-thermal-expert]
+    steps:
+      - step: 1
+        action: confirm_symptom
+        prompt: >
+          To make sure I understand: the system is throttling frequency under sustained load,
+          and you believe it is thermal-driven rather than a governor regression.
+          Does the throttle correlate with a specific workload (e.g., 30 seconds into a
+          benchmark) or does it happen immediately at load start — which would suggest a
+          sensor calibration issue rather than genuine overheating?
+
+      - step: 2
+        action: probe_resource_state
+        tool_hint: |
+          watch -n 0.5 'cat /sys/class/thermal/thermal_zone*/temp'
+          cat /sys/class/thermal/thermal_zone*/trip_point_*_temp
+          cat /sys/class/thermal/thermal_zone*/trip_point_*_type
+          cat /sys/class/thermal/cooling_device*/cur_state
+          dmesg | grep -i "thermal\|throttle\|trip"
+        prompt: >
+          Run the watch command above during the throttle event and capture the output.
+          I need to see: (1) which thermal zone trips first, (2) the trip temperature vs.
+          the current temperature reading, (3) the cooling device state at the moment of
+          throttle. Share the dmesg output around the throttle event timestamp.
+
+      - step: 3
+        action: form_hypothesis
+        physics_anchor: >
+          LVTS (Low Voltage Thermal Sensor) on MediaTek platforms reports temperatures via
+          a polynomial calibration function applied to raw ADC readings. If the calibration
+          efuse values are incorrect or not applied, the sensor can report temperatures
+          10–20°C above actual, triggering the critical trip point prematurely.
+          The thermal governor (power_allocator or step_wise) then applies cooling device
+          states proportional to the distance from the control temperature
+          (Reference: drivers/thermal/thermal_core.c, thermal/mediatek/).
+        prompt: >
+          My hypothesis: the LVTS sensor calibration offset is incorrect, causing the sensor
+          to over-report temperature and trigger the trip point earlier than the physical
+          junction temperature would justify.
+          Can you confirm: is the trip temperature (e.g., 85°C) being reached in under
+          30 seconds of load on a room-temperature device? If yes, this strongly suggests
+          a calibration issue. What does the efuse calibration log show at boot
+          (dmesg | grep -i lvts)?
+
+      - step: 4
+        action: verify_or_pivot
+        verification_command: |
+          dmesg | grep -i "lvts\|thermal calibrat\|efuse"
+          cat /sys/kernel/debug/thermal/thermal_zone*/thermal_zone_parameters
+          # Cross-reference with an external thermometer or thermocouple on the SoC package
+        prompt: >
+          If the efuse calibration values look correct, pivot: check whether the thermal
+          zone's polling interval is too coarse, causing the governor to overshoot the
+          control temperature before applying cooling. The power_allocator governor requires
+          accurate k_po, k_pu, and k_i parameters — misconfigured PID coefficients can
+          cause hunting. Share the thermal_zone_parameters output.
+
+  # ---------------------------------------------------------------------------
+
+  - id: PWR-004
+    name: "STR resume failure — system hangs on wake"
+    trigger_keywords:
+      - "STR"
+      - "suspend to RAM"
+      - "resume hang"
+      - "wake fail"
+      - "system hangs after resume"
+      - "s2ram"
+      - "PSCI CPU_SUSPEND"
+      - "PM suspend"
+    learner_levels: [driver]
+    blackboard_domains: [power-thermal-expert, boot-debug-expert]
+    steps:
+      - step: 1
+        action: confirm_symptom
+        prompt: >
+          Let me confirm the failure mode: the system suspends successfully (reaches the
+          deepest PSCI CPU_SUSPEND state) but hangs during resume, never returning to userspace.
+          Does the hang produce any output on the serial console during resume, or is the
+          console completely silent after the wake event?
+
+      - step: 2
+        action: probe_resource_state
+        tool_hint: |
+          # Enable early console and PM debug before suspend
+          echo 1 > /sys/module/kernel/parameters/panic_on_warn
+          echo 1 > /sys/power/pm_debug_messages
+          echo 1 > /sys/power/pm_print_times
+          echo mem > /sys/power/state 2>&1 | tee /tmp/suspend_log.txt
+          # After hang: use JTAG or check last dmesg via pstore/ramoops
+          cat /sys/fs/pstore/dmesg-ramoops-0
+        prompt: >
+          Enable pm_debug_messages and pm_print_times before triggering suspend.
+          If you have a serial console, capture the full output through the hang.
+          If not, check pstore/ramoops for the last kernel log before the hang.
+          Share the last 50 lines of the console or pstore log — the hanging driver
+          will appear as the last dev_pm_ops callback printed before the log stops.
+
+      - step: 3
+        action: form_hypothesis
+        physics_anchor: >
+          Linux STR follows a strict dev_pm_ops callback chain:
+          freeze → quiesce → suspend → suspend_late → suspend_noirq (forward order),
+          resume_noirq → resume_early → resume → thaw → complete (reverse order).
+          A driver that calls a clock or regulator during resume_noirq before clocks
+          are restored will hang waiting for a clock ACK that never comes.
+          Reference: Linux Documentation/driver-api/pm/dev_pm_ops.rst,
+          Documentation/power/states.rst, ARM PSCI DEN0022D section 5.4.
+        prompt: >
+          My hypothesis: a driver is calling a hardware resource (clock, regulator, or DMA)
+          during its resume_noirq or resume_early callback before that resource has been
+          restored by the subsystem's resume chain.
+          Which driver's callback was the last one printed in the log before the hang?
+          This is almost certainly the guilty driver.
+
+      - step: 4
+        action: verify_or_pivot
+        verification_command: |
+          # Add instrumentation to the suspected driver
+          echo 1 > /sys/kernel/debug/<driver_name>/resume_debug
+          # Or use ftrace to catch the hang point
+          trace-cmd record -e rpm:rpm_resume -e rpm:rpm_suspend \
+            -e power:device_pm_callback_start \
+            -e power:device_pm_callback_end \
+            -p nop &
+          echo mem > /sys/power/state
+        prompt: >
+          Instrument the suspected driver's resume path with ftrace using the commands above.
+          The device_pm_callback_start and device_pm_callback_end events will show exactly
+          which callback started but never returned. If the hang is not in a driver callback
+          but in the PSCI return path itself, the issue is in the ATF (ARM Trusted Firmware)
+          or secure monitor — you will need JTAG to inspect the EL3 stack.
+
+  # ---------------------------------------------------------------------------
+  # BOOT DOMAIN
+  # ---------------------------------------------------------------------------
+
+  - id: BOOT-001
+    name: "Cold boot hang — power sequencing failure"
+    trigger_keywords:
+      - "boot hang"
+      - "cold boot"
+      - "power on fail"
+      - "PMIC sequence"
+      - "power sequencing"
+      - "won't boot"
+      - "stuck at boot"
+      - "power-on reset"
+    learner_levels: [driver]
+    blackboard_domains: [boot-debug-expert, power-thermal-expert]
+    steps:
+      - step: 1
+        action: confirm_symptom
+        prompt: >
+          I want to confirm the failure point: the system fails to reach the bootloader
+          (pre-DRAM training) or does it fail after DRAM is initialized (post-BL1)?
+          Does the serial console show any output at all before the hang, or is it
+          completely silent from power-on?
+
+      - step: 2
+        action: probe_resource_state
+        tool_hint: |
+          # Requires logic analyzer or oscilloscope on PMIC enable lines
+          # Check PMIC power-good signals: VDD_CPU, VDD_GPU, LPDDR5_VDD1, LPDDR5_VDD2
+          # Serial console: capture boot ROM / BL1 log
+          # If UART available:
+          cat /proc/cmdline   # if kernel reached
+          dmesg | head -100   # early boot messages
+          # Check regulator enable order in device tree:
+          # arch/arm64/boot/dts/<vendor>/<board>.dts
+        prompt: >
+          If you have a logic analyzer, probe the PMIC power-good signals in sequence.
+          If you only have serial UART, capture everything from power-on.
+          Share the last output line before the hang — this identifies which boot stage failed.
+          Is DRAM training output visible (typically printed by BL2)?
+
+      - step: 3
+        action: form_hypothesis
+        physics_anchor: >
+          SoC cold boot follows a strict power rail sequencing order specified in the SoC
+          reference design. If a downstream rail (e.g., VDD_CPU_CORE) asserts before its
+          upstream rail (e.g., VDDQ_LPDDR5) is stable, the SoC may enter an undefined
+          state due to back-driving through internal level shifters.
+          Isolation cells must remain engaged (high-Z) until the rail they protect reaches
+          the minimum operating voltage (typically Vmin + 10% margin).
+          Reference: ARM Cortex-A55 TRM, section on power management / power state retention.
+        prompt: >
+          My hypothesis: a power rail is asserting out of sequence, either too early (before
+          its upstream dependency is stable) or too late (causing the downstream IP to
+          time out waiting for a resource).
+          Does the PMIC configuration in device tree or OTP match the reference design's
+          sequencing delay requirements? What is the enable_delay value for the first
+          failing regulator?
+
+      - step: 4
+        action: verify_or_pivot
+        verification_command: |
+          # Device tree regulator enable delays:
+          grep -r "enable-delay-us\|off-on-delay-us\|regulator-boot-on" \
+            arch/arm64/boot/dts/ | grep -i pmic
+          # PMIC I2C log (if I2C debug is enabled):
+          echo 1 > /sys/kernel/debug/regulator/regulator_summary
+        prompt: >
+          Check the enable-delay-us values for each regulator in the power sequence.
+          If the delays are correct per the PMIC datasheet, pivot to checking whether the
+          boot ROM is attempting to use DRAM before the LPDDR5 training completes — this
+          would manifest as a hang immediately after the "DRAM init" string, with no
+          subsequent output.
+
+  # ---------------------------------------------------------------------------
+
+  - id: BOOT-002
+    name: "PLL lock failure"
+    trigger_keywords:
+      - "PLL"
+      - "clock lock"
+      - "clock fail"
+      - "PLL not locking"
+      - "clk_prepare_enable"
+      - "clock timeout"
+      - "MMPLL"
+      - "ARMPLL"
+    learner_levels: [driver]
+    blackboard_domains: [boot-debug-expert]
+    steps:
+      - step: 1
+        action: confirm_symptom
+        prompt: >
+          Let me confirm: a PLL is failing to lock, which manifests as a timeout in
+          clk_prepare_enable() or as a downstream clock consumer getting 0 Hz.
+          Does the failure happen during boot (before userspace) or when a specific
+          driver loads — suggesting the PLL is being enabled on demand?
+
+      - step: 2
+        action: probe_resource_state
+        tool_hint: |
+          cat /sys/kernel/debug/clk/clk_summary | grep -E "pll|PLL"
+          dmesg | grep -i "pll\|clock\|clk"
+          # Check PLL lock status registers via devmem (if safe):
+          # devmem2 <PLL_CON_ADDR> w   # read PLL control register
+          cat /sys/kernel/debug/regulator/regulator_summary
+        prompt: >
+          Run the commands above and share the output. I need to see: (1) the PLL's
+          reported frequency and enable count in clk_summary — a 0 Hz entry means
+          the PLL never locked. (2) any clk-related dmesg errors. (3) the regulator
+          summary to verify the PLL's supply voltage is within spec.
+
+      - step: 3
+        action: form_hypothesis
+        physics_anchor: >
+          A PLL fails to lock when: (a) the reference clock (XTAL or parent PLL) is not
+          stable before the PLL is enabled, (b) the supply voltage is below Vmin for the
+          PLL's VCO operating range, or (c) the M/N/P divider values produce a VCO frequency
+          outside the PLL's guaranteed lock range.
+          PLL lock time is typically 20–100 µs; if the lock status is polled before this
+          window, a false failure is reported.
+          Reference: Linux Documentation/driver-api/clk.rst, clk framework internals.
+        prompt: >
+          My hypothesis: the PLL's reference clock (XTAL) is not stable when the PLL
+          enable sequence starts, causing the lock detector to time out.
+          Is the XTAL frequency confirmed stable in clk_summary (it should show its nominal
+          value, e.g., 26000000 Hz)? If XTAL is at 0 Hz or missing, the root cause is
+          upstream — the crystal oscillator circuit or its enable GPIO.
+
+      - step: 4
+        action: verify_or_pivot
+        verification_command: |
+          # Check PLL parent clock status
+          cat /sys/kernel/debug/clk/<pll_name>/clk_parent
+          cat /sys/kernel/debug/clk/<pll_name>/clk_rate
+          cat /sys/kernel/debug/clk/<pll_name>/clk_enable_count
+          # Verify lock timeout in driver source:
+          grep -r "pll.*timeout\|lock.*timeout" drivers/clk/ --include="*.c" | head -20
+        prompt: >
+          Check the PLL's clk_parent and clk_rate. If the parent clock is healthy but the
+          PLL still fails, pivot to examining the M/N/P divider values in the device tree
+          PLL node — an incorrect divider can produce a VCO frequency outside the spec.
+          Share the PLL node from the device tree and we will compute the VCO frequency together.
+
+  # ---------------------------------------------------------------------------
+
+  - id: BOOT-003
+    name: "Power island zombie state — IP block unresponsive after power collapse"
+    trigger_keywords:
+      - "power island"
+      - "power gating"
+      - "pd_provider"
+      - "genpd"
+      - "zombie"
+      - "IP unresponsive"
+      - "power domain stuck"
+      - "pm_domain"
+    learner_levels: [driver]
+    blackboard_domains: [boot-debug-expert, power-thermal-expert]
+    steps:
+      - step: 1
+        action: confirm_symptom
+        prompt: >
+          Let me confirm: an IP block (e.g., ISP, GPU, VPU) is unresponsive after its
+          power island was collapsed and re-enabled — it is in a "zombie" state where
+          the kernel believes it is powered on but the hardware is not responding to
+          register accesses.
+          Does the IP become unresponsive on the first power-on after boot, or only
+          after a power collapse / re-enable cycle?
+
+      - step: 2
+        action: probe_resource_state
+        tool_hint: |
+          cat /sys/kernel/debug/pm_genpd/pm_genpd_summary
+          cat /sys/kernel/debug/regulator/regulator_summary
+          dmesg | grep -i "power domain\|genpd\|pd_provider\|isolation"
+          # Check isolation cell status (platform-specific sysfs or debugfs)
+        prompt: >
+          Run the commands above and share the output. I need to see: (1) the genpd
+          summary showing the domain's status (on/off) and usage count, (2) whether the
+          regulator for the power island is actually reporting enabled, (3) any dmesg
+          messages about isolation cell control.
+
+      - step: 3
+        action: form_hypothesis
+        physics_anchor: >
+          Power island zombie state occurs when isolation cells are released (de-asserted)
+          before the power island's supply voltage has ramped to Vmin.
+          If the IP's internal state machines see indeterminate voltage during isolation
+          release, they can latch into an undefined state.
+          The correct sequence is: (1) assert isolation, (2) enable power, (3) wait for
+          power-good, (4) release reset, (5) de-assert isolation.
+          If steps 3 and 5 are swapped, the IP enters zombie state.
+          Reference: ARM power island sequencing guidelines, SoC TRM power management chapter.
+        prompt: >
+          My hypothesis: the isolation cell release sequence is occurring before the power
+          island supply has reached Vmin + margin, causing the IP to latch into an
+          undefined state.
+          In the genpd driver for this power domain, what is the delay between
+          regulator_enable() and the isolation cell release (typically controlled via
+          a syscon register write)? Share the driver source path.
+
+      - step: 4
+        action: verify_or_pivot
+        verification_command: |
+          # Identify the genpd driver for the affected IP
+          grep -r "genpd\|power_domain" drivers/soc/<vendor>/ --include="*.c" | \
+            grep -i "isolation\|enable_count"
+          # Add a 1ms delay after regulator_enable() before isolation release and re-test
+          # Verify by reading the IP's version register after power-on:
+          # devmem2 <IP_VERSION_REG_ADDR> w
+        prompt: >
+          Look at the genpd driver's power_on() implementation. If isolation is released
+          immediately after regulator enable without a power-good poll or explicit delay,
+          add a delay matching the regulator's ramp time specification.
+          If the sequence is already correct, pivot to checking whether the reset signal
+          to the IP is being de-asserted while isolation is still active — this is the
+          second most common cause of zombie state.
+
+  # ---------------------------------------------------------------------------
+  # MULTIMEDIA DOMAIN
+  # ---------------------------------------------------------------------------
+
+  - id: MM-001
+    name: "Camera open failure — V4L2 device open returns error"
+    trigger_keywords:
+      - "camera open"
+      - "V4L2"
+      - "camera fail"
+      - "/dev/video"
+      - "camera HAL"
+      - "CameraService"
+      - "MIPI CSI"
+      - "sensor probe"
+    learner_levels: [driver, application]
+    blackboard_domains: [multimedia-camera-expert, boot-debug-expert]
+    steps:
+      - step: 1
+        action: confirm_symptom
+        prompt: >
+          Let me confirm the failure mode: opening /dev/videoX (or the camera HAL)
+          returns an error. Does the failure happen at the V4L2 device open() call itself
+          (ENXIO or ENOENT — device not probed), or does it succeed at open() but fail
+          later at VIDIOC_S_FMT or VIDIOC_STREAMON (device probed but pipeline config fails)?
+
+      - step: 2
+        action: probe_resource_state
+        tool_hint: |
+          ls -la /dev/video*
+          dmesg | grep -i "v4l2\|sensor\|csi\|isp\|mipi\|camera"
+          adb shell dumpsys media.camera
+          # Check if sensor driver probed successfully:
+          dmesg | grep -i "probe"
+          cat /sys/kernel/debug/v4l2-core/video_device
+        prompt: >
+          Run the commands above and share the output. I need to see: (1) whether the
+          /dev/videoX device node exists (if not, the driver did not probe), (2) dmesg
+          errors from the camera subsystem, (3) the camera service dump showing which
+          cameras are enumerated.
+
+      - step: 3
+        action: form_hypothesis
+        physics_anchor: >
+          V4L2 camera open() fails at the driver probe level when: the sensor's I2C address
+          is not acknowledged (wrong address in device tree, sensor power not sequenced
+          correctly before probe), or the MIPI CSI-2 receiver is not clocked when the
+          sensor driver attempts to configure the CSI RX lane parameters.
+          I2C probe failures are silent unless CONFIG_I2C_DEBUG_BUS is enabled.
+          Reference: Linux Documentation/userspace-api/media/v4l/open.rst,
+          drivers/media/i2c/<sensor_name>.c.
+        prompt: >
+          My hypothesis: the image sensor is not responding to I2C probe because its power
+          sequence (AVDD, DOVDD, DVDD, and XCLK) has not been applied before the driver
+          attempts the I2C ID read.
+          Does dmesg show a sensor probe attempt followed by an I2C NACK error? If yes,
+          the power sequence in the device tree AVDD/DOVDD regulator enable-delay-us
+          values needs adjustment.
+
+      - step: 4
+        action: verify_or_pivot
+        verification_command: |
+          # Enable I2C bus debug:
+          echo 7 > /sys/module/i2c_core/parameters/debug
+          dmesg | grep -i "i2c\|sensor"
+          # Check sensor power sequence in DTS:
+          grep -r "avdd\|dovdd\|xclk\|enable-delay" \
+            arch/arm64/boot/dts/ --include="*.dts*" | grep -i sensor
+          # After fix: verify sensor probes cleanly
+          dmesg | grep -i "probe success\|registered"
+        prompt: >
+          Enable I2C debug and re-trigger the camera open. If I2C NACK is confirmed,
+          adjust the regulator enable sequence in device tree.
+          If I2C is responding correctly (sensor probe succeeds) but open() still fails,
+          pivot to the MIPI CSI-2 receiver configuration — share the VIDIOC_SUBDEV_S_FMT
+          ioctl error code and the CSI RX lane configuration from device tree.
+
+  # ---------------------------------------------------------------------------
+
+  - id: MM-002
+    name: "Video recording dropout — eMMC GC stall"
+    trigger_keywords:
+      - "video dropout"
+      - "recording glitch"
+      - "eMMC"
+      - "GC stall"
+      - "F2FS"
+      - "write latency"
+      - "encoder stall"
+      - "video frame drop"
+      - "buffer underrun"
+    learner_levels: [driver, algorithm]
+    blackboard_domains: [multimedia-camera-expert]
+    steps:
+      - step: 1
+        action: confirm_symptom
+        prompt: >
+          Let me confirm: during video recording, the output file has periodic dropouts
+          (missing frames or audio gaps) at irregular intervals — not a constant frame drop.
+          Do the dropouts correlate with a specific recording duration (e.g., every 3–5 minutes),
+          which would suggest a GC cycle, or are they random, which might indicate an
+          encoder pipeline issue?
+
+      - step: 2
+        action: probe_resource_state
+        tool_hint: |
+          # Monitor write latency in real time during recording:
+          iostat -x mmcblk0 1 | tee /tmp/iostat_log.txt
+          # Check F2FS GC status:
+          cat /sys/fs/f2fs/mmcblk0p<data_partition>/gc_stat
+          cat /sys/fs/f2fs/mmcblk0p<data_partition>/victim_stat
+          # DMA-BUF buffer queue depth (if kernel exposes it):
+          cat /sys/kernel/debug/dma_buf/bufinfo
+        prompt: >
+          Start recording and run the iostat command above in parallel.
+          Share the iostat output — I need to see the write latency (await column) at the
+          moment of each dropout. A spike to > 500ms in await during an otherwise low-latency
+          stream is the signature of an eMMC GC stall.
+
+      - step: 3
+        action: form_hypothesis
+        physics_anchor: >
+          eMMC NAND Flash garbage collection (GC) is triggered when the free block count
+          falls below the GC threshold. During GC, the device is internally busy reading,
+          erasing, and rewriting blocks — write commands queue behind the GC operation,
+          causing write latency to spike from ~1ms to > 500ms.
+          If the video encoder's DMA-BUF output queue depth is insufficient to absorb a
+          500ms stall, frames are dropped.
+          Reference: Linux Documentation/filesystems/f2fs.rst, F2FS GC policy,
+          kernel/drivers/mmc/core/mmc.c.
+        prompt: >
+          My hypothesis: eMMC background GC is causing periodic write stalls that exceed
+          the DMA-BUF queue depth on the encoder output path, causing frames to be dropped.
+          Does the iostat await spike to > 200ms at the exact moment of each dropout?
+          If yes, this hypothesis is confirmed.
+
+      - step: 4
+        action: verify_or_pivot
+        verification_command: |
+          # Trigger GC proactively before recording (pre-GC strategy):
+          echo urgent > /sys/fs/f2fs/mmcblk0p<data>/gc_urgent
+          # Or use eMMC BKOPS (background operations):
+          mmc bkops-en /dev/mmcblk0
+          # Increase encoder output buffer pool depth in V4L2 driver:
+          # v4l2-ctl --set-fmt-video-output num_planes=1
+          # After fix: verify no await spikes during 10-minute recording
+          iostat -x mmcblk0 1 60
+        prompt: >
+          If GC stalls are confirmed, the mitigation options are: (1) trigger F2FS urgent
+          GC before recording starts (pre-GC strategy), (2) enable eMMC BKOPS to spread
+          GC across idle periods, (3) increase the encoder output DMA-BUF pool depth to
+          buffer longer stalls. Option 1 is safest for immediate results.
+          If iostat await stays low during dropouts, pivot — the issue is not eMMC GC but
+          encoder throughput; share the encoder driver's V4L2 M2M queue statistics.
+
+  # ---------------------------------------------------------------------------
+  # GPU DOMAIN
+  # ---------------------------------------------------------------------------
+
+  - id: GPU-001
+    name: "GPU overdraw / frame drop — rendering pipeline bottleneck"
+    trigger_keywords:
+      - "overdraw"
+      - "frame drop"
+      - "GPU"
+      - "renderpass"
+      - "fragment shader"
+      - "draw call"
+      - "FPS drop"
+      - "GPU busy"
+      - "Vulkan"
+      - "OpenGL"
+    learner_levels: [driver, algorithm]
+    blackboard_domains: [gpu-rendering-expert]
+    steps:
+      - step: 1
+        action: confirm_symptom
+        prompt: >
+          Let me confirm: the frame rate drops below the target (e.g., < 60 FPS or < 90 FPS)
+          and you suspect GPU-side rendering is the bottleneck.
+          Is the frame drop consistent (all frames take > budget) or intermittent (most frames
+          are fine, occasional spikes) — the two cases point to very different root causes?
+
+      - step: 2
+        action: probe_resource_state
+        tool_hint: |
+          # Android GPU Inspector or Perfetto GPU counters:
+          adb shell perfetto --config - --out /data/local/tmp/trace.pb <<EOF
+          buffers { size_kb: 65536 }
+          data_sources { config { name: "gpu.counters" } }
+          duration_ms: 5000
+          EOF
+          # Or via sysfs GPU frequency:
+          cat /sys/class/kgsl/kgsl-3d0/gpuclk       # Qualcomm
+          cat /sys/class/misc/mali0/device/devfreq/*/cur_freq  # ARM Mali
+          # Fragment vs vertex bottleneck via GPU hardware counters
+        prompt: >
+          Capture a Perfetto GPU counter trace during the frame drop. I need to see:
+          (1) GPU busy percentage — is the GPU at 100% utilization? (2) fragment vs.
+          vertex shader thread occupancy — which stage is saturated? (3) GPU frequency
+          — is the GPU at its maximum OPP or being thermally throttled?
+
+      - step: 3
+        action: form_hypothesis
+        physics_anchor: >
+          Tile-based deferred rendering (TBDR, used on ARM Mali and Imagination GPUs)
+          achieves bandwidth efficiency by rasterizing into tiles in on-chip memory.
+          If the scene has high overdraw (multiple opaque fragments rendered per pixel),
+          the fragment shader stage becomes the bottleneck. The effective fragment throughput
+          is: Shader_GFLOPS / fragment_instructions_per_pixel / overdraw_factor.
+          Each additional overdraw layer multiplies the fragment work.
+          Reference: ARM Mali GPU Best Practices Guide (public), Vulkan render pass
+          spec (VK_ATTACHMENT_LOAD_OP_LOAD forces tile memory flush).
+        prompt: >
+          My hypothesis: high overdraw in the scene (multiple opaque layers rendered per
+          pixel, or transparent surfaces on top of opaque geometry) is saturating the
+          fragment shader throughput.
+          In the Perfetto trace, is the fragment shader utilization > 80% while vertex
+          shader utilization is < 40%? If yes, this is a fragment-bound overdraw problem.
+
+      - step: 4
+        action: verify_or_pivot
+        verification_command: |
+          # Enable Android overdraw visualization:
+          adb shell setprop debug.hwui.overdraw show_overdraw
+          # Or in Vulkan: use RenderDoc to inspect per-drawcall fragment counts
+          # GPU frequency at drop time:
+          cat /sys/class/misc/mali0/device/devfreq/*/trans_stat
+        prompt: >
+          Enable the overdraw visualization and identify which UI layers contribute the
+          most overdraw. If overdraw is confirmed, the fix is: (1) sort opaque geometry
+          front-to-back to exploit TBDR early-Z rejection, (2) minimize transparent layers,
+          (3) use Vulkan subpasses to keep intermediate render targets in tile memory.
+          If fragment utilization is low but the GPU is still busy, pivot — the bottleneck
+          may be bandwidth-bound (too many texture fetches from DRAM); check the
+          L2 cache miss rate in the Perfetto counters.
+
+  # ---------------------------------------------------------------------------
+  # INTERRUPT / VIRTUALIZATION DOMAIN
+  # ---------------------------------------------------------------------------
+
+  - id: IRQ-001
+    name: "IRQ storm / interrupt latency spike"
+    trigger_keywords:
+      - "IRQ storm"
+      - "interrupt storm"
+      - "interrupt latency"
+      - "irq latency"
+      - "/proc/interrupts"
+      - "softirq"
+      - "interrupt flood"
+      - "GIC"
+      - "irqbalance"
+    learner_levels: [driver]
+    blackboard_domains: [interrupt-virtualization-expert]
+    steps:
+      - step: 1
+        action: confirm_symptom
+        prompt: >
+          Let me confirm: you are seeing an IRQ storm — an abnormally high interrupt
+          rate from one or more sources that is consuming excessive CPU time.
+          Does the storm happen continuously, or is it triggered by a specific event
+          (e.g., plugging a USB device, starting a network transfer, opening the camera)?
+
+      - step: 2
+        action: probe_resource_state
+        tool_hint: |
+          watch -n 1 'cat /proc/interrupts | sort -k2 -rn | head -20'
+          cat /proc/softirqs
+          # Identify the interrupt source:
+          cat /proc/interrupts | awk '{if($2+0 > 10000) print}'
+          # Measure IRQ handler time:
+          trace-cmd record -e irq:irq_handler_entry \
+            -e irq:irq_handler_exit -p nop -- sleep 5
+          trace-cmd report | awk '{if($NF > 100) print}'   # handlers > 100us
+        prompt: >
+          Run the watch command and capture the interrupt counter increments per second.
+          Share: (1) which IRQ number is incrementing fastest, (2) the driver name
+          associated with it from /proc/interrupts, (3) the ftrace output showing
+          whether the IRQ handler itself is taking a long time or is just called too
+          frequently.
+
+      - step: 3
+        action: form_hypothesis
+        physics_anchor: >
+          An IRQ storm occurs when a device asserts an edge-triggered interrupt continuously
+          because the driver's ISR fails to clear the hardware interrupt status register
+          before returning. The GIC re-delivers the interrupt immediately after EOI.
+          For level-triggered interrupts, the storm occurs when the hardware condition
+          (e.g., FIFO not empty) persists beyond the ISR's ability to drain it.
+          Reference: ARM GICv3 Architecture Specification, section 4.1 (interrupt lifecycle),
+          Linux Documentation/core-api/irq/irq-domain.rst.
+        prompt: >
+          My hypothesis: the ISR for the offending driver is not clearing the hardware
+          interrupt status register before returning, causing the GIC to re-deliver the
+          interrupt in an infinite loop.
+          Does the IRQ counter increment at the full CPU clock rate (hundreds of millions
+          per second) rather than at the data rate of the peripheral? If yes, this confirms
+          an ISR missing a status-clear write.
+
+      - step: 4
+        action: verify_or_pivot
+        verification_command: |
+          # Identify the ISR implementation:
+          grep -r "irq_handler\|request_irq\|devm_request_irq" \
+            drivers/<subsystem>/<driver>/ --include="*.c"
+          # Check if the status register clear is present:
+          grep -r "status.*clear\|ACK\|INTCLR\|ICSR" \
+            drivers/<subsystem>/<driver>/ --include="*.c"
+          # Temporarily mask the IRQ to confirm it stops the storm:
+          echo 1 > /proc/irq/<irq_number>/smp_affinity_list  # reroute to CPU1
+        prompt: >
+          In the driver's ISR, verify that the hardware interrupt status register is
+          cleared before the ISR returns. If the clear is present, check whether it
+          is taking effect — some hardware requires a readback after write to flush
+          the write buffer before EOI.
+          If the ISR is correct, pivot: the storm may be caused by a misconfigured
+          interrupt trigger type (edge vs. level) in the device tree or ACPI table.
+
+  # ---------------------------------------------------------------------------
+  # CROSS-DOMAIN
+  # ---------------------------------------------------------------------------
+
+  - id: XDOM-001
+    name: "Cross-domain: random reboot during video recording (multimedia + thermal + power)"
+    trigger_keywords:
+      - "random reboot"
+      - "reboot during recording"
+      - "crash while recording"
+      - "video recording reboot"
+      - "OCP"
+      - "PMIC shutdown"
+      - "thermal shutdown"
+    learner_levels: [driver]
+    blackboard_domains:
+      - multimedia-camera-expert
+      - power-thermal-expert
+      - interrupt-virtualization-expert
+    steps:
+      - step: 1
+        action: confirm_symptom
+        prompt: >
+          This symptom — random reboot during video recording — is a classic multi-domain
+          problem. I will need to activate Blackboard mode to coordinate analysis across
+          power, thermal, and multimedia domains.
+          First, let me confirm the failure signature: does the system reboot with a kernel
+          panic (visible on serial console or in pstore), or does it perform a hard reset
+          with no kernel panic — suggesting a PMIC overcurrent protection (OCP) or watchdog
+          event rather than a software crash?
+
+      - step: 2
+        action: probe_resource_state
+        tool_hint: |
+          # Check for hardware-triggered reboot (PMIC OCP or watchdog):
+          cat /sys/fs/pstore/dmesg-ramoops-0
+          dmesg | grep -i "reset\|reboot\|watchdog\|OCP\|overcurrent\|UVLO"
+          # Thermal state at time of reboot (if logged):
+          cat /sys/class/thermal/thermal_zone*/temp
+          # PMIC fault log (platform-specific):
+          i2cdump -y <bus> <pmic_addr>   # read PMIC fault register
+          # Video pipeline at time of reboot:
+          cat /sys/kernel/debug/dma_buf/bufinfo
+        prompt: >
+          Check pstore first — if there is a kernel panic log, share the last 30 lines.
+          If pstore is empty, the reboot was hardware-triggered (PMIC OCP, watchdog, or
+          thermal emergency shutdown).
+          Also share: (1) the PMIC fault register contents if accessible, (2) thermal zone
+          temperatures (from a background logger if the reboot is hard), (3) whether the
+          reboot happens at a consistent elapsed recording time.
+
+      - step: 3
+        action: form_hypothesis
+        physics_anchor: >
+          Video recording simultaneously stresses: (a) ISP clock frequency at its maximum
+          OPP (high dynamic current), (b) DRAM bandwidth for DMA-BUF transfers (LPDDR5
+          IDD_OP increases with bandwidth), (c) encoder VPU at peak power, (d) eMMC write
+          current during sustained writes.
+          Combined peak current can transiently exceed the PMIC's current limit on the
+          shared VDD_CORE rail, triggering OCP protection.
+          Thermal runaway can also trigger the PMIC UVLO (undervoltage lockout) if junction
+          temperature causes internal IR drop.
+          Reference: JEDEC LPDDR5 JESD79-5 IDD specifications, ARM DynamIQ power model.
+        prompt: >
+          My leading hypothesis: the combined current draw of ISP + VPU + DRAM + eMMC
+          during video recording is exceeding the PMIC's OCP threshold on the core supply
+          rail, triggering a protective hard reset.
+          I am activating Blackboard mode to coordinate analysis across power, thermal,
+          and multimedia experts. While that proceeds: does the reboot happen more often
+          in a warm environment (> 30°C ambient) than in a cool environment? This would
+          confirm thermal contribution to the OCP event.
+
+      - step: 4
+        action: verify_or_pivot
+        verification_command: |
+          # Verify OCP hypothesis: reduce peak current during recording test
+          echo 0 > /sys/class/thermal/cooling_device0/cur_state  # disable SW throttle temporarily
+          echo 1800000 > /sys/devices/system/cpu/cpufreq/policy4/scaling_max_freq  # cap big cluster
+          # Run recording test with reduced OPP and check if reboot stops
+          # If reboot stops: confirmed peak current issue, fix via current limiting in PMIC DTS
+          # Check PMIC current limit settings in device tree:
+          grep -r "regulator-max-microamp\|current-limit" \
+            arch/arm64/boot/dts/ --include="*.dts*"
+        prompt: >
+          To quickly confirm or rule out the OCP hypothesis: temporarily reduce the CPU
+          big cluster maximum frequency during recording and test again.
+          If the reboot stops, OCP is confirmed — the fix is to increase the PMIC rail's
+          current limit (if the hardware supports it) or implement a software current
+          budget that prevents all peak-power consumers from operating simultaneously.
+          If the reboot continues even at reduced OPP, pivot: share the kernel panic from
+          pstore and we will switch to a software crash analysis path.

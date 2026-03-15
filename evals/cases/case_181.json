@@ -1,0 +1,8 @@
+{
+  "id": "case_181",
+  "skill": "bsp-knowledge-mentor",
+  "input": "Our Android device randomly reboots after roughly 30 minutes of 4K video recording. The kernel panic log shows:\n\n  [1823.447] thermal thermal_zone3: Trip point 2 crossed. Throttling CPU cluster to 1209600 kHz\n  [1823.451] v4l2-dma-contig: failed to alloc 33554432 bytes DMA buffer\n  [1823.452] mtk-isp: pipe_1: DMA buffer starvation, dropping frame 1041\n  [1823.453] mtk-isp: too many consecutive frame drops, triggering pipeline reset\n  [1823.461] Kernel panic - not syncing: hung_task: blocked for more than 120 seconds\n\nThe thermal_zone3 is mapped to the ISP cluster. Our thermal policy sets DRAM frequency floor to 800 MHz but clearly that is not preventing the issue. Is this a thermal throttle causing DMA buffer starvation, or is the DMA allocator itself the culprit? How do I triage the root cause between the thermal subsystem and the ISP DMA pipeline?",
+  "expected_topics": ["thermal throttle", "DMA buffer starvation", "v4l2-dma-contig", "ISP pipeline", "LPDDR5 bandwidth", "CMA", "thermal_zone", "hung_task"],
+  "min_score": 4,
+  "tags": ["cross-domain", "blackboard", "multimedia-camera", "power-thermal"]
+}

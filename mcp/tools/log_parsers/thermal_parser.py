@@ -92,13 +92,14 @@ def parse_thermal_log(log_path: str) -> dict[str, Any]:
         if _THROTTLE_RE.search(line):
             throttle_count += 1
 
-    max_temp_c = max_temp_mc / 1000 if max_temp_mc else None
+    max_temp_c = max_temp_mc / 1000 if max_temp_mc is not None and max_temp_mc > 0 else None
 
+    temp_str = f"{max_temp_c:.1f}°C" if max_temp_c is not None else "unknown"
     diagnosis = "No thermal throttling events detected."
     if trip_crossings:
         diagnosis = (
             f"{len(trip_crossings)} trip point crossing(s) detected. "
-            f"Peak temperature: {max_temp_c:.1f}°C. "
+            f"Peak temperature: {temp_str}. "
             f"{len(cooling_events)} cooling device state change(s). "
             "Review EAS energy model and thermal budget allocation. "
             "Escalate to /power-thermal-expert for DVFS/EAS tuning."
@@ -106,7 +107,7 @@ def parse_thermal_log(log_path: str) -> dict[str, Any]:
     elif throttle_count > 0:
         diagnosis = (
             f"{throttle_count} throttle-related log line(s) found but no trip point crossing. "
-            f"Peak temperature seen: {max_temp_c:.1f}°C. May be near-threshold."
+            f"Peak temperature seen: {temp_str}. May be near-threshold."
         )
 
     return {

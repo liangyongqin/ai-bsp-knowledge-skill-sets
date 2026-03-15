@@ -8,21 +8,30 @@ This repository implements **BSP Knowledge Skill Sets** — Claude Code skills t
 
 ## Current Development Status
 
-**Phase 1 is complete. Phase 2 is the active work front.**
+**Phases 1 and 2 are complete. Phase 3 is the active work front.**
 
 What exists and works:
 - Kuzu knowledge graph schema (`knowledge-graph/schema/schema.py`, `init_db.py`)
-- Four open-source seed scripts (`knowledge-graph/base/`)
+- 10 open-source seed scripts (`knowledge-graph/base/`) — **501 nodes** in base graph
 - Four GraphRAG query templates (`knowledge-graph/queries/`)
-- Document ingestion pipeline (`mcp/tools/spec_extractor/`)
+- Document ingestion pipeline (`mcp/tools/spec_extractor/`) including `graph_diff_writer.py`
 - MCP server with graph query tools (`mcp/server.py`, `mcp/tools/graph_query/query_tools.py`)
-- Tool safety gate (`mcp/tools/safety_gate.py`)
+- Tool safety gate (`mcp/tools/safety_gate.py`) — 82 unit tests passing
+- 16 log parsers in `mcp/tools/log_parsers/`
+- 6 domain `skill.md` files written (one per skill directory)
+- 180 eval cases in `evals/cases/` (30 per skill)
 - `scripts/build_base_graph.py`, `scripts/ingest_custom.py`, `scripts/install.sh`
 
-What is missing (Phase 2 primary gap):
-- **`skill.md` files** — not written for any of the 7 skills yet; this is the main deliverable
-- **`mcp/tools/log_parsers/`** — directory exists but is empty; all parsers are pending
-- **`evals/cases/`** — no eval cases written yet
+What is pending (Phase 2 human-gated, non-blocking for Phase 3):
+- Human expert scoring of 180 eval cases (≥ 4/5 per skill)
+- MCP integration test end-to-end (≥ 90% tool-calling success rate)
+
+What is missing (Phase 3 primary gap):
+- **`skills/bsp-knowledge-mentor/skill.md`** — ITS teaching engine, not yet written
+- **`skills/bsp-knowledge-mentor/socratic-templates.yaml`** — Socratic questioning sequences
+- **`skills/bsp-knowledge-mentor/term-dictionary.yaml`** — ≥ 100 BSP ↔ business term pairs
+- **`mcp/tools/impact_translator/`** — business impact translation engine, not yet written
+- **≥ 20 multi-domain eval cases** — for Blackboard pattern testing
 
 ## Hard Constraints
 
@@ -34,8 +43,8 @@ What is missing (Phase 2 primary gap):
 ## Architecture
 
 ```
-Layer 3: skills/bsp-knowledge-mentor/   ← ITS teaching engine, Blackboard coordinator (⬜ not started)
-Layer 2: skills/<domain>-expert/        ← Six domain skills (🔄 directories exist, skill.md pending)
+Layer 3: skills/bsp-knowledge-mentor/   ← ITS teaching engine, Blackboard coordinator (⬜ Phase 3, active)
+Layer 2: skills/<domain>-expert/        ← Six domain skills (✅ complete — all skill.md written)
 Layer 1: knowledge-graph/ + mcp/        ← Kuzu graph + MCP tool server (✅ complete)
 ```
 
@@ -132,9 +141,30 @@ check_approval(tool_name: str, requires_human_approval: bool = False) -> bool
 
 Unknown tools default to `READ_ONLY` with a warning. New tools must be added to `TOOL_RISK_LEVELS` — do not leave them unregistered.
 
-### Log Parsers (pending)
+### Log Parsers
 
-`mcp/tools/log_parsers/` is empty. The safety gate already pre-registers the expected names: `parse_ftrace`, `parse_dmesg`, `parse_perf`, `parse_v4l2_log`, `parse_thermal_log`, `parse_pmic_log`, `parse_irq_log`. New parser files go here and must be registered in `mcp/server.py`.
+`mcp/tools/log_parsers/` contains 16 parsers, all registered in `safety_gate.py` and `mcp/server.py`:
+
+| Parser file | MCP tool name | Domain skill |
+|---|---|---|
+| `ftrace_parser.py` | `parse_ftrace` | power-thermal |
+| `perf_parser.py` | `parse_perf_stat` | power-thermal |
+| `thermal_parser.py` | `parse_thermal_log` | power-thermal |
+| `dvfs_opp_calc.py` | `compute_dvfs_efficiency` | power-thermal |
+| `suspend_resume_parser.py` | `parse_suspend_resume_log` | power-thermal |
+| `pll_checker.py` | `parse_pll_log` | power-thermal |
+| `power_island_scanner.py` | `scan_power_islands` | power-thermal |
+| `pmic_log_parser.py` | `parse_pmic_log` | boot-debug |
+| `irq_stat_parser.py` | `parse_irq_stats` | interrupt-virt |
+| `v4l2_stats_parser.py` | `parse_v4l2_log` | multimedia |
+| `emmc_io_parser.py` | `parse_emmc_io_log` | multimedia |
+| `camera_hal_error_decoder.py` | `parse_camera_hal_errors` | multimedia |
+| `perfetto_gpu_parser.py` | `parse_perfetto_gpu` | gpu-rendering |
+| `agp_parser.py` | `parse_agp_report` | gpu-rendering |
+| `vm_exit_counter.py` | `parse_vm_exit_stats` | interrupt-virt |
+| `its_validator.py` | `validate_its_table` | interrupt-virt |
+
+New parsers go here and must be registered in both `safety_gate.py` and `mcp/server.py`.
 
 ## Skill File Convention
 
@@ -168,7 +198,7 @@ Knowledge anchors in `skill.md` must cite specific open-source references (ARM T
 
 ## bsp-knowledge-mentor Rules
 
-To be encoded in `skills/bsp-knowledge-mentor/skill.md` (not yet written). Must enforce:
+To be encoded in `skills/bsp-knowledge-mentor/skill.md` (Phase 3, pending). Must enforce:
 
 - Never give a direct fix script. Guide with Socratic questions: symptom confirmation → resource state probe → hypothesis → tool verification.
 - Learner level gates response depth: app-layer → HAL abstractions; driver → register-level; algorithm → Roofline/NPU; management → business impact only.
@@ -184,9 +214,10 @@ pip install -r requirements.txt
 
 # Initialize and populate the base knowledge graph
 python knowledge-graph/schema/init_db.py
-python scripts/build_base_graph.py
+python scripts/build_base_graph.py        # builds 501-node base graph
+python scripts/build_base_graph.py --clean  # wipe and rebuild from scratch
 
-# Start MCP server (from repo root)
+# Start MCP server (from repo root — never from inside mcp/)
 python mcp/server.py
 
 # Register skills (copy to user Claude skills directory)
@@ -194,6 +225,9 @@ cp skills/*/skill.md ~/.claude/skills/
 
 # Add user's in-house SoC documents to custom graph
 python scripts/ingest_custom.py --input /path/to/TRM.pdf --soc mt6989
+
+# Run unit tests
+pytest tests/test_safety_gate.py -v       # safety gate — 82 tests
 
 # Run evals
 pytest evals/run_evals.py

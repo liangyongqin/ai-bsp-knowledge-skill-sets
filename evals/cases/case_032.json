@@ -1,0 +1,7 @@
+{
+  "id": "case_032",
+  "skill": "boot-debug-expert",
+  "input": "BL2 attempts to read the SoC PLL status register at offset 0x10C before the 1 ms lock time has elapsed. The read returns 0x00000000 (PLL not locked) and BL2 treats this as a fatal error and halts. The oscilloscope shows the PLL output frequency is actually stable. What is the correct procedure for polling PLL lock status and what minimum wait is required?",
+  "expected_topics": ["PLL", "lock", "timeout", "BL2", "boot"],
+  "min_score": 4
+}

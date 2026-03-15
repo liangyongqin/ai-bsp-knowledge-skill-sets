@@ -1,0 +1,7 @@
+{
+  "id": "case_167",
+  "skill": "hardware-spec-extractor",
+  "input": "An IP-XACT file marks a register field as 'read-only' (access type 'r'). A driver review shows a write to that field's address. The knowledge graph has access_type='r' for the register but the ingestion script did not flag this during extraction. How should the extractor expose access type information, and what automated check could catch RO-field-written violations during driver review?",
+  "expected_topics": ["access type", "read-only", "register", "IP-XACT", "validation"],
+  "min_score": 4
+}

@@ -1,0 +1,7 @@
+{
+  "id": "case_027",
+  "skill": "power-thermal-expert",
+  "input": "LPDDR5 self-refresh entry is commanded during STR but the power measurement shows the DRAM VDD2 rail does not drop as expected. The DRAM power model predicts 2 mW in self-refresh but we measure 180 mW. The DFI low-power handshake completes without error. What additional conditions are required for LPDDR5 to actually enter self-refresh and reduce power?",
+  "expected_topics": ["LPDDR5", "self-refresh", "DFI", "power", "STR"],
+  "min_score": 3
+}

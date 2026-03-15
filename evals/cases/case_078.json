@@ -1,0 +1,7 @@
+{
+  "id": "case_078",
+  "skill": "multimedia-camera-expert",
+  "input": "ISP scaler output is configured as NV12 1920x1080, but the display shows a stretched green image. v4l2-ctl --get-fmt-video reports format YUYV and resolution 1920x540. What causes scaler output format and resolution mismatch?",
+  "expected_topics": ["ISP scaler", "format mismatch", "NV12", "V4L2", "output format"],
+  "min_score": 4
+}

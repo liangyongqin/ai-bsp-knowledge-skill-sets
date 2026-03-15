@@ -1,0 +1,7 @@
+{
+  "id": "case_163",
+  "skill": "hardware-spec-extractor",
+  "input": "A register field 'MODE' has 4 possible values (0=DISABLE, 1=ENABLE, 2=RESET) but value 3 has no enumeratedValue entry in the IP-XACT file. The hardware spec says encoding 3 is reserved. How should the extractor represent missing or undocumented enum encodings, and how should downstream tools treat a field set to an undocumented value?",
+  "expected_topics": ["enum", "field", "undocumented", "IP-XACT", "register"],
+  "min_score": 3
+}

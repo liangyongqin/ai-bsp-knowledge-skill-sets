@@ -1,0 +1,7 @@
+{
+  "id": "case_005",
+  "skill": "power-thermal-expert",
+  "input": "We are seeing voltage droop on the VDDCPU rail when the CPU steps from 400 MHz to 2.0 GHz under a burst workload. The oscilloscope shows the rail dips 80 mV below the target for ~500 µs before recovering. No crash, but we are worried about marginal operation. How do I characterize PMIC transient response and determine if the droop is within spec?",
+  "expected_topics": ["PMIC", "transient", "voltage droop", "load step", "regulator"],
+  "min_score": 4
+}

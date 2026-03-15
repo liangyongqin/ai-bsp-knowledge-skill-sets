@@ -1,0 +1,7 @@
+{
+  "id": "case_155",
+  "skill": "hardware-spec-extractor",
+  "input": "PDF extraction of a scanned register table returns OCR confidence scores between 60% and 75% for several fields. Some field names are garbled: 'RES0' appears as 'RE50' and a bit range '31:16' appears as '31:I6'. How should the extractor handle low-confidence OCR output, what threshold triggers a warning, and how do I manually verify and correct the extracted data before graph injection?",
+  "expected_topics": ["OCR", "confidence", "PDF extraction", "validation", "register"],
+  "min_score": 4
+}

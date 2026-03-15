@@ -1,0 +1,7 @@
+{
+  "id": "case_135",
+  "skill": "interrupt-virtualization-expert",
+  "input": "A PCIe endpoint has DeviceID 0x0100 which requires 256 EventIDs. Our MAPD command sets ITT_size to 4 (meaning 2^(4+1) = 32 entries). LPIs for EventIDs above 31 are silently dropped. How does ITS device table sizing work, what is the correct ITT_size field calculation, and what are the consequences of undersizing?",
+  "expected_topics": ["ITS", "MAPD", "ITT_size", "DeviceID", "EventID"],
+  "min_score": 4
+}

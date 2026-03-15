@@ -1,0 +1,7 @@
+{
+  "id": "case_133",
+  "skill": "interrupt-virtualization-expert",
+  "input": "An IRQ threaded handler (IRQF_THREAD) in a sensor driver calls mutex_lock() and then makes a synchronous I2C transfer that can sleep for up to 50 ms. Other real-time tasks report scheduling latency spikes at the same time. How does a sleeping threaded IRQ handler affect system call latency and what are the recommended alternatives for long-running interrupt work?",
+  "expected_topics": ["threaded IRQ", "IRQF_THREAD", "mutex", "latency", "workqueue"],
+  "min_score": 4
+}

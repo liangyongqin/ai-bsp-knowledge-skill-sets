@@ -1,0 +1,7 @@
+{
+  "id": "case_113",
+  "skill": "gpu-rendering-expert",
+  "input": "Display output is black after boot. dmesg shows: [ 5.001] [drm] CRTC 0 not enabled. DRM kms_check passes and connector reports connected. Framebuffer device /dev/fb0 exists. What is the DRM CRTC enable sequence and how do I diagnose a CRTC not enabled causing no display output?",
+  "expected_topics": ["DRM", "CRTC", "display output", "KMS", "modesetting"],
+  "min_score": 4
+}

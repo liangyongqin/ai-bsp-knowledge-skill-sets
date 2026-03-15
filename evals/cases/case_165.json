@@ -1,0 +1,7 @@
+{
+  "id": "case_165",
+  "skill": "hardware-spec-extractor",
+  "input": "An IP-XACT file defines a busInterface element connecting the component to an AMBA AHB bus. The extractor ignores busInterface and only parses memoryMap registers. A bus topology query in the knowledge graph returns no connectivity for this component. How should the extractor handle busInterface definitions and what graph relationships should be created from them?",
+  "expected_topics": ["IP-XACT", "busInterface", "AMBA", "graph", "relationship"],
+  "min_score": 4
+}

@@ -1,0 +1,7 @@
+{
+  "id": "case_098",
+  "skill": "gpu-rendering-expert",
+  "input": "Battery drains unusually fast in standby mode. /sys/class/devfreq/gpu/cur_freq shows GPU stuck at 800MHz (max) even when no GPU workload is running. The devfreq governor is 'simple_ondemand'. What causes GPU devfreq to stay at max frequency and what is the fix?",
+  "expected_topics": ["GPU devfreq", "frequency", "battery drain", "governor", "idle"],
+  "min_score": 4
+}

@@ -1,0 +1,7 @@
+{
+  "id": "case_059",
+  "skill": "boot-debug-expert",
+  "input": "ROM code on a new SoC revision rejects the BL1 image with 'CRC check failed: expected 0xA3F21B4C got 0xD9081E77'. The BL1 binary was compiled from the same source as the previous revision. The ROM code CRC algorithm is CRC-32/MPEG-2. The BL1 image packing tool was updated between revisions. What are the possible causes of a ROM code CRC failure and how do I independently verify the image CRC?",
+  "expected_topics": ["ROM code", "CRC", "BL1", "boot", "image"],
+  "min_score": 4
+}

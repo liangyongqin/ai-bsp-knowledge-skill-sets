@@ -1,0 +1,7 @@
+{
+  "id": "case_060",
+  "skill": "boot-debug-expert",
+  "input": "A new board revision swapped the power sequencing so VDDIO (1.8V I/O supply) ramps before VDDCORE (0.75V logic supply). The SoC TRM requires VDDCORE to be stable before VDDIO. The board works in warm conditions but fails to reach functional mode at cold temperatures (-10°C). How does applying VDDIO before VDDCORE cause a functional mode miss and what is the safe power sequencing requirement?",
+  "expected_topics": ["power sequencing", "VDDIO", "VDDCORE", "functional mode", "bring-up"],
+  "min_score": 4
+}

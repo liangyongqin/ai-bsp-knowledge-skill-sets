@@ -1,0 +1,7 @@
+{
+  "id": "case_026",
+  "skill": "power-thermal-expert",
+  "input": "After STR resume, /sys/power/pm_wakeup_irq shows 0 even though the device woke up from a GPIO key press. The wakeup event is delivered but the kernel cannot attribute the wakeup to the correct IRQ. How should a wakeup IRQ source be registered so that pm_wakeup_irq is populated correctly on resume?",
+  "expected_topics": ["wakeup IRQ", "resume_reason", "pm_wakeup_irq", "STR", "IRQ"],
+  "min_score": 4
+}

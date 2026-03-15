@@ -1,0 +1,7 @@
+{
+  "id": "case_158",
+  "skill": "hardware-spec-extractor",
+  "input": "An IP-XACT file defines a 32-bit register with a field named 'DATA' spanning bits 63:32. The extractor imports this without error but the bit range is clearly invalid for a 32-bit register. How should the extractor validate field bit ranges against the parent register width, and what should it do when a violation is found — skip, warn, or abort?",
+  "expected_topics": ["field", "bit range", "register width", "validation", "IP-XACT"],
+  "min_score": 4
+}

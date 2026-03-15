@@ -1,0 +1,7 @@
+{
+  "id": "case_169",
+  "skill": "hardware-spec-extractor",
+  "input": "A vendor supplies a scanned PDF (image-only, no text layer) of their SoC register reference. pdfplumber returns empty text. pytesseract OCR is needed. How do I configure the spec_extractor pipeline to fall back to OCR when no text layer is detected, what Python libraries are required, and what quality checks should be applied to OCR output before graph ingestion?",
+  "expected_topics": ["OCR", "scanned PDF", "pytesseract", "text layer", "extraction"],
+  "min_score": 4
+}

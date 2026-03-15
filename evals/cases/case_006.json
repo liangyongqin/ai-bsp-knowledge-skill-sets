@@ -1,0 +1,7 @@
+{
+  "id": "case_006",
+  "skill": "power-thermal-expert",
+  "input": "STR suspend is blocked. The kernel log shows: 'PM: suspend entry (deep)' then nothing for 60 seconds, then 'Freezing of tasks failed after 20.003 seconds'. We have a USB host attached. How do I find which wakeup source or task is blocking suspend?",
+  "expected_topics": ["STR", "suspend", "wakeup source", "freeze", "PM"],
+  "min_score": 4
+}

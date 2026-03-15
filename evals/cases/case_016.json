@@ -1,0 +1,7 @@
+{
+  "id": "case_016",
+  "skill": "power-thermal-expert",
+  "input": "The thermal zone for the SoC skin temperature sensor is reporting 95°C at room temperature (ambient 25°C). The sensor raw ADC value looks plausible but the trip points fire immediately on boot. How do I validate a thermal zone configuration including the sensor coefficients and trip point values in the device tree?",
+  "expected_topics": ["thermal zone", "trip point", "sensor", "device tree", "calibration"],
+  "min_score": 4
+}

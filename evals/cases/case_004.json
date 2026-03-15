@@ -1,0 +1,7 @@
+{
+  "id": "case_004",
+  "skill": "power-thermal-expert",
+  "input": "EAS is enabled but the scheduler is placing tasks on the big cores even for light workloads. /proc/sys/kernel/sched_energy_aware is 1. I checked and the capacity values in the energy model look wrong — the big core shows capacity 1024 but the little core shows 512 when it should be around 350. How do EAS capacity values get computed and validated?",
+  "expected_topics": ["EAS", "capacity", "energy model", "schedutil", "OPP"],
+  "min_score": 4
+}

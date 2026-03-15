@@ -1,0 +1,7 @@
+{
+  "id": "case_131",
+  "skill": "interrupt-virtualization-expert",
+  "input": "A PCIe endpoint was reset using secondary bus reset. After re-initialization the MSI interrupt never fires even though the driver re-writes the MSI capability registers and the device shows MSI enabled in lspci. ITS MAPD and MAPTI were not re-issued after reset. What is the correct ITS re-programming sequence after a PCIe device reset?",
+  "expected_topics": ["MSI", "PCIe", "device reset", "ITS", "MAPD"],
+  "min_score": 4
+}

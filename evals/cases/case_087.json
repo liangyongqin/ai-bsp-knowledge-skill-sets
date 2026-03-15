@@ -1,0 +1,7 @@
+{
+  "id": "case_087",
+  "skill": "multimedia-camera-expert",
+  "input": "HAL3 stream configuration is rejected with: E CameraHAL: configureStreams: format 0x23 (HAL_PIXEL_FORMAT_YCbCr_420_888) not supported for stream type OUTPUT on physical camera 2. How do I determine which formats are supported and how to fix stream configuration rejection?",
+  "expected_topics": ["HAL3", "stream configuration", "format", "YCbCr", "physical camera"],
+  "min_score": 4
+}

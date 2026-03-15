@@ -1,0 +1,7 @@
+{
+  "id": "case_160",
+  "skill": "hardware-spec-extractor",
+  "input": "I want to add in-house SoC register knowledge to the graph so that domain skills like power-thermal-expert can query it. Walk me through the end-to-end custom knowledge injection workflow: what input files are accepted, what script to run, what arguments to pass, and how to verify the data is queryable afterward.",
+  "expected_topics": ["custom knowledge", "ingest_custom", "workflow", "namespace", "query"],
+  "min_score": 4
+}

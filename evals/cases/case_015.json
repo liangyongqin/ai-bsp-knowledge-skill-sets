@@ -1,0 +1,7 @@
+{
+  "id": "case_015",
+  "skill": "power-thermal-expert",
+  "input": "A real-time audio driver calls pm_qos_add_request with PM_QOS_CPU_LATENCY = 50 µs at probe time and never releases it. As a result, C-states deeper than C1 are never entered. The driver has shipped and we cannot modify it immediately. How do I identify all active PM QoS constraints and their requestors?",
+  "expected_topics": ["PM QoS", "C-state", "latency", "cpuidle", "constraint"],
+  "min_score": 4
+}

@@ -1,0 +1,7 @@
+{
+  "id": "case_103",
+  "skill": "gpu-rendering-expert",
+  "input": "Overdraw is high on a scene with many translucent UI layers. A depth pre-pass was suggested to use early-Z rejection, but the engineer points out objects are rendered front-to-back already. Why doesn't early-Z reject translucent geometry and what is the correct approach for depth pre-pass in this scenario?",
+  "expected_topics": ["depth pre-pass", "early-Z", "overdraw", "translucent", "alpha blending"],
+  "min_score": 3
+}

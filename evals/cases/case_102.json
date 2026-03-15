@@ -1,0 +1,7 @@
+{
+  "id": "case_102",
+  "skill": "gpu-rendering-expert",
+  "input": "Every few seconds, eglSwapBuffers takes 80-120ms instead of the normal 16ms. Perfetto shows the stall is on waiting for a sync fence. The compositor reports the GPU rendering fence did not signal within the deadline. How do I debug eglSwapBuffers latency spikes caused by unsignalled fences?",
+  "expected_topics": ["eglSwapBuffers", "fence", "latency", "sync", "compositor"],
+  "min_score": 4
+}

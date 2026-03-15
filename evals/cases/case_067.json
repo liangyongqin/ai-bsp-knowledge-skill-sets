@@ -1,0 +1,7 @@
+{
+  "id": "case_067",
+  "skill": "multimedia-camera-expert",
+  "input": "Camera sensor stays in LP-11 state and never transitions to HS mode. dmesg shows: [ 102.445] csi2-dphy: timeout waiting for HS entry on lane 0. The sensor datasheet says MCLK must be stable 5ms before asserting XSHUTDOWN. How do I debug LP-state stuck issue?",
+  "expected_topics": ["D-PHY", "LP-11", "HS entry", "MCLK", "XSHUTDOWN"],
+  "min_score": 4
+}

@@ -1,0 +1,7 @@
+{
+  "id": "case_090",
+  "skill": "multimedia-camera-expert",
+  "input": "Device thermal daemon kills ISP clock during prolonged camera use. dmesg: [ 1234.0] thermal: ISP zone reached CRITICAL trip 95C, disabling isp_clk. Camera black screens and HAL3 reports CAMERA3_MSG_ERROR_DEVICE. How should ISP thermal throttling be designed to avoid abrupt shutdown?",
+  "expected_topics": ["thermal", "ISP", "power budget", "throttle", "trip point"],
+  "min_score": 4
+}

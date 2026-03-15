@@ -1,0 +1,7 @@
+{
+  "id": "case_141",
+  "skill": "interrupt-virtualization-expert",
+  "input": "KVM perf shows arm_timer_exit at 95,000/sec. The guest is using a 1 ms tick rate and the ARM virtual timer is not using hardware acceleration. The host is running at HZ=250. What KVM configuration and kernel options enable hardware-accelerated ARM virtual timer to eliminate vtimer VM exits?",
+  "expected_topics": ["KVM", "vtimer", "ARM timer", "VM Exit", "hardware acceleration"],
+  "min_score": 4
+}

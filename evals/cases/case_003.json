@@ -1,0 +1,7 @@
+{
+  "id": "case_003",
+  "skill": "power-thermal-expert",
+  "input": "After system suspend, the LPDDR5 does not enter deep sleep. DRAM power rails remain at full voltage. The DRAM controller log shows: 'SR entry timeout after 20ms, DFISTAT.dfi_lp_ack not received'. How do I debug LPDDR5 deep sleep failure?",
+  "expected_topics": ["LPDDR5", "self-refresh", "DFI", "deep sleep", "DRAM controller"],
+  "min_score": 4
+}

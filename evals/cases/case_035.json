@@ -1,0 +1,7 @@
+{
+  "id": "case_035",
+  "skill": "boot-debug-expert",
+  "input": "CoreSight ETF (Embedded Trace FIFO) overflows during boot trace capture. The trace session drops 40% of packets. The ETF is configured for 4 KB FIFO size and the formatter is enabled. Increasing ETF size is not possible on this SoC. What configuration options reduce ETF overflow without changing FIFO size?",
+  "expected_topics": ["CoreSight", "ETF", "overflow", "trace", "formatter"],
+  "min_score": 3
+}

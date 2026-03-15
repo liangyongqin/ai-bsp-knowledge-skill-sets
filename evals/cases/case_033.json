@@ -1,0 +1,7 @@
+{
+  "id": "case_033",
+  "skill": "boot-debug-expert",
+  "input": "During power domain bring-up, we forgot to de-assert the isolation cells between the newly powered domain and the always-on domain. The logic analyzer shows glitches on the domain boundary signals. The SoC does not latch up but the peripheral registers read back garbage. What is the correct isolation cell assertion/de-assertion sequence relative to power rail and reset?",
+  "expected_topics": ["isolation cell", "power domain", "clamp", "latch-up", "reset"],
+  "min_score": 4
+}

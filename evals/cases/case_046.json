@@ -1,0 +1,7 @@
+{
+  "id": "case_046",
+  "skill": "boot-debug-expert",
+  "input": "The watchdog timer (WDT) fires 800 ms into boot, before the kernel drivers have initialized. The bootloader is supposed to disable the WDT during boot but the PMIC's WDT has a separate enable bit that the bootloader does not clear. The system reboots in a loop. How do I identify all active watchdog sources during early boot and safely disable only those not needed during bring-up?",
+  "expected_topics": ["watchdog", "WDT", "boot", "PMIC", "reboot loop"],
+  "min_score": 4
+}

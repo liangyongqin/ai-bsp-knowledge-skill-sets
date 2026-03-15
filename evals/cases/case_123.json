@@ -1,0 +1,7 @@
+{
+  "id": "case_123",
+  "skill": "interrupt-virtualization-expert",
+  "input": "KVM perf shows VM Exit rate spiking to 300k/s when a virtio-net guest is under load. vmstat confirms the exits are dominated by MMIO traps. The host CPU is 80% busy servicing exits, leaving the guest starved. How do I identify which MMIO region is causing the trap storm and what are the options to eliminate or reduce these exits?",
+  "expected_topics": ["VM Exit", "MMIO", "trap", "virtio", "KVM"],
+  "min_score": 4
+}

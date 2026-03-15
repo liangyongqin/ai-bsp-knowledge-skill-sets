@@ -1,0 +1,7 @@
+{
+  "id": "case_084",
+  "skill": "multimedia-camera-expert",
+  "input": "Raw Bayer capture from a 16MP sensor saves to a file with stride 8192 bytes but the sensor output width is 4624 pixels (RAW10 packed = 5780 bytes/row). The saved image has a diagonal shear artifact. How do I fix the stride/padding mismatch for raw output?",
+  "expected_topics": ["stride", "Bayer", "raw", "padding", "RAW10"],
+  "min_score": 4
+}

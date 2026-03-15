@@ -1,0 +1,7 @@
+{
+  "id": "case_055",
+  "skill": "boot-debug-expert",
+  "input": "The first suspend attempt after boot fails with 'spm: SPM firmware handshake timeout'. The SPM firmware is loaded by the kernel driver from the firmware partition. Subsequent suspend attempts succeed. This only happens on the very first suspend after a cold boot. Note: SPM (System Power Manager) is a MediaTek-specific subsystem; refer to your custom/ TRM for register details. How do I debug a one-shot SPM handshake failure on first suspend?",
+  "expected_topics": ["SPM", "suspend", "firmware", "handshake", "timeout"],
+  "min_score": 3
+}

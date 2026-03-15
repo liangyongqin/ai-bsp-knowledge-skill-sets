@@ -1,0 +1,7 @@
+{
+  "id": "case_079",
+  "skill": "multimedia-camera-expert",
+  "input": "v4l2-ctl DQBUF blocks indefinitely during preview. strace shows the ioctl hangs at VIDIOC_DQBUF. The consumer application thread processes frames slowly (~80ms per frame) but the sensor outputs at 30fps. How do I handle DQBUF timeout from a slow consumer?",
+  "expected_topics": ["DQBUF", "V4L2", "timeout", "consumer", "buffer queue"],
+  "min_score": 4
+}

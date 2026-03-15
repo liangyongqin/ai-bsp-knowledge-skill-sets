@@ -1,0 +1,7 @@
+{
+  "id": "case_086",
+  "skill": "multimedia-camera-expert",
+  "input": "MIPI C-PHY is configured for 3 trios but the dmesg log shows: [ 11.234] cphy-rx: expected 3 trios, detected 2 active trios on CSI port 1. Image data is scrambled. What causes C-PHY trio count mismatch and how do I verify the physical lane mapping?",
+  "expected_topics": ["C-PHY", "trio", "MIPI", "CSI", "lane mapping"],
+  "min_score": 4
+}

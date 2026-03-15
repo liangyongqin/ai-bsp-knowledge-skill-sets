@@ -1,0 +1,7 @@
+{
+  "id": "case_047",
+  "skill": "boot-debug-expert",
+  "input": "After a failed OTA update the eMMC GPT backup partition table was overwritten. The primary GPT is intact but the kernel cannot mount the userdata partition because it validates both GPT copies. The device boots to recovery. How do I repair a damaged GPT backup table on an eMMC device without a full re-flash?",
+  "expected_topics": ["eMMC", "GPT", "partition table", "corrupt", "recovery"],
+  "min_score": 4
+}

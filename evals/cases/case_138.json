@@ -1,0 +1,7 @@
+{
+  "id": "case_138",
+  "skill": "interrupt-virtualization-expert",
+  "input": "A GICv3 SPI is configured as Group 1 Non-Secure. The interrupt fires at EL3 but never reaches the OS at EL1 Non-Secure. GICD_IGROUPR shows the correct Group 1 NS bit set. SCR_EL3.IRQ is 0. What GICv3 security model settings at EL3 and ICC registers must be verified to ensure Group 1 NS interrupts are routed to EL1?",
+  "expected_topics": ["GICv3", "Group 1", "EL1", "SCR_EL3", "ICC"],
+  "min_score": 4
+}

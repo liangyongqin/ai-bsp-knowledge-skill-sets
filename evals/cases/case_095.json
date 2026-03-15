@@ -1,0 +1,7 @@
+{
+  "id": "case_095",
+  "skill": "gpu-rendering-expert",
+  "input": "Vulkan application has a 2-3 second hitch on first frame render. Perfetto shows GPU is busy for 2.1 seconds in the Vulkan driver thread before the first vkQueueSubmit. Subsequent frames are 16ms. What causes pipeline compile stall in Vulkan and how do I eliminate first-frame hitches?",
+  "expected_topics": ["Vulkan", "pipeline", "compile", "stall", "pipeline cache"],
+  "min_score": 4
+}

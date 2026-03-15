@@ -1,0 +1,7 @@
+{
+  "id": "case_120",
+  "skill": "gpu-rendering-expert",
+  "input": "GPU thermal zone is not listed in /sys/class/thermal/. Running 'cat /sys/class/thermal/thermal_zone*/type' shows cpu-big, cpu-little, battery, but no gpu zone. The GPU thermal driver is loaded (lsmod shows mali). What is needed to register a GPU thermal zone and why is it important for system thermal management?",
+  "expected_topics": ["GPU thermal zone", "thermal", "trip point", "thermal framework", "registration"],
+  "min_score": 4
+}

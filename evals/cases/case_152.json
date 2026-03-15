@@ -1,0 +1,7 @@
+{
+  "id": "case_152",
+  "skill": "hardware-spec-extractor",
+  "input": "The spec extractor crashes with a KeyError on 'memoryMap' when parsing an IP-XACT file from a third-party vendor. The file is well-formed XML but the memoryMap element is absent — the vendor used a flat register list directly under the component element. How should the extractor handle this malformed or non-standard structure gracefully, and what fallback logic is appropriate?",
+  "expected_topics": ["IP-XACT", "memoryMap", "XML", "fallback", "parsing"],
+  "min_score": 4
+}

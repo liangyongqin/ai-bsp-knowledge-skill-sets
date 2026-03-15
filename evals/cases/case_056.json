@@ -1,0 +1,7 @@
+{
+  "id": "case_056",
+  "skill": "boot-debug-expert",
+  "input": "OpenOCD connects to the ADIv6 DAP but all AP register reads return 0xFFFFFFFF. The DPACC IDR register is readable (0x4BA00477) but APACC transactions fail with FAULT response. The DAP authentication challenge-response protocol requires an unlock token, but the bootloader firmware version flashed does not implement the unlock sequence. How does ADIv6 DAP authentication work and what must the firmware implement to allow AP access?",
+  "expected_topics": ["ADIv6", "DAP", "authentication", "AP", "CoreSight"],
+  "min_score": 3
+}

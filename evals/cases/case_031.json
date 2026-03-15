@@ -1,0 +1,7 @@
+{
+  "id": "case_031",
+  "skill": "boot-debug-expert",
+  "input": "During board bring-up the SoC hangs immediately after power-on. The PMIC sequence log shows VDDANA ramps up 50 ms before VDDCORE. The SoC design guide says VDDCORE must be stable before VDDANA. How do I diagnose a wrong power rail supply order and what are the risks of VDDANA being applied before VDDCORE?",
+  "expected_topics": ["power rail", "supply order", "PMIC", "sequence", "bring-up"],
+  "min_score": 4
+}

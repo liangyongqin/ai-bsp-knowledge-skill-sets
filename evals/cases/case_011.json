@@ -1,0 +1,7 @@
+{
+  "id": "case_011",
+  "skill": "power-thermal-expert",
+  "input": "During a 3D gaming workload the GPU thermal zone hits the throttle trip point at 85°C and the system throttles CPUfreq to 800 MHz to shed load. The frame rate drops from 60 fps to 22 fps. The thermal zone has only one trip point configured. How do I design a multi-step thermal cooling strategy to avoid abrupt frame drops?",
+  "expected_topics": ["thermal", "throttling", "trip point", "cooling device", "CPUFreq"],
+  "min_score": 4
+}

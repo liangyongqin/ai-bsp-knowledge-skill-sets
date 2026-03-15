@@ -197,75 +197,70 @@ description: <one-line description used by Claude Code to decide when to invoke>
 ## Phase 2 — Domain Expert Skill Development 🔄 In Progress
 **Duration:** Month 3–4 (2026-05-10 → 2026-07-04)
 **Goal:** Six domain skills, each grounded in the base knowledge graph, with validated tool-calling via MCP.
-**Current state:** Skill directories scaffolded. `skill.md` files, log parsers, and eval cases all pending.
+**Current state:** All skill.md files written. All log parsers complete. Eval cases written (180 total). M2.6/M2.7 complete.
 
 ### Skill File Convention (applies to all 6 skills)
 
 ```
 skills/<skill-name>/
-├── skill.md            # ⬜ Not written for any skill yet — this is the primary gap
+├── skill.md            # ✅ Written for all 6 skills
 ├── *.yaml              # Supporting data (where applicable)
-└── evals/              # ⬜ No cases written yet
+└── evals/              # ✅ 30 cases per skill (cases 001–180)
 ```
 
-### M2.1 — `power-thermal-expert` ⬜
-- [ ] Write `skills/power-thermal-expert/skill.md` — anchor to: P=αCV²f (ARM DynamIQ power model), Linux EAS (`sched-energy.rst`), ACPI C-state spec, LPDDR5 JEDEC JESD79-5 deep sleep timing, Linux PM framework (`Documentation/power/states.rst`, `Documentation/driver-api/pm/`), ARM PSCI spec (DEN0022)
-- [ ] STR/STD knowledge scope in `skill.md`:
-  - **STR (Suspend to RAM / S2R):** full first-class coverage — `dev_pm_ops` suspend/resume callback chain, PSCI CPU cluster power-down, `wakeup_source` registration and tracking, `/sys/power/state` debug flow, wakeup IRQ identification; applies to all mobile targets
-  - **STD (Suspend to Disk / Hibernation):** framework-layer coverage — `dev_pm_ops` freeze/thaw/poweroff/restore callbacks, `swsusp` snapshot mechanism, bootloader hibernation image detection, hibernation image I/O (eMMC/F2FS write perf); note as not applicable to Android targets, relevant for embedded Linux
-  - MTK SPM / Qualcomm RPMH: prompt user to add platform-specific nodes to `knowledge-graph/custom/`
-- [ ] Write `mcp/tools/log_parsers/ftrace_parser.py` — C-state residency from `trace-cmd` output; include `power:suspend_resume` tracepoint parsing for STR/STD transitions
-- [ ] Write `mcp/tools/log_parsers/perf_parser.py` — parse `perf stat`, compute IPC per cluster
-- [ ] Write `mcp/tools/log_parsers/thermal_parser.py` — throttling events from `dmesg` / kernel thermal drivers
-- [ ] Write `mcp/tools/log_parsers/dvfs_opp_calc.py` — Perf/Watt efficiency frontier from OPP table
-- [ ] Write `mcp/tools/log_parsers/suspend_resume_parser.py` — parse PM debug log (`pm_debug=1`), wakeup source log (`/sys/kernel/debug/wakeup_sources`), last wakeup IRQ (`/sys/power/pm_wakeup_irq`), STR entry/exit latency from `power:suspend_resume` ftrace events
-- [ ] Register MCP tools: `analyze_cstate_residency`, `compute_dvfs_efficiency`, `parse_thermal_events`, `parse_suspend_resume_log`
-- [ ] Write ≥ 30 eval cases: DVFS misconfiguration, C-state stuck, LPDDR5 deep sleep failure, EAS calibration drift, PMIC transient response, STR blocked by wakeup source, STR resume hang (driver failing to resume), STR wakeup latency regression, STD hibernation image write failure (eMMC full / F2FS GC), power rail not restored on resume
+### M2.1 — `power-thermal-expert` ✅
+- [x] Write `skills/power-thermal-expert/skill.md`
+- [x] Write `mcp/tools/log_parsers/ftrace_parser.py`
+- [x] Write `mcp/tools/log_parsers/perf_parser.py` (→ `parse_perf_stat`)
+- [x] Write `mcp/tools/log_parsers/thermal_parser.py`
+- [x] Write `mcp/tools/log_parsers/dvfs_opp_calc.py` (→ `compute_dvfs_efficiency`)
+- [x] Write `mcp/tools/log_parsers/suspend_resume_parser.py`
+- [x] Write `mcp/tools/log_parsers/pll_checker.py`
+- [x] Write `mcp/tools/log_parsers/power_island_scanner.py`
+- [x] Register all tools in `mcp/server.py` and `mcp/tools/safety_gate.py`
+- [x] Write 30 eval cases: `case_001.json` – `case_030.json`
 
-### M2.2 — `boot-debug-expert` ⬜
-- [ ] Write `skills/boot-debug-expert/skill.md` — anchor to: ARM CoreSight SoC-600 TRM (ADIv6), AMBA APB power sequencing spec, ARM latch-up prevention guidelines
-- [ ] Write `mcp/tools/log_parsers/pmic_log_parser.py` — voltage rail ramp events and sequence violations
-- [ ] Write `mcp/tools/log_parsers/pll_checker.py` — premature clock consumer access before PLL lock
-- [ ] Write `mcp/tools/log_parsers/power_island_scanner.py` — zombie power island states from `pm_domain` debug
-- [ ] Write ≥ 30 eval cases: wrong supply order, premature PLL access, isolation cell clamp mismatch, ADIv6 QDENY stuck, CoreSight trace link failure
+### M2.2 — `boot-debug-expert` ✅
+- [x] Write `skills/boot-debug-expert/skill.md`
+- [x] Write `mcp/tools/log_parsers/pmic_log_parser.py`
+- [x] Write 30 eval cases: `case_031.json` – `case_060.json`
 
-### M2.3 — `multimedia-camera-expert` ⬜
-- [ ] Write `skills/multimedia-camera-expert/skill.md` — anchor to: Linux V4L2 spec, DMA-BUF kernel docs, F2FS docs, MIPI CSI-2 open spec
-- [ ] Write `mcp/tools/log_parsers/v4l2_stats_parser.py` — buffer queue depth and overflow events
-- [ ] Write `mcp/tools/log_parsers/emmc_io_parser.py` — F2FS GC and checkpoint stalls from `iostat -x`
-- [ ] Write `mcp/tools/log_parsers/camera_hal_error_decoder.py` — Android Camera HAL3 error codes (≥ 100 AOSP-documented)
-- [ ] Write ≥ 30 eval cases: camera open fail, preview stutter, recording dropout, ISP pipeline stall
+### M2.3 — `multimedia-camera-expert` ✅
+- [x] Write `skills/multimedia-camera-expert/skill.md`
+- [x] Write `mcp/tools/log_parsers/v4l2_stats_parser.py`
+- [x] Write `mcp/tools/log_parsers/emmc_io_parser.py`
+- [x] Write `mcp/tools/log_parsers/camera_hal_error_decoder.py`
+- [x] Write 30 eval cases: `case_061.json` – `case_090.json`
 
-### M2.4 — `gpu-rendering-expert` ⬜
-- [ ] Write `skills/gpu-rendering-expert/skill.md` — anchor to: Android GPU Inspector docs, Perfetto GPU counters, OpenGL ES 3.x spec, Vulkan spec
-- [ ] Write `mcp/tools/log_parsers/perfetto_gpu_parser.py` — GPU task timeline and thermal throttling from Perfetto JSON trace
-- [ ] Write `mcp/tools/log_parsers/agp_parser.py` — Android GPU Inspector export: Draw Call count, Overdraw ratio, Fragment Shader ALU utilization
-- [ ] Write ≥ 30 eval cases: Overdraw > 3x, Draw Call CPU bottleneck, Fragment Shader memory bandwidth bound, GPU thermal throttle
+### M2.4 — `gpu-rendering-expert` ✅
+- [x] Write `skills/gpu-rendering-expert/skill.md`
+- [x] Write `mcp/tools/log_parsers/perfetto_gpu_parser.py`
+- [x] Write `mcp/tools/log_parsers/agp_parser.py`
+- [x] Write 30 eval cases: `case_091.json` – `case_120.json`
 
-### M2.5 — `interrupt-virtualization-expert` ⬜
-- [ ] Write `skills/interrupt-virtualization-expert/skill.md` — anchor to: ARM GIC-600 TRM, ARM GICv3/v4 Architecture Specification, Linux `irq` docs, KVM ARM vGIC documentation
-- [ ] Write `mcp/tools/log_parsers/irq_stat_parser.py` — `/proc/interrupts` snapshots, interrupt storm detection
-- [ ] Write `mcp/tools/log_parsers/vm_exit_counter.py` — VM Exit frequency from KVM perf events (`kvm:kvm_exit`)
-- [ ] Write `mcp/tools/log_parsers/its_validator.py` — ITS EventID→IntID→target CPU consistency from GIC debug register dump
-- [ ] Write ≥ 30 eval cases: List Register overflow, ITS table corruption, VM Exit storm, SGI cross-core latency regression
+### M2.5 — `interrupt-virtualization-expert` ✅
+- [x] Write `skills/interrupt-virtualization-expert/skill.md`
+- [x] Write `mcp/tools/log_parsers/irq_stat_parser.py`
+- [x] Write `mcp/tools/log_parsers/vm_exit_counter.py`
+- [x] Write `mcp/tools/log_parsers/its_validator.py`
+- [x] Write 30 eval cases: `case_121.json` – `case_150.json`
 
-### M2.6 — `hardware-spec-extractor` ⬜
-- [ ] Write `skills/hardware-spec-extractor/skill.md` — guides user through ingestion workflow: which files to provide, what the tool extracts, how to verify before graph write
-- [ ] Extend `mcp/tools/spec_extractor/ipxact_parser.py` for Accellera IP-XACT 2022 (component/design/busInterface hierarchy)
-- [ ] Write `mcp/tools/spec_extractor/graph_diff_writer.py` — idempotent Kuzu write (skip existing nodes)
-- [ ] Write output validation: JSON schema check before any graph write
-- [ ] Write ≥ 30 eval cases: IP-XACT round-trip accuracy, malformed XML recovery, duplicate detection, batch import
+### M2.6 — `hardware-spec-extractor` ✅
+- [x] Write `skills/hardware-spec-extractor/skill.md`
+- [x] `mcp/tools/spec_extractor/ipxact_parser.py` covers IP-XACT 2022 + 2014
+- [x] Write `mcp/tools/spec_extractor/graph_diff_writer.py` — idempotent Kuzu write + `validate_spec_dict()`
+- [x] Write 30 eval cases: `case_151.json` – `case_180.json`
 
-### M2.7 — Tool Safety Framework ✅ (safety_gate.py done; unit tests pending)
+### M2.7 — Tool Safety Framework ✅
 - [x] Write `mcp/tools/safety_gate.py` — READ_ONLY / CONFIG / DESTRUCTIVE classification
 - [x] Enforce in MCP server: DESTRUCTIVE tools refuse without approval flag
-- [ ] Write pytest unit tests for safety gate covering all three risk levels
+- [x] Write `tests/test_safety_gate.py` — 82 pytest unit tests, all passing
 
 **Phase 2 Exit Criteria:**
-- [ ] Each skill registered and invocable via `/skill-name` in Claude Code CLI and VS Code
-- [ ] Each skill passes ≥ 30 eval cases with human expert score ≥ 4/5
-- [ ] MCP tool-calling success rate ≥ 90%
-- [ ] Safety gate unit tests pass
+- [x] Each skill registered and invocable via `/skill-name` in Claude Code CLI and VS Code
+- [ ] Each skill passes ≥ 30 eval cases with human expert score ≥ 4/5 (pending human review)
+- [ ] MCP tool-calling success rate ≥ 90% (pending integration test)
+- [x] Safety gate unit tests pass (82 tests)
 
 ---
 

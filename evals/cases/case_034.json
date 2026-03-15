@@ -1,0 +1,7 @@
+{
+  "id": "case_034",
+  "skill": "boot-debug-expert",
+  "input": "OpenOCD reports 'QDENY asserted, cannot access debug registers' when connecting to the CoreSight DAP. The SoC is running TF-A BL31. The ADIv6 QDENY signal prevents the debugger from issuing AP transactions. What controls the QDENY signal in ADIv6 and how do I clear it to regain CoreSight access?",
+  "expected_topics": ["ADIv6", "QDENY", "CoreSight", "DAP", "debug"],
+  "min_score": 3
+}

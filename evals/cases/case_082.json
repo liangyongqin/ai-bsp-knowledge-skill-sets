@@ -1,0 +1,7 @@
+{
+  "id": "case_082",
+  "skill": "multimedia-camera-expert",
+  "input": "Setting gain and exposure via v4l2-ctl --set-ctrl analog_gain=512,exposure=10000 returns success, but the captured frames show no change in brightness. The controls are listed by v4l2-ctl --list-ctrls. How do I verify V4L2 control writes actually reach the sensor?",
+  "expected_topics": ["V4L2", "control", "gain", "exposure", "I2C"],
+  "min_score": 4
+}

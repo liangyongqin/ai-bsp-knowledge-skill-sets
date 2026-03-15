@@ -1,0 +1,7 @@
+{
+  "id": "case_044",
+  "skill": "boot-debug-expert",
+  "input": "BL1 DRAM training fails with 'DDR PHY: read leveling failed for byte lane 2'. The failure is reproducible at room temperature on all boards. The DQ byte lane 2 routing on the PCB was found to have a 400 ps additional trace delay versus other lanes. How does DRAM read leveling work and what margin does the PHY have for skew compensation?",
+  "expected_topics": ["DRAM training", "BL1", "read leveling", "PHY", "LPDDR5"],
+  "min_score": 3
+}

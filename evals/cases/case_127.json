@@ -1,0 +1,7 @@
+{
+  "id": "case_127",
+  "skill": "interrupt-virtualization-expert",
+  "input": "All device interrupts are handled on CPU0. cat /proc/irq/*/smp_affinity_list shows all lines read '0'. The system has 8 CPUs. Performance is poor and CPU0 is saturated while CPU1-7 are idle. How do I redistribute IRQ affinity and what is the right way to set smp_affinity_list to spread load?",
+  "expected_topics": ["IRQ affinity", "smp_affinity_list", "CPU0", "irqbalance", "GIC"],
+  "min_score": 4
+}

@@ -1,0 +1,7 @@
+{
+  "id": "case_173",
+  "skill": "hardware-spec-extractor",
+  "input": "A register has several bits marked as 'reserved' (RES0 or RES1 per ARM convention). The extractor skips reserved fields entirely. A driver reviewer wants to verify that the driver masks off reserved bits before writing. How should the extractor represent reserved fields in the graph, and what access_type or annotation convention should be used for RES0 vs RES1?",
+  "expected_topics": ["reserved field", "RES0", "RES1", "register", "access type"],
+  "min_score": 4
+}

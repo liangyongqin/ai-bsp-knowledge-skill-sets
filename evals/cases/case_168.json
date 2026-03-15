@@ -1,0 +1,7 @@
+{
+  "id": "case_168",
+  "skill": "hardware-spec-extractor",
+  "input": "An IP-XACT file uses a design element with componentRef elements to instantiate sub-components. The extractor only processes the top-level component and ignores nested instantiations. A query for the sub-component registers returns nothing. How should the extractor resolve componentRef hierarchies and traverse IP-XACT design files to extract registers from all instantiated sub-components?",
+  "expected_topics": ["IP-XACT", "componentRef", "design", "hierarchy", "instantiation"],
+  "min_score": 4
+}

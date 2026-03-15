@@ -1,0 +1,7 @@
+{
+  "id": "case_109",
+  "skill": "gpu-rendering-expert",
+  "input": "After a sequence of glBindTexture and glTexImage2D calls, subsequent draw calls render incorrect geometry. The OpenGL ES driver seems to be in an inconsistent state. glGetError() returns GL_INVALID_OPERATION only after the problematic draw. How do I diagnose and recover from an OpenGL ES driver state machine issue?",
+  "expected_topics": ["OpenGL ES", "driver state", "glGetError", "texture binding", "state machine"],
+  "min_score": 3
+}

@@ -1,0 +1,7 @@
+{
+  "id": "case_112",
+  "skill": "gpu-rendering-expert",
+  "input": "GPU driver returns VK_ERROR_OUT_OF_DEVICE_MEMORY during vkAllocateMemory for a 512MB texture atlas. Total GPU-accessible memory is 4GB (unified). Other allocations total ~1.8GB. Why does GPU memory allocation fail with apparent headroom remaining and how do I diagnose GPU OOM?",
+  "expected_topics": ["GPU OOM", "memory allocation", "Vulkan", "fragmentation", "heap"],
+  "min_score": 4
+}

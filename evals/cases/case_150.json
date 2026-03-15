@@ -1,0 +1,7 @@
+{
+  "id": "case_150",
+  "skill": "interrupt-virtualization-expert",
+  "input": "Two IRQ chips each claim SPI 72. The system has a GPIO controller that maps GPIO lines to SPIs, and a secondary interrupt controller that also registers a handler for the same SPI line. During boot, request_irq() succeeds for both but at runtime one handler never fires. How does the Linux IRQ domain hierarchy work, what is the correct parent/child domain relationship, and how do I detect the duplicate claim?",
+  "expected_topics": ["IRQ domain", "hierarchy", "IRQ chip", "SPI", "parent domain"],
+  "min_score": 4
+}

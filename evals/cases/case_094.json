@@ -1,0 +1,7 @@
+{
+  "id": "case_094",
+  "skill": "gpu-rendering-expert",
+  "input": "During a 10-minute gaming session, GPU frequency drops from 800MHz to 400MHz and stays there even when the workload is heavy. dmesg: [ 612.3] devfreq: GPU thermal throttle, cur_temp=87C, target_freq=400MHz. Frame rate drops from 60fps to ~30fps. What is the correct approach to handle GPU thermal throttle?",
+  "expected_topics": ["thermal throttle", "GPU frequency", "devfreq", "temperature", "power"],
+  "min_score": 4
+}

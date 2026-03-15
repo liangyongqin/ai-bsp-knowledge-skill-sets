@@ -1,0 +1,7 @@
+{
+  "id": "case_129",
+  "skill": "interrupt-virtualization-expert",
+  "input": "A PCIe NVMe device has 4 MSI-X vectors. After setting IRQ affinity, all four vectors fire on CPU0 instead of being spread across CPUs 0-3. The MSI-X table entries look correct in lspci -vv. What steps do I take to verify the ITS MAPTI targets the right Redistributor for each CPU, and how does the ITS collection table factor in?",
+  "expected_topics": ["MSI-X", "ITS", "MAPTI", "Redistributor", "collection table"],
+  "min_score": 4
+}

@@ -1,0 +1,7 @@
+{
+  "id": "case_002",
+  "skill": "power-thermal-expert",
+  "input": "CPUidle statistics show the deepest C-state (C3) is never entered even when the system is fully idle. /sys/kernel/debug/cpuidle shows zero entries for state 3. The device has been idle for 30 seconds. What prevents C-state entry?",
+  "expected_topics": ["CPUidle", "C-state", "latency", "PM QoS", "idle"],
+  "min_score": 4
+}

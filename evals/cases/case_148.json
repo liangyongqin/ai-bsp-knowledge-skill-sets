@@ -1,0 +1,7 @@
+{
+  "id": "case_148",
+  "skill": "interrupt-virtualization-expert",
+  "input": "A driver uses nested interrupt handling: the top-half enables local IRQs to allow higher-priority interrupts, then calls a function that also runs with interrupts enabled. Under certain timing conditions the kernel stack overflows. What are the risks of nested interrupt handling on ARM64, what stack size is allocated for interrupt context, and how can lockdep or KASAN help detect the overflow?",
+  "expected_topics": ["nested interrupt", "stack overflow", "IRQ stack", "ARM64", "interrupt context"],
+  "min_score": 4
+}

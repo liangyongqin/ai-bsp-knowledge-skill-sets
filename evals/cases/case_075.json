@@ -1,0 +1,7 @@
+{
+  "id": "case_075",
+  "skill": "multimedia-camera-expert",
+  "input": "After switching eMMC to HS400 mode, write throughput is lower than HS200. dmesg shows: [ 3.456] mmc0: HS400 tuning failed, falling back to HS200. What are common causes of HS400 tuning failure and how does it affect camera recording write speed?",
+  "expected_topics": ["eMMC", "HS400", "tuning", "write throughput", "recording"],
+  "min_score": 3
+}

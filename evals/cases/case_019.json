@@ -1,0 +1,7 @@
+{
+  "id": "case_019",
+  "skill": "power-thermal-expert",
+  "input": "Screen-off idle current is 35 mA instead of the expected 8 mA. adb shell dumpsys power shows 'Wake lock count: 3'. Two are from system services. The third is from a third-party app. How do I identify zombie wake locks and force-release them for testing without modifying the app?",
+  "expected_topics": ["wakelock", "idle power", "dumpsys", "wake lock", "regression"],
+  "min_score": 4
+}

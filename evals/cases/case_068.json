@@ -1,0 +1,7 @@
+{
+  "id": "case_068",
+  "skill": "multimedia-camera-expert",
+  "input": "logcat shows: E Camera3-Device: processCaptureResult: CAMERA3_MSG_ERROR_DEVICE received, restarting camera session. This happens 30 seconds into a recording session. What are the likely causes and how do I get more diagnostics?",
+  "expected_topics": ["CAMERA3_MSG_ERROR_DEVICE", "HAL3", "camera session", "recovery", "fatal error"],
+  "min_score": 4
+}

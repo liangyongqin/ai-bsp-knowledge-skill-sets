@@ -1,0 +1,7 @@
+{
+  "id": "case_139",
+  "skill": "interrupt-virtualization-expert",
+  "input": "KVM perf report shows vmexit_mmio at 120,000 exits/sec. The guest is running a workload that polls a virtio status register. Overall guest throughput is 40% below bare metal. What tools and KVM tracepoints can I use to measure per-exit overhead, and what design patterns (IOEVENTFD, in-kernel emulation, vhost) can reduce MMIO exit rate?",
+  "expected_topics": ["VM Exit", "MMIO", "IOEVENTFD", "vhost", "KVM tracepoints"],
+  "min_score": 4
+}

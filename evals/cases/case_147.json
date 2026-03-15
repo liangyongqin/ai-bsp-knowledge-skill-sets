@@ -1,0 +1,7 @@
+{
+  "id": "case_147",
+  "skill": "interrupt-virtualization-expert",
+  "input": "After CPU hotplug removes and re-adds CPU5, IRQ affinity hints set by irq_set_affinity_hint() are no longer applied. IRQs that should prefer CPU5 are now spreading to other CPUs, causing cache locality degradation. What kernel mechanism is responsible for re-applying affinity hints after CPU hotplug events and how do I debug the missed re-application?",
+  "expected_topics": ["IRQ affinity hint", "CPU hotplug", "irq_set_affinity_hint", "migration", "IRQ"],
+  "min_score": 3
+}

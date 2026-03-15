@@ -1,0 +1,7 @@
+{
+  "id": "case_041",
+  "skill": "boot-debug-expert",
+  "input": "A clock consumer driver in BL2 calls the SPI clock enable register before the PLL driving it has locked. The SPI controller gets an unstable clock and corrupts DRAM training data. dmesg shows no error but DRAM ECC errors appear later in the boot. How do I enforce clock consumer ordering relative to PLL readiness in bootloader code?",
+  "expected_topics": ["clock", "PLL", "consumer", "ordering", "boot"],
+  "min_score": 4
+}

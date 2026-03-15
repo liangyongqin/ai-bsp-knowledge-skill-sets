@@ -1,0 +1,7 @@
+{
+  "id": "case_149",
+  "skill": "interrupt-virtualization-expert",
+  "input": "We are trying to use GICv4.1 vSGI direct injection to deliver SGIs to a VM without a VM exit. CONFIG_ARM_GIC_V4_1=y is set. The ITS VSGI command sequence was not programmed. Guest SGIs still cause VM exits visible in KVM stats. What additional ITS commands and vPE configuration are required for GICv4.1 vSGI direct injection compared to GICv4 LPI injection?",
+  "expected_topics": ["GICv4.1", "vSGI", "direct injection", "ITS", "vPE"],
+  "min_score": 4
+}

@@ -1,0 +1,7 @@
+{
+  "id": "case_179",
+  "skill": "hardware-spec-extractor",
+  "input": "I ran ingest_custom.py for a new SoC's UART register map. Before injecting I want to check if any Register nodes with the same name and component already exist in the graph to avoid silent overwrites. What Kuzu query do I run to detect pre-existing duplicate nodes, and what does the upsert_node helper do when the primary key already exists?",
+  "expected_topics": ["duplicate", "Register", "upsert_node", "Kuzu", "query"],
+  "min_score": 4
+}

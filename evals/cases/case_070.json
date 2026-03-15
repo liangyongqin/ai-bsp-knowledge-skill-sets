@@ -1,0 +1,7 @@
+{
+  "id": "case_070",
+  "skill": "multimedia-camera-expert",
+  "input": "3A (AE/AWB/AF) algorithm crashes with: Fatal signal 11 (SIGSEGV) in libcamera3hal.so. The crash address is inside the stats buffer parsing loop. stats_buf->meta_addr is 0x0. What causes stats buffer misalignment and how do I trace it?",
+  "expected_topics": ["3A", "stats buffer", "misalignment", "SIGSEGV", "AE"],
+  "min_score": 4
+}

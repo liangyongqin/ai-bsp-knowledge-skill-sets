@@ -1,0 +1,7 @@
+{
+  "id": "case_040",
+  "skill": "boot-debug-expert",
+  "input": "BL1 log shows 'Main PLL lock failed: status=0x0 after 2 ms poll'. The PLL is supplied by VDDPLL at 0.8V. The oscilloscope confirms VDDPLL is at the correct voltage. The reference clock input (26 MHz XTAL) measures correct frequency and amplitude. What else could cause a PLL lock timeout at boot and how do I narrow it down?",
+  "expected_topics": ["PLL", "lock timeout", "boot", "clock", "BL1"],
+  "min_score": 3
+}

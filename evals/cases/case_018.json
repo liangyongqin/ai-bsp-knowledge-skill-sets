@@ -1,0 +1,7 @@
+{
+  "id": "case_018",
+  "skill": "power-thermal-expert",
+  "input": "The PMIC event log shows repeated OCP (overcurrent protection) events on the VDD_GPU rail during a machine learning inference workload. The rail is rated for 3A but the OCP threshold is set to 2.5A in the PMIC register. The workload peak current measured at 2.7A. How do I safely adjust the OCP threshold and verify it does not mask real faults?",
+  "expected_topics": ["OCP", "overcurrent", "PMIC", "regulator", "current limit"],
+  "min_score": 4
+}

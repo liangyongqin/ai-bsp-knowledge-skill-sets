@@ -1,0 +1,7 @@
+{
+  "id": "case_080",
+  "skill": "multimedia-camera-expert",
+  "input": "DMA-BUF PRIME fd export fails with -EINVAL when the ISP tries to share a buffer with a DSP using ion_share_dma_buf_fd(). The ISP heap is CMA and the DSP heap is IOMMU-mapped SRAM. What causes incompatible heap export failure?",
+  "expected_topics": ["DMA-BUF", "PRIME", "heap", "export", "CMA"],
+  "min_score": 3
+}

@@ -1,0 +1,7 @@
+{
+  "id": "case_023",
+  "skill": "power-thermal-expert",
+  "input": "A benchmark harness sets /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor to performance for all CPUs before running tests. After the benchmark finishes the governor is not restored. The device stays in performance mode overnight. How does DVFS performance mode override interact with power saving and what is the correct way to scope it to a test session?",
+  "expected_topics": ["DVFS", "performance mode", "CPUFreq", "governor", "power saving"],
+  "min_score": 4
+}

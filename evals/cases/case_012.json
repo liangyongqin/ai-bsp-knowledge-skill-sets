@@ -1,0 +1,7 @@
+{
+  "id": "case_012",
+  "skill": "power-thermal-expert",
+  "input": "The CPUFreq governor (schedutil) is stuck at 614 MHz even under high load. /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq reports 614400. The load average is 3.5. How do I debug why the governor is not scaling up?",
+  "expected_topics": ["CPUFreq", "governor", "schedutil", "scaling", "frequency"],
+  "min_score": 4
+}

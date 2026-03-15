@@ -1,0 +1,7 @@
+{
+  "id": "case_097",
+  "skill": "gpu-rendering-expert",
+  "input": "GPU crashes with a page fault. dmesg: [ 789.123] gpu-mmu: page fault at iova=0xdeadbeef000, context=render, access=read. The fault address matches a GEM buffer that was closed by the CPU before the GPU finished rendering. How do I debug GPU page faults caused by use-after-free GEM buffers?",
+  "expected_topics": ["GPU page fault", "GEM", "use-after-free", "IOMMU", "fence"],
+  "min_score": 4
+}

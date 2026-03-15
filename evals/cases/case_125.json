@@ -1,0 +1,7 @@
+{
+  "id": "case_125",
+  "skill": "interrupt-virtualization-expert",
+  "input": "We enabled GICv4 LPI direct injection to skip the VM exit on LPI delivery. The kernel config has CONFIG_ARM_GIC_V4=y and the ITS has vPE mapping programmed. But interrupts still cause VM exits visible in KVM stats. VMOVP and VMAPP were issued. What else could prevent GICv4 direct injection from working?",
+  "expected_topics": ["GICv4", "LPI", "direct injection", "VMAPP", "vPE"],
+  "min_score": 4
+}

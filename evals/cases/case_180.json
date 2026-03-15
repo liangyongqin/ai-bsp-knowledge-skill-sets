@@ -1,0 +1,7 @@
+{
+  "id": "case_180",
+  "skill": "hardware-spec-extractor",
+  "input": "After running ingest_custom.py for a PCIe controller IP-XACT file, how do I confirm the write was successful? What specific Kuzu queries should I run to verify the Component node exists, the expected number of Register nodes were created under the correct namespace, and at least one relationship was written? Provide concrete example query patterns.",
+  "expected_topics": ["graph write", "verification", "Kuzu", "query", "namespace"],
+  "min_score": 4
+}

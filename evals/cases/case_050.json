@@ -1,0 +1,7 @@
+{
+  "id": "case_050",
+  "skill": "boot-debug-expert",
+  "input": "The secondary CPUs (CPU1-CPU7) are not coming online. dmesg shows 'CPU1: failed to come online' for each. The spin-table is used for secondary CPU release. The spin-table address in the device tree is 0x40000000 but the actual spin-table was placed at 0x40001000 by the bootloader. How does the spin-table mechanism work and how do I verify the secondary CPU release address matches between firmware and device tree?",
+  "expected_topics": ["secondary CPU", "spin-table", "affinity", "device tree", "CPU online"],
+  "min_score": 4
+}

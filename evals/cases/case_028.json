@@ -1,0 +1,7 @@
+{
+  "id": "case_028",
+  "skill": "power-thermal-expert",
+  "input": "After STR resume the display subsystem fails to initialize with 'mipi_dsi: panel power-on failed'. Investigation shows the VDDI power domain isolation cell was de-asserted but the power rail was not yet stable when the DSI controller attempted to access the panel. How does the kernel power domain framework coordinate isolation cell release with rail ramp-up?",
+  "expected_topics": ["power domain", "isolation cell", "resume", "STR", "regulator"],
+  "min_score": 3
+}

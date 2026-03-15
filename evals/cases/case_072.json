@@ -1,0 +1,7 @@
+{
+  "id": "case_072",
+  "skill": "multimedia-camera-expert",
+  "input": "Sensor I2C probe fails intermittently in the lab but not on the bench. dmesg: [ 5.123] imx766 2-001a: i2c read failed: addr=0x0016 err=-5. Schematic shows AVDD rail is shared with another device. How do I determine if AVDD or MCLK sequencing is the cause?",
+  "expected_topics": ["AVDD", "MCLK", "power sequence", "I2C", "sensor probe"],
+  "min_score": 4
+}

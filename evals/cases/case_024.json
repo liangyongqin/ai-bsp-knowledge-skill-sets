@@ -1,0 +1,7 @@
+{
+  "id": "case_024",
+  "skill": "power-thermal-expert",
+  "input": "The GPU thermal zone reaches 90°C and triggers the passive cooling action, but /sys/class/thermal/thermal_zone2/cdev0 shows no cooling device bound. The device tree has a cooling-maps node but the GPU driver does not call thermal_cooling_device_register. How do I register a thermal cooling device and bind it to an existing thermal zone?",
+  "expected_topics": ["thermal cooling device", "register", "thermal zone", "cooling-maps", "device tree"],
+  "min_score": 4
+}

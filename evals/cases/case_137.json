@@ -1,0 +1,7 @@
+{
+  "id": "case_137",
+  "skill": "interrupt-virtualization-expert",
+  "input": "Two drivers share IRQ 56 (IRQF_SHARED). Under load, driver B's handler is called but the interrupt was actually for driver A. Driver B checks its status register, sees nothing pending, and should return IRQ_NONE. However, it always returns IRQ_HANDLED. What is the impact of incorrectly returning IRQ_HANDLED in a shared IRQ handler and how do I identify which driver is misbehaving?",
+  "expected_topics": ["IRQF_SHARED", "IRQ_HANDLED", "IRQ_NONE", "shared IRQ", "handler"],
+  "min_score": 4
+}

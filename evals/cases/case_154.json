@@ -1,0 +1,7 @@
+{
+  "id": "case_154",
+  "skill": "hardware-spec-extractor",
+  "input": "I need to import register maps for five IPs at once: GIC-600, SMMU-600, Cortex-A55, Mali-G77, and a custom audio DSP. Each has its own IP-XACT file. What is the correct batch import workflow, how do I ensure each component gets the right namespace, and how do I verify all five were written to the graph without duplicates or collisions?",
+  "expected_topics": ["batch import", "IP-XACT", "namespace", "component", "knowledge graph"],
+  "min_score": 4
+}

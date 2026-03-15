@@ -1,0 +1,7 @@
+{
+  "id": "case_151",
+  "skill": "hardware-spec-extractor",
+  "input": "I imported a GIC-600 register map from an IP-XACT 2022 file into the knowledge graph and then re-exported it back to IP-XACT. When I diff the original and the re-exported file, several register addressOffsets and field bitRanges are different. How do I verify round-trip accuracy and what are the most common sources of loss during IP-XACT parse and re-export?",
+  "expected_topics": ["IP-XACT", "round-trip", "addressOffset", "bitRange", "register"],
+  "min_score": 4
+}

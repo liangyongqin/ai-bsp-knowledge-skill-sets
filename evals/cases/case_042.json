@@ -1,0 +1,7 @@
+{
+  "id": "case_042",
+  "skill": "boot-debug-expert",
+  "input": "After power-domain bring-up debugging, a test power domain (VDDCSI) was enabled and never disabled. The domain remains powered through subsequent boot cycles. Power measurement shows +85 mW unexplained idle consumption. How do I audit power domains left active after bring-up debug sessions and correctly disable zombie domains?",
+  "expected_topics": ["power domain", "zombie", "power island", "bring-up", "disable"],
+  "min_score": 4
+}

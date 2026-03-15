@@ -1,0 +1,7 @@
+{
+  "id": "case_037",
+  "skill": "boot-debug-expert",
+  "input": "U-Boot boots and prints the board ID line but then hangs with 'Unhandled exception (EL3): ESR_EL3=0x96000050'. No further output. The exception occurs in the U-Boot SPL DRAM init code. How do I decode an ARM exception syndrome register value and map it to the failing instruction?",
+  "expected_topics": ["U-Boot", "exception", "ESR", "bootloader", "hang"],
+  "min_score": 4
+}

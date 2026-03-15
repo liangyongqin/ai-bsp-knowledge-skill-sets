@@ -1,0 +1,7 @@
+{
+  "id": "case_001",
+  "skill": "power-thermal-expert",
+  "input": "Our OPP table for the big cluster tops out at 2.6 GHz but the SoC TRM shows 2.8 GHz is supported. I added the 2800000 kHz entry with a voltage of 900 mV but the system crashes under sustained load. How do I diagnose the voltage margin issue?",
+  "expected_topics": ["OPP", "voltage margin", "DVFS", "cpufreq", "regulator"],
+  "min_score": 4
+}

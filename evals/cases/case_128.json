@@ -1,0 +1,7 @@
+{
+  "id": "case_128",
+  "skill": "interrupt-virtualization-expert",
+  "input": "We programmed ITS MAPTI to map an EventID to an LPI IntID and a vPE. No ITS SYNC command was issued afterward. The MSI fires but the interrupt does not reach the guest. The ITS command queue shows no errors. How does the missing SYNC affect LPI mapping commit, and what is the correct completion sequence?",
+  "expected_topics": ["ITS", "SYNC", "MAPTI", "command queue", "LPI"],
+  "min_score": 4
+}

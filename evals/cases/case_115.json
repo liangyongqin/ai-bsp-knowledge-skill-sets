@@ -1,0 +1,7 @@
+{
+  "id": "case_115",
+  "skill": "gpu-rendering-expert",
+  "input": "After the GPU has been idle for 50ms, the first frame after activity resumes takes 8ms longer than steady state. GPU devfreq shows the GPU powers back up and ramps frequency within 3ms, but there is still a 5ms latency before first pixel output. What causes GPU clock gating wake latency and how do I tune it?",
+  "expected_topics": ["clock gating", "GPU wake latency", "power gating", "devfreq", "idle"],
+  "min_score": 4
+}

@@ -1,0 +1,7 @@
+{
+  "id": "case_074",
+  "skill": "multimedia-camera-expert",
+  "input": "During video recording to F2FS partition, there is a 300-500ms gap in the output file every few minutes. dmesg shows: [ 892.001] f2fs: GC triggered, segments=128, free_blocks=512. How does F2FS garbage collection cause recording gaps and what tunables help?",
+  "expected_topics": ["F2FS", "GC", "garbage collection", "recording gap", "storage"],
+  "min_score": 4
+}

@@ -1,0 +1,7 @@
+{
+  "id": "case_111",
+  "skill": "gpu-rendering-expert",
+  "input": "Frame pacing analysis shows frame intervals of alternating 10ms and 22ms instead of a steady 16.67ms at 60fps. The app submits frames at a constant 60fps cadence. Choreographer vsync callbacks are regular. What causes frame pacing jitter (uneven vsync delivery) at the display level?",
+  "expected_topics": ["frame pacing", "vsync", "jitter", "choreographer", "display"],
+  "min_score": 4
+}

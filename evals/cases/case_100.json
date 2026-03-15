@@ -1,0 +1,7 @@
+{
+  "id": "case_100",
+  "skill": "gpu-rendering-expert",
+  "input": "Vertex shader stage is the GPU bottleneck. The scene has 2M triangles per frame with complex per-vertex skinning (8 bone influences). GPU utilization shows vertex stage at 95% while fragment stage is 30%. How do I profile and optimize a vertex shader bottleneck?",
+  "expected_topics": ["vertex shader", "bottleneck", "geometry", "skinning", "GPU"],
+  "min_score": 4
+}

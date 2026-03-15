@@ -1,0 +1,7 @@
+{
+  "id": "case_043",
+  "skill": "boot-debug-expert",
+  "input": "A new board variant has the CPU reset vector remapped to 0xFFFF0000 instead of the expected 0x00000000. BL1 starts executing garbage instructions because the ROM is mapped at 0x00000000. The boot strap pins controlling reset vector selection are identified in the schematic. How do I verify the reset vector on a running system and correct it without re-spinning hardware?",
+  "expected_topics": ["reset vector", "CPU", "boot", "ROM", "address"],
+  "min_score": 3
+}

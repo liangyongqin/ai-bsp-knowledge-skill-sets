@@ -1,0 +1,7 @@
+{
+  "id": "case_164",
+  "skill": "hardware-spec-extractor",
+  "input": "A PDF TRM uses a two-column layout: the left column has the field name and bit positions, the right column has the field description. Standard PDF text extraction merges both columns into a single interleaved stream, making it impossible to associate field names with descriptions correctly. How should the extractor handle multi-column register tables in PDFs?",
+  "expected_topics": ["PDF", "multi-column", "table", "extraction", "field"],
+  "min_score": 4
+}

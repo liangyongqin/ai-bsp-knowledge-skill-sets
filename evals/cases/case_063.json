@@ -1,0 +1,7 @@
+{
+  "id": "case_063",
+  "skill": "multimedia-camera-expert",
+  "input": "Video recording shows occasional 1-2 frame dropouts roughly every 30 seconds. logcat shows: E CameraHAL: buffer underrun in encoder input queue, dropping frame. What should I investigate?",
+  "expected_topics": ["buffer underrun", "encoder", "queue", "recording", "frame drop"],
+  "min_score": 4
+}

@@ -1,0 +1,7 @@
+{
+  "id": "case_022",
+  "skill": "power-thermal-expert",
+  "input": "The EAS energy model in the device tree shows capacity-dmips-mhz = <1024> for the big core and <512> for the little core, but the values computed at runtime by the kernel (visible in /proc/cpuinfo via BogoMIPS and the schedutil capacity tables) differ significantly. How does the kernel reconcile device tree DMIPS values with runtime capacity measurements and what causes a mismatch?",
+  "expected_topics": ["EAS", "energy model", "device tree", "capacity", "DMIPS"],
+  "min_score": 3
+}

@@ -1,0 +1,7 @@
+{
+  "id": "case_132",
+  "skill": "interrupt-virtualization-expert",
+  "input": "SPI interrupt IRQ 32 is level-triggered and connected to a GPIO controller. The interrupt fires and the handler runs but the handler does not clear the GPIO latch before returning. /proc/interrupts shows the count incrementing continuously at tens of thousands per second. How do I confirm the handler is not clearing the source and what is the correct fix for a level-triggered SPI stuck high?",
+  "expected_topics": ["SPI", "level-triggered", "interrupt handler", "GPIO", "GIC"],
+  "min_score": 4
+}

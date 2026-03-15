@@ -1,0 +1,7 @@
+{
+  "id": "case_021",
+  "skill": "power-thermal-expert",
+  "input": "We are using CPU hotplug to offline CPU4-CPU7 (the big cluster) when the device is plugged in to reduce heat. After offlining, the idle power is higher than with all CPUs online. Profiling shows the remaining little cores are running at a higher frequency than before. How does CPU hotplug interact with EAS and CPUFreq to cause this power imbalance?",
+  "expected_topics": ["CPU hotplug", "power imbalance", "EAS", "CPUFreq", "cluster"],
+  "min_score": 3
+}

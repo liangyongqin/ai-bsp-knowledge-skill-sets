@@ -1,0 +1,7 @@
+{
+  "id": "case_177",
+  "skill": "hardware-spec-extractor",
+  "input": "A PDF register table has a 'Description' column where the text for register GIC_CTRL is truncated mid-sentence because the cell ran out of space. The remainder of the description is split across the next two rows in the same column. The extractor treats each row as a separate field and creates wrong field entries. How should the extractor detect and merge truncated description rows?",
+  "expected_topics": ["PDF", "truncated", "description", "table", "merge"],
+  "min_score": 4
+}

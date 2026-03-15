@@ -1,0 +1,7 @@
+{
+  "id": "case_175",
+  "skill": "hardware-spec-extractor",
+  "input": "A new BSP engineer wants to add register knowledge from a vendor PDF to the knowledge graph. They have never used the tool before. What files do they need to prepare, what command do they run, what arguments are required vs optional, and what is the expected output that confirms the ingestion was successful?",
+  "expected_topics": ["ingestion", "workflow", "ingest_custom", "PDF", "command"],
+  "min_score": 4
+}

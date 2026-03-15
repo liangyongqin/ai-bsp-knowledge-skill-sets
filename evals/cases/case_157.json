@@ -1,0 +1,7 @@
+{
+  "id": "case_157",
+  "skill": "hardware-spec-extractor",
+  "input": "After importing a UART register map, a query reveals two registers at overlapping addresses: UART_DR at 0x000 and UART_RSR at 0x000 (both at offset 0). The spec says these are aliases (read vs write variants). The graph treats them as two separate nodes with overlapping addresses. How does the extractor detect address overlap, and when is overlap legitimate (aliases) vs a genuine error?",
+  "expected_topics": ["register", "address overlap", "alias", "detection", "validation"],
+  "min_score": 4
+}

@@ -1,0 +1,7 @@
+{
+  "id": "case_029",
+  "skill": "power-thermal-expert",
+  "input": "The schedutil governor is configured with rate_limit_us = 1000 µs. Under a bursty workload that ramps in under 500 µs, the governor cannot respond fast enough and the CPU under-clocks for the burst duration. Reducing rate_limit_us to 100 µs fixes performance but increases scheduler overhead. How do I characterize the right rate_limit_us for a given workload profile?",
+  "expected_topics": ["schedutil", "rate_limit_us", "latency", "CPUFreq", "governor"],
+  "min_score": 4
+}

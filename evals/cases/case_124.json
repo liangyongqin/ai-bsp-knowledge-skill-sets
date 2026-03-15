@@ -1,0 +1,7 @@
+{
+  "id": "case_124",
+  "skill": "interrupt-virtualization-expert",
+  "input": "We are measuring IPI round-trip latency in a big.LITTLE system. SGI from a big core to a LITTLE core shows 4 µs average, but SGI between two LITTLE cores shows only 0.8 µs. We suspected cache coherency but the interconnect team says it should be symmetric. What GIC-600 SGI path factors could explain the cross-cluster latency regression?",
+  "expected_topics": ["SGI", "GIC-600", "latency", "cluster", "Redistributor"],
+  "min_score": 4
+}

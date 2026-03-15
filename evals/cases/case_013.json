@@ -1,0 +1,7 @@
+{
+  "id": "case_013",
+  "skill": "power-thermal-expert",
+  "input": "On our big.LITTLE SoC the EAS scheduler is not migrating a heavy thread from a LITTLE core to a big core even though the LITTLE core is at 100% utilization. The big cores are all idle. What conditions must be met for a cluster migration to occur and how do I verify each condition?",
+  "expected_topics": ["big.LITTLE", "EAS", "cluster migration", "utilization", "scheduler"],
+  "min_score": 4
+}

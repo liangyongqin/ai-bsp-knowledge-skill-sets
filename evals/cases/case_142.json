@@ -1,0 +1,7 @@
+{
+  "id": "case_142",
+  "skill": "interrupt-virtualization-expert",
+  "input": "LPIs for a PCIe device are routed to CPU2. After profiling, we find the ITS MAPC collection table entry for collection 2 points to the Redistributor base address of CPU3 instead of CPU2. The interrupt is delivered to CPU3 unexpectedly. How do I verify which Redistributor address MAPC maps to each collection, and what is the correct MAPC programming procedure?",
+  "expected_topics": ["ITS", "MAPC", "collection table", "Redistributor", "LPI"],
+  "min_score": 4
+}

@@ -1,0 +1,7 @@
+{
+  "id": "case_162",
+  "skill": "hardware-spec-extractor",
+  "input": "An IP-XACT register has no resetValue element. The extractor stores None for reset_value. Later a driver-spec review script flags all registers with reset_value == 0xDEADBEEF as 'unknown reset'. What default value convention should the extractor use for missing resetValue, and how should this be distinguished from a genuine 0x00000000 reset value in the graph?",
+  "expected_topics": ["reset value", "IP-XACT", "register", "default", "validation"],
+  "min_score": 3
+}

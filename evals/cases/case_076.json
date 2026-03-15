@@ -1,0 +1,7 @@
+{
+  "id": "case_076",
+  "skill": "multimedia-camera-expert",
+  "input": "logcat shows: E CameraHAL3: processCaptureResult: CAMERA3_MSG_ERROR_RESULT for request 422, partial metadata missing. The result callback has no AE_STATE or AWB_STATE keys. What does this error mean and what triggers missing metadata?",
+  "expected_topics": ["CAMERA3_MSG_ERROR_RESULT", "metadata", "HAL3", "partial result", "AE_STATE"],
+  "min_score": 4
+}

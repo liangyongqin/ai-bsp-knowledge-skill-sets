@@ -1,0 +1,7 @@
+{
+  "id": "case_136",
+  "skill": "interrupt-virtualization-expert",
+  "input": "We set IRQ affinity for SPI 45 to CPU6. CPU6 is then hot-unplugged for thermal reasons. From that point on IRQ 45 is never serviced and the device hangs. /proc/irq/45/smp_affinity_list still shows 6. How should the kernel migrate interrupts during CPU hotplug and what driver or platform code is responsible for handling this correctly?",
+  "expected_topics": ["IRQ affinity", "CPU hotplug", "offline CPU", "migration", "GIC"],
+  "min_score": 4
+}

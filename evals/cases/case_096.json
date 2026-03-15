@@ -1,0 +1,7 @@
+{
+  "id": "case_096",
+  "skill": "gpu-rendering-expert",
+  "input": "DRM atomic commit fails with: kernel: [drm:drm_atomic_commit] *ERROR* [PLANE:31:plane-3] format DRM_FORMAT_ABGR2101010 not supported by CRTC. Display shows black. How do I diagnose DRM plane format unsupported errors and determine what formats a CRTC accepts?",
+  "expected_topics": ["DRM", "atomic commit", "plane", "format", "CRTC"],
+  "min_score": 4
+}

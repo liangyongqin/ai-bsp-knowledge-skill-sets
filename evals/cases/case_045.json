@@ -1,0 +1,7 @@
+{
+  "id": "case_045",
+  "skill": "boot-debug-expert",
+  "input": "Secure boot is enabled. BL2 fails with 'BL33 authentication failed: ROTPK hash mismatch'. The BL33 binary was signed with the correct key according to the build log. The ROTPK fuse was programmed last week. What are the possible causes of a TrustZone authentication failure even when the correct signing key is used?",
+  "expected_topics": ["secure boot", "TrustZone", "authentication", "ROTPK", "BL33"],
+  "min_score": 4
+}

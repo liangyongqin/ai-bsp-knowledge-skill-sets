@@ -1,0 +1,7 @@
+{
+  "id": "case_108",
+  "skill": "gpu-rendering-expert",
+  "input": "Vulkan validation layers report: VUID-VkSubpassDependency-srcStageMask-00860: srcStageMask must include VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT. Rendering to a texture and then sampling it in the next subpass produces incorrect results (stale data). How do I correctly specify render pass subpass dependencies in Vulkan?",
+  "expected_topics": ["Vulkan", "render pass", "subpass dependency", "pipeline barrier", "synchronization"],
+  "min_score": 4
+}

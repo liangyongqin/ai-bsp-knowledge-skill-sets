@@ -1,0 +1,7 @@
+{
+  "id": "case_122",
+  "skill": "interrupt-virtualization-expert",
+  "input": "We are bringing up PCIe MSI in a KVM guest. The guest driver issues MAPTI to the ITS before MAPD has been issued for the same DeviceID. The MSI fires but the interrupt is never delivered. ITS error log shows: ITS: Command queue error on MAPTI — device not mapped. What is the correct ITS command sequence and how do we recover?",
+  "expected_topics": ["ITS", "MAPD", "MAPTI", "command queue", "DeviceID"],
+  "min_score": 4
+}

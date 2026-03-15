@@ -1,0 +1,7 @@
+{
+  "id": "case_053",
+  "skill": "boot-debug-expert",
+  "input": "UART console output is absent. The board has a dedicated UART console port. The PMIC powers on, the SoC starts (GPIO activity visible on logic analyzer), but no characters appear on the terminal. The UART clock source is UART_CLK derived from the main PLL. Pinmux is set by U-Boot. How do I systematically debug a missing UART console during early boot?",
+  "expected_topics": ["UART", "console", "clock", "pinmux", "boot"],
+  "min_score": 4
+}

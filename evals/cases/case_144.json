@@ -1,0 +1,7 @@
+{
+  "id": "case_144",
+  "skill": "interrupt-virtualization-expert",
+  "input": "A GPIO driver uses edge-triggered interrupts. If the GPIO line transitions while the handler is executing, the edge is not latched and the interrupt is silently missed. The device state has changed but the driver never sees the second event. What is the correct pattern to handle re-entrant edge-triggered interrupts in Linux, and how does the GIC pending state interact with this?",
+  "expected_topics": ["edge-triggered", "pending", "re-entrant", "GIC", "interrupt handler"],
+  "min_score": 4
+}

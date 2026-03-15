@@ -1,0 +1,7 @@
+{
+  "id": "case_126",
+  "skill": "interrupt-virtualization-expert",
+  "input": "System is unresponsive and /proc/interrupts shows IRQ 47 (eth0) at 58,000 interrupts/sec and climbing. The driver's NAPI poll is running but rx_dropped counter keeps increasing. CPU0 is at 100%. How do I confirm this is a true interrupt storm, find the root cause, and stop it without crashing the system?",
+  "expected_topics": ["interrupt storm", "NAPI", "IRQ", "/proc/interrupts", "affinity"],
+  "min_score": 4
+}

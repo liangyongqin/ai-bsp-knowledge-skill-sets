@@ -1,0 +1,7 @@
+{
+  "id": "case_071",
+  "skill": "multimedia-camera-expert",
+  "input": "GPU consumer reads ISP output via DMA-BUF and the image has a green tint only on the first frame after camera open. After the first frame it looks correct. Suspecting cache incoherency. How do I confirm and fix DMA-BUF cache flush issues between ISP and GPU?",
+  "expected_topics": ["DMA-BUF", "cache", "incoherency", "flush", "ISP"],
+  "min_score": 4
+}

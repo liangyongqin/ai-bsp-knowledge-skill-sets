@@ -1,0 +1,7 @@
+{
+  "id": "case_117",
+  "skill": "gpu-rendering-expert",
+  "input": "A Vulkan compute shader writes to a storage buffer in one dispatch and reads from it in a subsequent dispatch. Results are incorrect (stale data from the previous dispatch). A VkMemoryBarrier was added between dispatches but the issue persists. What barrier configuration is needed to correctly synchronize compute shader writes and reads?",
+  "expected_topics": ["compute shader", "barrier", "synchronization", "Vulkan", "memory dependency"],
+  "min_score": 4
+}

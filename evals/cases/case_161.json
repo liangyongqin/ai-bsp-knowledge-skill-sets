@@ -1,0 +1,7 @@
+{
+  "id": "case_161",
+  "skill": "hardware-spec-extractor",
+  "input": "An IP-XACT file uses both addressOffset (relative to the memoryMap base) and baseAddress (the memoryMap's base address). My extractor reads addressOffset alone and produces wrong absolute addresses. For example, baseAddress=0x10000000 and addressOffset=0x100 but the extractor stores 0x100 instead of 0x10000100. How should the extractor compute the final register address from these two fields?",
+  "expected_topics": ["IP-XACT", "addressOffset", "baseAddress", "absolute address", "register"],
+  "min_score": 4
+}

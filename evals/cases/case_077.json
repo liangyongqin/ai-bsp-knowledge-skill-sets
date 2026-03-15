@@ -1,0 +1,7 @@
+{
+  "id": "case_077",
+  "skill": "multimedia-camera-expert",
+  "input": "Dual camera setup shows objects at different depths appearing misaligned in the merged frame. Analysis shows rear-wide timestamp is 8ms ahead of rear-main. How do I debug multi-camera sensor timestamp drift and synchronize them?",
+  "expected_topics": ["multi-camera", "timestamp", "sync", "sensor", "drift"],
+  "min_score": 4
+}

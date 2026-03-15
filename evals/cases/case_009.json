@@ -1,0 +1,7 @@
+{
+  "id": "case_009",
+  "skill": "power-thermal-expert",
+  "input": "Hibernate (STD) fails with: 'PM: Saving platform NVS memory' then 'PM: Not enough free memory'. The userspace hibernation image write fails because the eMMC partition for the swap image is only 2 GB and free space is exhausted by F2FS GC pending writes. What is the correct approach to size the hibernation partition and handle F2FS GC interaction?",
+  "expected_topics": ["STD", "hibernation", "F2FS", "swap", "image"],
+  "min_score": 3
+}

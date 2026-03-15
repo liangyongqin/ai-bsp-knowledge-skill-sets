@@ -1,0 +1,7 @@
+{
+  "id": "case_171",
+  "skill": "hardware-spec-extractor",
+  "input": "A team is migrating from IP-XACT 2009 (IEEE 1685-2009) to IP-XACT 2022. The extractor uses the 2009 XML namespace and fails to parse 2022 files that use the updated spirit:2022 namespace. What are the key structural differences between IP-XACT 2009 and 2022 that affect parsing, and how should the extractor auto-detect and handle both versions?",
+  "expected_topics": ["IP-XACT", "2022", "2009", "namespace", "schema"],
+  "min_score": 4
+}

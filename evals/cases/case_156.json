@@ -1,0 +1,7 @@
+{
+  "id": "case_156",
+  "skill": "hardware-spec-extractor",
+  "input": "A register definition in the PDF spans pages 47 and 48. The field table header is on page 47, but the last four field rows appear on page 48 after a page break. The extractor only captures the fields on page 47 and silently drops the continuation. How should a PDF register table parser handle cross-page table continuations, and what heuristics identify a continuation table?",
+  "expected_topics": ["PDF", "page break", "table continuation", "extraction", "register"],
+  "min_score": 4
+}

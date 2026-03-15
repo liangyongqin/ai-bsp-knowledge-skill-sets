@@ -1,0 +1,7 @@
+{
+  "id": "case_085",
+  "skill": "multimedia-camera-expert",
+  "input": "ISP 3DNR module crashes during motion-heavy scenes. dmesg: [ 456.789] isp-3dnr: DMA alignment error, ref_frame_addr=0x8f030001, required alignment=128. What causes 3DNR reference frame DMA alignment errors and what are the buffer allocation requirements?",
+  "expected_topics": ["3DNR", "DMA", "alignment", "reference frame", "ISP"],
+  "min_score": 4
+}

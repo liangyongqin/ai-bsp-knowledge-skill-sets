@@ -1,0 +1,7 @@
+{
+  "id": "case_088",
+  "skill": "multimedia-camera-expert",
+  "input": "AF lens actuator and the main sensor both sit on CCI bus instance 0. After adding the lens driver, sensor I2C reads randomly fail with -EBUSY. Both devices use different slave addresses. How do I resolve CCI bus conflicts between lens and sensor?",
+  "expected_topics": ["CCI", "bus conflict", "I2C", "lens", "arbitration"],
+  "min_score": 4
+}

@@ -1,0 +1,7 @@
+{
+  "id": "case_073",
+  "skill": "multimedia-camera-expert",
+  "input": "H.264 video encoder drops frames during recording at target bitrate 20Mbps. logcat shows: W VideoEncoder: bitrate overflow, skipping frame idx=4891. The resolution is 4K@30fps. What encoder parameters and system constraints should I check?",
+  "expected_topics": ["H.264", "bitrate", "encoder", "frame drop", "overflow"],
+  "min_score": 4
+}

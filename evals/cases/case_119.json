@@ -1,0 +1,7 @@
+{
+  "id": "case_119",
+  "skill": "gpu-rendering-expert",
+  "input": "A Vulkan render pass has loadOp set to VK_ATTACHMENT_LOAD_OP_LOAD for a color attachment. The pass always clears the entire attachment at the start of the shader. GPU bandwidth profiler shows 30% excess memory reads. What is the cost of VK_ATTACHMENT_LOAD_OP_LOAD vs CLEAR and how does it affect bandwidth on tile-based GPUs?",
+  "expected_topics": ["render pass", "load_op", "CLEAR", "bandwidth", "tile-based GPU"],
+  "min_score": 4
+}

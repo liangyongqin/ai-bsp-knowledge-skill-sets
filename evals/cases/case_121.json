@@ -1,0 +1,7 @@
+{
+  "id": "case_121",
+  "skill": "interrupt-virtualization-expert",
+  "input": "Our VM loses interrupts under high network load. dmesg inside the guest shows dropped packets but /proc/interrupts outside shows the IRQ firing fine. The host GIC-600 List Register count hits the cap. How do I diagnose and fix LR overflow causing IRQ loss in the VM?",
+  "expected_topics": ["List Register", "LR", "vGIC", "overflow", "KVM"],
+  "min_score": 4
+}

@@ -1,0 +1,7 @@
+{
+  "id": "case_091",
+  "skill": "gpu-rendering-expert",
+  "input": "GPU Inspector shows overdraw ratio > 3x on the main UI layer. Frame rate drops from 60fps to 45fps when the notification shade is open. How do I identify and reduce overdraw on Android to recover frame rate?",
+  "expected_topics": ["overdraw", "frame rate", "GPU", "early-Z", "draw call"],
+  "min_score": 4
+}

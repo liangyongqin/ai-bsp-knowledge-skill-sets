@@ -1,0 +1,7 @@
+{
+  "id": "case_176",
+  "skill": "hardware-spec-extractor",
+  "input": "Before writing extracted registers to the knowledge graph, what is the recommended validation checklist? We want to catch common issues such as invalid addresses, bit range violations, duplicate nodes, wrong namespace, missing access types, and low-OCR-confidence fields before any graph write occurs. Please enumerate each check and what constitutes a pass or fail.",
+  "expected_topics": ["validation", "checklist", "register", "bit range", "namespace"],
+  "min_score": 4
+}

@@ -1,0 +1,7 @@
+{
+  "id": "case_007",
+  "skill": "power-thermal-expert",
+  "input": "After STR resume the system hangs. The last kernel log line before hang is 'PM: resume devices'. The UART goes silent after a driver prints 'resume complete' for the display subsystem. How do I identify which driver is failing to resume?",
+  "expected_topics": ["STR", "resume", "dev_pm_ops", "driver", "suspend"],
+  "min_score": 4
+}

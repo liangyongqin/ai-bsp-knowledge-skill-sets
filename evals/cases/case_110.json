@@ -1,0 +1,7 @@
+{
+  "id": "case_110",
+  "skill": "gpu-rendering-expert",
+  "input": "Perfetto GPU trace shows no GPU slices — the GPU track is completely empty. The app is clearly rendering (display shows content). I enabled GPU tracing in the Perfetto config with gpu_ftrace: true but still no data. What is needed to get GPU activity visible in a Perfetto trace?",
+  "expected_topics": ["Perfetto", "GPU trace", "tracing", "ftrace", "GPU counters"],
+  "min_score": 4
+}

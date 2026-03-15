@@ -1,0 +1,7 @@
+{
+  "id": "case_118",
+  "skill": "gpu-rendering-expert",
+  "input": "HDR tone mapping shader on an OLED panel produces oversaturated highlights — bright areas clip to white. The shader uses mediump (fp16) for intermediate luminance calculations. Maximum scene luminance is 4000 nits but fp16 max is ~65504. How does fp16 range overflow affect HDR tone mapping and what precision is required?",
+  "expected_topics": ["HDR", "tone mapping", "fp16", "precision", "luminance"],
+  "min_score": 4
+}

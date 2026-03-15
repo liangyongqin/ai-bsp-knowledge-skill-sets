@@ -1,0 +1,7 @@
+{
+  "id": "case_054",
+  "skill": "boot-debug-expert",
+  "input": "The system hangs after 'Booting Trusted OS' with no further output. JTAG shows CPU0 is stuck in EL3 executing a tight loop at the TrustZone world switch entry point. The Secure Monitor Call (SMC) from BL31 to the Trusted OS never returns. What are the common causes of a TrustZone world switch hang and how do I use JTAG/CoreSight to identify where the TEE is stuck?",
+  "expected_topics": ["TrustZone", "world switch", "SMC", "EL3", "TEE"],
+  "min_score": 3
+}

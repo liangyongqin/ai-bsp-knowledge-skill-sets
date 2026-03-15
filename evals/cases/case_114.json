@@ -1,0 +1,7 @@
+{
+  "id": "case_114",
+  "skill": "gpu-rendering-expert",
+  "input": "dmesg shows: [ 890.123] mali_csf: firmware hang detected, resetting GPU. This occurs during a Vulkan compute shader workload. The firmware hang produces a kernel oops trace. How do I debug Mali CSF firmware hang and what information should I collect?",
+  "expected_topics": ["Mali CSF", "firmware hang", "GPU reset", "Vulkan compute", "debug"],
+  "min_score": 4
+}

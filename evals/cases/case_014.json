@@ -1,0 +1,7 @@
+{
+  "id": "case_014",
+  "skill": "power-thermal-expert",
+  "input": "The DRAM controller log during boot shows: 'ZQ calibration timeout: ZQCTL0.zq_calib_short did not complete within 1ms'. This happens intermittently at cold temperatures (-20°C). What is LPDDR5 ZQ calibration, why does it time out, and what are the corrective actions?",
+  "expected_topics": ["LPDDR5", "ZQ calibration", "DRAM", "timeout", "temperature"],
+  "min_score": 3
+}

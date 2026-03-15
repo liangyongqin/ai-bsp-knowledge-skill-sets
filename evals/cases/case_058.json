@@ -1,0 +1,7 @@
+{
+  "id": "case_058",
+  "skill": "boot-debug-expert",
+  "input": "A new MIPI CSI camera driver was added. Boot time increased from 4.2 s to 6.8 s. The camera driver performs a firmware download over I2C at probe time. initcall_debug shows the driver probe takes 2.6 s. The driver cannot be moved to async probe easily because it has synchronous dependencies. What are the strategies to reduce boot time regression caused by a slow driver probe without making it async?",
+  "expected_topics": ["boot time", "driver probe", "initcall_debug", "regression", "boot"],
+  "min_score": 4
+}

@@ -1,0 +1,7 @@
+{
+  "id": "case_064",
+  "skill": "multimedia-camera-expert",
+  "input": "dmesg reports: [  892.103] isp-dma: overflow on output port 2, bandwidth saturated. This happens when running 4K ISP output simultaneously with video encoder. How do I diagnose ISP DMA bandwidth exhaustion?",
+  "expected_topics": ["DMA", "bandwidth", "ISP", "overflow", "memory bus"],
+  "min_score": 4
+}

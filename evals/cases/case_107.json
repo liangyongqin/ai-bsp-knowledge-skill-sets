@@ -1,0 +1,7 @@
+{
+  "id": "case_107",
+  "skill": "gpu-rendering-expert",
+  "input": "System ANR is triggered by a GPU job timeout. dmesg: [ 2345.678] gpu: job timeout on slot 0, resetting GPU. The reset causes SurfaceFlinger to lose its GL context and the display freezes for 3 seconds. How do I root-cause GPU job timeout causing ANR?",
+  "expected_topics": ["GPU job timeout", "ANR", "reset", "SurfaceFlinger", "GL context"],
+  "min_score": 4
+}

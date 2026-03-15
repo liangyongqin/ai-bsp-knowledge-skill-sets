@@ -1,0 +1,7 @@
+{
+  "id": "case_159",
+  "skill": "hardware-spec-extractor",
+  "input": "A new team member ran ingest_custom.py but accidentally passed --namespace base instead of --namespace custom for a proprietary SoC register map. The confidential registers are now in the base namespace and could be exposed via base knowledge queries. How do I detect this namespace mistake after the fact, correct it in the graph, and what guard should the ingestion script add to prevent it?",
+  "expected_topics": ["namespace", "custom", "base", "ingestion", "knowledge graph"],
+  "min_score": 4
+}

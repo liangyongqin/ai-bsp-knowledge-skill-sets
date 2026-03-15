@@ -1,0 +1,7 @@
+{
+  "id": "case_049",
+  "skill": "boot-debug-expert",
+  "input": "During PMIC initialization in BL2, the I2C bus hangs with no NACK or ACK. The logic analyzer shows the I2C SCL line stuck low. The PMIC I2C address is 0x68. Another device at 0x68 was mistakenly populated on the same bus from a previous board revision. How do I debug an I2C bus lockup caused by an address collision during early boot?",
+  "expected_topics": ["I2C", "NACK", "PMIC", "address", "bus lockup"],
+  "min_score": 4
+}

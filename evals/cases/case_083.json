@@ -1,0 +1,7 @@
+{
+  "id": "case_083",
+  "skill": "multimedia-camera-expert",
+  "input": "Camera2 API app using ImageReader with maxImages=3 at 4K resolution sees acquireLatestImage() returning null frequently. logcat: W ImageReader_JNI: imageReader_acquireNextImage: Max images (3) already acquired. What causes ImageReader buffer starvation and how should buffer count be chosen?",
+  "expected_topics": ["ImageReader", "Camera2", "buffer starvation", "maxImages", "acquire"],
+  "min_score": 4
+}

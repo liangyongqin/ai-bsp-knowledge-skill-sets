@@ -1,0 +1,7 @@
+{
+  "id": "case_105",
+  "skill": "gpu-rendering-expert",
+  "input": "UI elements appear with slightly wrong colors — they look washed out. The texture assets are stored as sRGB PNG but the compositor blends them as linear RGB. The display panel is set to sRGB mode. What causes sRGB vs linear texture format mismatch and how is it corrected in OpenGL ES?",
+  "expected_topics": ["sRGB", "linear", "texture format", "color space", "gamma"],
+  "min_score": 4
+}

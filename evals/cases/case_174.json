@@ -1,0 +1,7 @@
+{
+  "id": "case_174",
+  "skill": "hardware-spec-extractor",
+  "input": "Two IPs share a status register: the DMA engine sets bit 0 to signal completion, and the interrupt controller reads bit 0 to determine pending state. Both IP-XACT files define the same register address with different field names. How should the extractor model this cross-IP shared register in the knowledge graph, and which relationship type is appropriate?",
+  "expected_topics": ["shared register", "cross-reference", "SHARED_WITH", "relationship", "IP"],
+  "min_score": 4
+}

@@ -1,0 +1,7 @@
+{
+  "id": "case_153",
+  "skill": "hardware-spec-extractor",
+  "input": "After importing a register map, the knowledge graph contains two Register nodes both named 'CTRL' but at different addresses: 0x000 and 0x200. They belong to the same component. The ingestion script did not detect the duplicate. What constitutes a true duplicate in the graph schema (same name + same component), how should the extractor detect this before writing, and what action should be taken?",
+  "expected_topics": ["duplicate", "Register", "node", "detection", "namespace"],
+  "min_score": 4
+}

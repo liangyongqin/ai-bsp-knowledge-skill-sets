@@ -1,0 +1,7 @@
+{
+  "id": "case_017",
+  "skill": "power-thermal-expert",
+  "input": "After a kernel upgrade from 5.15 to 6.1, the battery drain in screen-off idle increased from 8 mA to 22 mA. No application changes were made. How do I methodically compare power states between the two kernels and identify the regression source?",
+  "expected_topics": ["battery drain", "idle", "regression", "wakelock", "cpuidle"],
+  "min_score": 4
+}

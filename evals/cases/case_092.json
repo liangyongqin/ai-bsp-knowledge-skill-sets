@@ -1,0 +1,7 @@
+{
+  "id": "case_092",
+  "skill": "gpu-rendering-expert",
+  "input": "Perfetto trace shows GPU is idle 40% of the time but CPU is 100% busy. The scene has 3200 draw calls per frame, each with a unique material. GPU utilization is low due to CPU submission overhead. How do I diagnose and fix draw call CPU bottleneck?",
+  "expected_topics": ["draw call", "CPU bottleneck", "batching", "instancing", "GPU idle"],
+  "min_score": 4
+}

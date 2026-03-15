@@ -1,0 +1,7 @@
+{
+  "id": "case_020",
+  "skill": "power-thermal-expert",
+  "input": "PSCI CPU_SUSPEND is called with the deepest power state (state 0x40000003) but the CPU only enters retention (state 0x00000001) according to the PSCI power state counters. The firmware is ARM Trusted Firmware v2.8. What are the conditions PSCI checks before allowing the deepest suspend state and how do I debug the mismatch?",
+  "expected_topics": ["PSCI", "CPU_SUSPEND", "deepest state", "power state", "ARM Trusted Firmware"],
+  "min_score": 3
+}

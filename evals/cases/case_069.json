@@ -1,0 +1,7 @@
+{
+  "id": "case_069",
+  "skill": "multimedia-camera-expert",
+  "input": "CameraService watchdog fires: E CameraService: Camera 0 request timeout after 5000ms, aborting session. This only happens on first capture after the camera has been idle for >10 seconds. What should I check?",
+  "expected_topics": ["request timeout", "HAL3", "watchdog", "idle", "pipeline"],
+  "min_score": 4
+}

@@ -1,0 +1,7 @@
+{
+  "id": "case_057",
+  "skill": "boot-debug-expert",
+  "input": "Secondary CPU1 never comes online. The CPU1 enable sequence calls PSCI CPU_ON but the CPU1 stays in WFE (Wait For Event). The spin-table entry for CPU1 is at the correct physical address. Cache coherency is enabled. Invalidating the CPU1 entry cache line on the primary CPU fixes the issue intermittently. What is the correct procedure to release a secondary CPU from a spin-table and ensure the release write is visible?",
+  "expected_topics": ["secondary CPU", "spin-table", "WFE", "cache", "CPU_ON"],
+  "min_score": 4
+}

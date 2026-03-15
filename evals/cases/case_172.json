@@ -1,0 +1,7 @@
+{
+  "id": "case_172",
+  "skill": "hardware-spec-extractor",
+  "input": "A 64-bit SoC has a register bank at base address 0x0000_0008_0000_0000 (above 32-bit address space). The IP-XACT addressOffset values are small (< 0x1000) but the baseAddress is 0x800000000. My extractor stores addresses as 32-bit integers and truncates to 0x00000000. How should the extractor handle 64-bit register bank addresses and what data type should address fields use in the graph?",
+  "expected_topics": ["64-bit", "address", "register", "baseAddress", "truncation"],
+  "min_score": 4
+}

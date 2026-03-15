@@ -1,0 +1,7 @@
+{
+  "id": "case_030",
+  "skill": "power-thermal-expert",
+  "input": "The cluster L3 cache power domain is not power-gating when all CPUs in the cluster are idle. /sys/kernel/debug/pm_genpd shows the cluster domain stuck in 'on' state. The CPUIdle driver is entering core-off but not cluster-off states. What conditions must be satisfied for the cluster L3 to power-gate and how do I verify each condition in the kernel?",
+  "expected_topics": ["L3", "power-gating", "cluster", "CPUIdle", "power domain"],
+  "min_score": 4
+}

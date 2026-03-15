@@ -1,0 +1,7 @@
+{
+  "id": "case_089",
+  "skill": "multimedia-camera-expert",
+  "input": "Video encoder shows 200-400ms latency spikes every ~10 seconds. Perfetto trace shows the encoder stalls while generating an IDR keyframe (forced by the framework every 10s). H.264 IDR frame size is 5x average P-frame. How do I reduce keyframe generation stall impact?",
+  "expected_topics": ["video encoder", "keyframe", "IDR", "latency", "H.264"],
+  "min_score": 4
+}

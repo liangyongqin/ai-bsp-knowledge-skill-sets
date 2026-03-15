@@ -1,0 +1,7 @@
+{
+  "id": "case_061",
+  "skill": "multimedia-camera-expert",
+  "input": "Camera open fails immediately after probe. dmesg shows: [ 1234.567] ov13b10 10-0036: i2c transfer failed, addr=0x36 ret=-121. The sensor does not respond on I2C. How do I debug this?",
+  "expected_topics": ["I2C", "NACK", "AVDD", "MCLK", "power sequence"],
+  "min_score": 4
+}

@@ -1,0 +1,7 @@
+{
+  "id": "case_104",
+  "skill": "gpu-rendering-expert",
+  "input": "Rendering at 4x MSAA causes frame time to increase from 16ms to 35ms. Memory bandwidth jumps from 8 GB/s to 22 GB/s. The render target is 2560x1440 with depth and stencil. How does MSAA affect GPU memory bandwidth and what are alternatives for anti-aliasing on mobile?",
+  "expected_topics": ["MSAA", "bandwidth", "anti-aliasing", "render target", "memory"],
+  "min_score": 4
+}

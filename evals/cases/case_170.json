@@ -1,0 +1,7 @@
+{
+  "id": "case_170",
+  "skill": "hardware-spec-extractor",
+  "input": "A vendor IP-XACT file uses non-standard field name prefixes and proprietary annotations in the description elements, e.g., '[VENDOR:MT6989]' tags. These vendor annotations need to be preserved in the graph so that SoC-specific queries can filter by chip. How should the extractor handle vendor-specific annotations, and where in the graph schema should proprietary metadata be stored?",
+  "expected_topics": ["vendor annotation", "IP-XACT", "register", "metadata", "namespace"],
+  "min_score": 3
+}

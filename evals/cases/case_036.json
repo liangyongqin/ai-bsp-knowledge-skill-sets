@@ -1,0 +1,7 @@
+{
+  "id": "case_036",
+  "skill": "boot-debug-expert",
+  "input": "Brand new board, first power-on. No UART output at all. JTAG probe cannot detect the device. The power LED is on and the 5V rail is present. How do I systematically debug a completely dead board with no debug output and no JTAG heartbeat?",
+  "expected_topics": ["dead board", "UART", "JTAG", "power", "bring-up"],
+  "min_score": 4
+}

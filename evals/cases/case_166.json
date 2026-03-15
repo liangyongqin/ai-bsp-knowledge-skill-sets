@@ -1,0 +1,7 @@
+{
+  "id": "case_166",
+  "skill": "hardware-spec-extractor",
+  "input": "I ran ingest_custom.py twice with the same IP-XACT file for the UART component. A query now shows doubled Register nodes or duplicated field entries. The script should be idempotent. How do I verify idempotency, use the upsert_node helper correctly to avoid duplicates, and diff the graph state before and after a second import?",
+  "expected_topics": ["idempotent", "upsert_node", "duplicate", "graph diff", "import"],
+  "min_score": 4
+}

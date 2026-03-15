@@ -1,0 +1,7 @@
+{
+  "id": "case_134",
+  "skill": "interrupt-virtualization-expert",
+  "input": "After CPU4 wakes from deep idle, the GIC-600 Redistributor for CPU4 is still powered down when the first interrupt arrives. dmesg shows: GIC: CPU4: Redistributor not powered, interrupt lost. We wake the CPU then immediately try to route an SPI to it. What is the correct Redistributor wake sequence and how does GICR_WAKER.ProcessorSleep relate to interrupt delivery?",
+  "expected_topics": ["GIC-600", "Redistributor", "GICR_WAKER", "ProcessorSleep", "CPU wakeup"],
+  "min_score": 4
+}

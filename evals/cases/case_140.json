@@ -1,0 +1,7 @@
+{
+  "id": "case_140",
+  "skill": "interrupt-virtualization-expert",
+  "input": "A high-rate sensor driver generates 10,000 interrupts/sec. We want to reduce CPU overhead by coalescing interrupts. The device supports an interrupt throttle register that delays assertion until N events accumulate or T microseconds pass. What are the tradeoffs of interrupt coalescing for latency-sensitive vs throughput-oriented workloads, and how do I choose N and T for a camera sensor?",
+  "expected_topics": ["interrupt coalescing", "throttle", "latency", "throughput", "IRQ"],
+  "min_score": 3
+}

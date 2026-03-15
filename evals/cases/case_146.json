@@ -1,0 +1,7 @@
+{
+  "id": "case_146",
+  "skill": "interrupt-virtualization-expert",
+  "input": "After system suspend-to-RAM, the device does not wake the system. The wakeup source is a PMIC interrupt connected to GPIO 12. dmesg shows the IRQ was not registered as a wake IRQ before suspend. The driver calls enable_irq_wake() only after resume. What is the correct sequence for registering a wake IRQ and what kernel infrastructure handles GIC wakeup routing during suspend?",
+  "expected_topics": ["wake IRQ", "enable_irq_wake", "suspend", "STR", "GIC"],
+  "min_score": 4
+}

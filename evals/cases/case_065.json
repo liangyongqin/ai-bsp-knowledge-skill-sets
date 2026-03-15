@@ -1,0 +1,7 @@
+{
+  "id": "case_065",
+  "skill": "multimedia-camera-expert",
+  "input": "v4l2-ctl fails to stream. Running 'media-ctl -p' shows the link between ISP output pad and video node is in state [INACTIVE]. How do I enable media controller links correctly?",
+  "expected_topics": ["media controller", "link", "pad", "media-ctl", "V4L2"],
+  "min_score": 4
+}

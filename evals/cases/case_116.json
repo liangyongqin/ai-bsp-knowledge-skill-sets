@@ -1,0 +1,7 @@
+{
+  "id": "case_116",
+  "skill": "gpu-rendering-expert",
+  "input": "An engineer switched particle rendering to use glDrawArraysInstanced() hoping to reduce draw calls from 5000 to 1. GPU profiler shows no reduction in draw call overhead. Each particle still issues a separate draw. glInstanceID is always 0 in the shader. What common API mistakes cause instanced rendering to not reduce draw calls?",
+  "expected_topics": ["instanced rendering", "draw call", "glDrawArraysInstanced", "OpenGL ES", "instancing"],
+  "min_score": 4
+}

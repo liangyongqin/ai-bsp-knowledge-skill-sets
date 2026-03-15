@@ -1,0 +1,7 @@
+{
+  "id": "case_106",
+  "skill": "gpu-rendering-expert",
+  "input": "A UI shadow blur effect uses a signed distance field (SDF) shader with 64 samples and multiple passes. GPU profiler shows this shader consumes 40% of the frame budget. How do I evaluate if an SDF shadow blur shader is worth the cost and what are cheaper alternatives?",
+  "expected_topics": ["SDF", "shadow blur", "shader", "GPU cost", "optimization"],
+  "min_score": 4
+}

@@ -1,0 +1,7 @@
+{
+  "id": "case_066",
+  "skill": "multimedia-camera-expert",
+  "input": "dmesg shows repeated MIPI CSI-2 ECC errors: [ 345.891] csi2-rx: ECC corrected 1-bit error on lane 2, frame_id=1247. Image has sporadic horizontal glitch lines. What does this indicate and how do I fix it?",
+  "expected_topics": ["MIPI CSI-2", "ECC", "lane skew", "D-PHY", "calibration"],
+  "min_score": 4
+}

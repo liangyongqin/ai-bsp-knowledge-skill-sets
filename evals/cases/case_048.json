@@ -1,0 +1,7 @@
+{
+  "id": "case_048",
+  "skill": "boot-debug-expert",
+  "input": "A new device tree overlay was applied for a different board variant. The touch controller fails to probe with 'focaltech,ft5x06: no matching of_device_id'. The compatible string in the DTS is 'focaltech,ft5406' but the driver only lists 'focaltech,ft5x06' in its of_match_table. How do I audit device tree compatible string mismatches systematically across a device tree?",
+  "expected_topics": ["device tree", "compatible string", "of_match_table", "driver", "probe"],
+  "min_score": 4
+}

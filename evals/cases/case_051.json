@@ -1,0 +1,7 @@
+{
+  "id": "case_051",
+  "skill": "boot-debug-expert",
+  "input": "CoreSight STM (System Trace Macrocell) is configured and the stimulus ports are written from the kernel driver, but no trace packets appear at the trace sink (ETR). The STM is enabled (STMTCSR.EN=1) and the trace link is connected. The TPIU formatter is disabled. How do I verify the CoreSight topology and trace path from STM to ETR and identify where packets are being dropped?",
+  "expected_topics": ["CoreSight", "STM", "trace", "ETR", "TPIU"],
+  "min_score": 3
+}

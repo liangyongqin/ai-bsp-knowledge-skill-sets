@@ -1,0 +1,7 @@
+{
+  "id": "case_081",
+  "skill": "multimedia-camera-expert",
+  "input": "Sensor is configured for 60fps but actual output is 30fps. The sensor register TIMING_HTS and TIMING_VTS are correct per the datasheet. MCLK is sourced from a PLL divider set to 24MHz. What MCLK divider misconfiguration causes halved frame rate?",
+  "expected_topics": ["MCLK", "frame rate", "divider", "sensor", "PLL"],
+  "min_score": 4
+}

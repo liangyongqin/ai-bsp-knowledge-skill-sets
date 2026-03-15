@@ -1,0 +1,7 @@
+{
+  "id": "case_052",
+  "skill": "boot-debug-expert",
+  "input": "During early kernel boot the RPMsg framework initializes but then deadlocks. The DSP (remote processor) sends a name service announcement before the host driver has registered its endpoint. The host driver waits for the DSP ready signal but the DSP is blocked waiting for an ACK that the host never sends because it is not yet listening. How do I debug an RPC deadlock between the host kernel and a remote processor during boot?",
+  "expected_topics": ["RPMsg", "remote processor", "deadlock", "boot", "RPC"],
+  "min_score": 3
+}

@@ -1,0 +1,7 @@
+{
+  "id": "case_039",
+  "skill": "boot-debug-expert",
+  "input": "JTAG debugger connects to the SoC but cannot halt CPU0. OpenOCD reports 'target not halted after 5000 ms'. The CPU is running. The SoC security fuse map shows DBGEN=0 and NIDEN=0. How do the DBGEN and NIDEN fuses control JTAG halting capability and what is the development-time workaround?",
+  "expected_topics": ["JTAG", "DBGEN", "fuse", "halt", "debug"],
+  "min_score": 4
+}

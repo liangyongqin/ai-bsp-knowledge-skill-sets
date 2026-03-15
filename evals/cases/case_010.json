@@ -1,0 +1,7 @@
+{
+  "id": "case_010",
+  "skill": "power-thermal-expert",
+  "input": "After hibernation restore the system boots but a peripheral (MIPI DSI display) fails to initialize with 'regulator_get: VDD18 not available'. The power rail was off during hibernation but should have been restored on resume. What is the mechanism to ensure power rails are restored in the correct order after hibernation?",
+  "expected_topics": ["hibernation", "regulator", "power rail", "resume", "restore"],
+  "min_score": 4
+}

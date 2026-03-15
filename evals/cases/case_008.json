@@ -1,0 +1,7 @@
+{
+  "id": "case_008",
+  "skill": "power-thermal-expert",
+  "input": "A recent kernel upgrade caused STR wakeup latency to increase from 250 ms to 650 ms. The user presses the power button and the screen stays dark for 650 ms instead of 250 ms. How do I profile the STR resume path to find which stage regressed?",
+  "expected_topics": ["STR", "wakeup latency", "resume", "initcall_debug", "ftrace"],
+  "min_score": 4
+}

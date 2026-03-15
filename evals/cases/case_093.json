@@ -1,0 +1,7 @@
+{
+  "id": "case_093",
+  "skill": "gpu-rendering-expert",
+  "input": "GPU profiler shows the fragment shader stage is the bottleneck. Memory bandwidth reads are 28 GB/s, which is 95% of the peak DDR bandwidth. The shader samples 6 textures per fragment. How do I identify and reduce fragment shader memory bandwidth pressure?",
+  "expected_topics": ["fragment shader", "memory bandwidth", "texture", "bandwidth bound", "GPU"],
+  "min_score": 4
+}

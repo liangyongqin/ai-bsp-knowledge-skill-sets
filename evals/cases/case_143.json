@@ -1,0 +1,7 @@
+{
+  "id": "case_143",
+  "skill": "interrupt-virtualization-expert",
+  "input": "A driver attempts to allocate LPI IntID 4096. The ITS rejects the command. GICv3 architecture specifies a minimum valid LPI IntID range. What is the minimum valid LPI IntID, why are lower values reserved, and what is the correct range to request from the Linux IRQ domain allocator for LPIs?",
+  "expected_topics": ["LPI", "IntID", "8192", "ITS", "IRQ domain"],
+  "min_score": 4
+}

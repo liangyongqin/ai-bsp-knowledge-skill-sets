@@ -1,0 +1,7 @@
+{
+  "id": "case_038",
+  "skill": "boot-debug-expert",
+  "input": "The kernel boots and reaches userspace but a critical SPI driver never completes probe. dmesg shows: 'spi-mt65xx: deferred probe, waiting for regulator vdd_spi'. The regulator is declared in the device tree but its provider driver has not probed yet. The deferred probe list keeps growing and the driver never retries. How do I debug a driver stuck in the deferred probe loop?",
+  "expected_topics": ["deferred probe", "driver", "regulator", "device tree", "kernel"],
+  "min_score": 4
+}

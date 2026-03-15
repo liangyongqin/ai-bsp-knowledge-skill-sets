@@ -1,0 +1,7 @@
+{
+  "id": "case_025",
+  "skill": "power-thermal-expert",
+  "input": "The kernel log shows 'PM: suspend entry (deep)' and then 'PM: Calling sys_sync()' and 'PM: syscore_suspend of clocksource-acpi: error -16'. The suspend then aborts. We never reach the PSCI SYSTEM_SUSPEND call. Which kernel subsystem handles syscore_suspend and what does error -16 (EBUSY) indicate here?",
+  "expected_topics": ["syscore_suspend", "STR", "suspend", "EBUSY", "PM"],
+  "min_score": 3
+}

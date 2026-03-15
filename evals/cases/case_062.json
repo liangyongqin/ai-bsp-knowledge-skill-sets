@@ -1,0 +1,7 @@
+{
+  "id": "case_062",
+  "skill": "multimedia-camera-expert",
+  "input": "Preview is stuttering every 2-3 seconds. ftrace shows ISP driver blocking on vb2_dqbuf for 120ms intermittently. The pipeline is sensor -> ISP -> display. How do I find the stall root cause?",
+  "expected_topics": ["ISP", "pipeline stall", "vb2", "buffer", "ftrace"],
+  "min_score": 4
+}

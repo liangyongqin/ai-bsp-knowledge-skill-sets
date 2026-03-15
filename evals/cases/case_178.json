@@ -1,0 +1,7 @@
+{
+  "id": "case_178",
+  "skill": "hardware-spec-extractor",
+  "input": "An IP-XACT design file contains a componentRef that points to a component defined in a separate file (external component library). The extractor raises FileNotFoundError because it looks for the referenced component in the same directory. How should the extractor resolve external componentRef paths, and what search path or manifest file should the user configure?",
+  "expected_topics": ["IP-XACT", "componentRef", "external file", "resolution", "design"],
+  "min_score": 4
+}

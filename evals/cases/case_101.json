@@ -1,0 +1,7 @@
+{
+  "id": "case_101",
+  "skill": "gpu-rendering-expert",
+  "input": "GPU L2 cache hit rate is 22% as reported by the hardware performance counters. The scene renders many uniquely-textured objects whose combined texture size is 256MB, far exceeding the 4MB GPU L2 cache. Frame time is 28ms at 1080p. How does GPU L2 cache thrashing manifest and what are the mitigation strategies?",
+  "expected_topics": ["L2 cache", "cache thrashing", "texture", "working set", "GPU"],
+  "min_score": 4
+}

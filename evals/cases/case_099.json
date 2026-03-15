@@ -1,0 +1,7 @@
+{
+  "id": "case_099",
+  "skill": "gpu-rendering-expert",
+  "input": "GPU profiler reports shader occupancy at 18% (theoretical max 100%). The fragment shader uses 72 registers per thread. Warp size is 32 and maximum concurrent warps per SM is limited by register file. How do register pressure and low shader occupancy affect GPU performance?",
+  "expected_topics": ["shader occupancy", "register pressure", "warp", "GPU", "fragment shader"],
+  "min_score": 4
+}

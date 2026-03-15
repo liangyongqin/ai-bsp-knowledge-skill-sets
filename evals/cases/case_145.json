@@ -1,0 +1,7 @@
+{
+  "id": "case_145",
+  "skill": "interrupt-virtualization-expert",
+  "input": "We are sending SGI 5 from CPU0 to CPU3. The SGI is sent by writing to ICC_SGI1R_EL1 with the target affinity of CPU3. However the interrupt arrives on CPU0 instead. The platform uses GIC-600 with banked SGI registers. What could cause the SGI to target the wrong CPU and how do I decode the ICC_SGI1R_EL1 affinity fields correctly for multi-cluster topologies?",
+  "expected_topics": ["SGI", "ICC_SGI1R_EL1", "affinity", "GIC-600", "banked"],
+  "min_score": 4
+}

@@ -1,0 +1,7 @@
+{
+  "id": "case_130",
+  "skill": "interrupt-virtualization-expert",
+  "input": "A KVM guest occasionally receives spurious interrupts: the IRQ fires in the guest but the guest driver finds no pending work and the hardware interrupt status register is clear. The vGIC active state is sometimes left set after EOI. How does KVM vGIC manage active state, and what conditions lead to spurious interrupt delivery?",
+  "expected_topics": ["vGIC", "spurious interrupt", "active state", "EOI", "KVM"],
+  "min_score": 4
+}

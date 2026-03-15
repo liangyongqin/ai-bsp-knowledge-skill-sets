@@ -1,242 +1,147 @@
 # BSP Knowledge Skill Sets
 
-A set of Claude Agent skills that form a **three-layer AI mentor system** for SoC BSP (Board Support Package) engineers. The system provides Socratic-guided diagnostics, cross-domain failure analysis, and structured knowledge grounding via a GraphRAG knowledge graph — all running fully air-gapped to protect hardware trade secrets.
+BSP engineers spend enormous amounts of time hunting through TRMs, re-explaining the same hardware failure to colleagues in other teams, and watching new engineers repeat the same debugging mistakes. There is no shared mental model, and there is no fast path from "symptom in dmesg" to "root cause in the power tree."
 
-## Table of Contents
-
-- [Architecture Overview](#architecture-overview)
-- [Repository Structure](#repository-structure)
-- [Skill Directory Convention](#skill-directory-convention)
-- [Domain Skills](#domain-skills)
-- [Knowledge Graph](#knowledge-graph)
-- [Tool Safety Classification](#tool-safety-classification)
-- [Development Phases](#development-phases)
-- [Getting Started](#getting-started)
-- [Contributing](#contributing)
+This project is seven Claude Code skills that guide BSP engineers through hardware diagnostics using Socratic questioning. The skills are grounded in a local knowledge graph built from ARM public TRMs, AMBA specs, and Linux kernel documentation — 501 nodes covering power domains, clock trees, interrupt routing, ISP pipelines, and common failure modes. No cloud database, no Docker, no IT approval required.
 
 ---
 
-## Architecture Overview
-
-The system is built in three layers that must be implemented in strict dependency order:
-
-```
-Layer 3: skills/bsp-knowledge-mentor/   ← ITS teaching engine; coordinates all others
-Layer 2: skills/<domain>-expert/        ← Six domain skills (parallel, independent)
-Layer 1: knowledge-graph/ + tools/      ← GraphRAG + Neo4j; must exist before skills
-```
-
-> **Critical constraint:** Domain skills must not be written before the Layer 1 knowledge graph is populated. Skills without graph grounding will hallucinate hardware facts (register addresses, power sequences, clock dependencies).
-
-### Skill Interaction
-
-```
-User Query
-    │
-    ▼
-bsp-knowledge-mentor  (entry coordinator)
-    │
-    ├──(teach mode)────► ITS Guidance Engine ──► Socratic question sequence
-    │
-    ├──(diagnose mode)─► Blackboard
-    │                    ├── power-thermal-expert
-    │                    ├── multimedia-camera-expert
-    │                    ├── gpu-rendering-expert
-    │                    └── interrupt-virtualization-expert
-    │
-    ├──(document mode)─► hardware-spec-extractor ──► GraphRAG query
-    │
-    └──(translate mode)► Terminology dictionary ──► Cross-department language bridge
-```
+> **Alpha software.** Expect rough edges. Skill responses have not yet passed formal human expert review.
+>
+> Works best with the Claude Code CLI or the VS Code extension with Claude Code.
+>
+> Without proprietary SoC data: all reasoning uses the 501-node base graph drawn from ARM and Linux open-source specs. Responses will be architecturally correct but not SoC-specific until you add your in-house TRM (see [Adding your SoC data](#adding-your-soc-data)).
+>
+> Report issues at the GitHub Issues tab.
 
 ---
 
-## Repository Structure
+## Architecture
 
 ```
-ai-bsp-knowledge-skill-sets/
-│
-├── skills/                          # Claude Agent Skill definitions
-│   ├── bsp-knowledge-mentor/        # Layer 3: ITS mentor & coordinator
-│   ├── power-thermal-expert/
-│   ├── boot-debug-expert/
-│   ├── multimedia-camera-expert/
-│   ├── gpu-rendering-expert/
-│   ├── interrupt-virtualization-expert/
-│   └── hardware-spec-extractor/
-│
-├── knowledge-graph/                 # GraphRAG / Neo4j infrastructure
-│   ├── schema/                      # Node & edge type definitions (Cypher)
-│   ├── seed-data/                   # Initial knowledge (power tree, clock tree, IRQ table)
-│   └── queries/                     # Reusable GraphRAG query templates
-│
-├── tools/                           # Tool-calling implementations
-│   ├── log-parsers/                 # ftrace, perf, dmesg, V4L2, thermal log parsers
-│   ├── spec-extractor/              # IP-XACT & PDF ingestion pipeline
-│   └── graph-writer/                # Neo4j ingest scripts
-│
-├── evals/                           # Evaluation harness
-│   ├── cases/                       # Real BSP problem cases (anonymized)
-│   └── scorecards/                  # Per-skill accuracy scorecards
-│
-├── infra/                           # Deployment & security configs
-│   ├── neo4j/
-│   ├── qdrant/
-│   └── air-gap/                     # ACL and isolation verification scripts
-│
-└── docs/                            # Internal architecture docs
+Layer 3: /bsp-knowledge-mentor       — ITS teaching engine, Blackboard coordinator
+Layer 2: /power-thermal-expert       — DVFS, EAS, PMIC, C-states, LPDDR5, STR/STD
+         /boot-debug-expert          — Power sequencing, PLL, CoreSight ADIv6
+         /multimedia-camera-expert   — ISP, V4L2, DMA-BUF, MIPI CSI-2, eMMC
+         /gpu-rendering-expert       — Render pipeline, Overdraw, Perfetto, Vulkan
+         /interrupt-virtualization-expert — GIC-600, ITS, GICv4, KVM
+         /hardware-spec-extractor    — IP-XACT 2022, PDF register map ingestion
+Layer 1: Knowledge graph (Kuzu, embedded) + MCP tool server (local stdio)
+         501 nodes from ARM TRMs, AMBA specs, Linux kernel Documentation/
 ```
 
----
-
-## Skill Directory Convention
-
-Every skill under `skills/` follows this structure:
-
-```
-skills/<skill-name>/
-├── prompt.md     # Full system prompt: persona, domain rules, GraphRAG query hooks
-├── tools.md      # Tool catalog: name, input/output schema, safety level
-├── config.yaml   # Trigger patterns, learner-level routing hints, model params
-└── evals/        # ≥ 30 anonymized real BSP problem cases with expected outputs
-```
+The knowledge graph (Layer 1) runs in-process via Kuzu — no server, no daemon. The MCP tool server runs as a local stdio process and is optional for basic skill use.
 
 ---
 
-## Domain Skills
+## Prerequisites
 
-### `bsp-knowledge-mentor` (Layer 3)
-
-The system entry point and ITS (Intelligent Tutoring System) teaching engine. It coordinates all other skills and enforces Socratic guidance rules.
-
-**Behavioral rules:**
-- Never give a direct fix script — guide the engineer to derive the answer via Socratic questions.
-- Learner level gates the response depth:
-
-| Learner level | Trigger keywords | Mentor strategy |
-|---|---|---|
-| App-layer engineer | framework, API, SDK, FPS | HAL abstractions; avoid register details |
-| Driver engineer | register, DMA, IRQ, kernel | Bit-level definitions, memory barriers, timing diagrams |
-| Algorithm engineer | MIPS, model, latency, inference | Roofline model, NPU offload, bandwidth analysis |
-| Management / PM | feature, experience, battery, temperature | Business impact translation only |
-
-- Cross-department messages must not contain raw register addresses or values.
-- Power domain shutdown must never be suggested without verifying the full supply sequence first.
-
-### Six Domain Skills (Layer 2)
-
-| Skill | Core domain | Key physical anchor |
-|---|---|---|
-| `power-thermal-expert` | DVFS, EAS, C-states, PMIC, LPDDR5 | P = αCV²f |
-| `boot-debug-expert` | Power sequencing, PLL lock, ADIv6 | Supply order: VDD_CORE → VDD_IO → VDD_ANA |
-| `multimedia-camera-expert` | ISP pipeline, V4L2, DMA-BUF, eMMC/F2FS | Zero-Copy: V4L2 + DMA-BUF eliminates CPU memcpy |
-| `gpu-rendering-expert` | Render pipeline, Overdraw, Draw Call | Depth Pre-pass reduces fragment shader work |
-| `interrupt-virtualization-expert` | GIC-600, ITS, GICv4 virtual injection | GICv4 direct injection eliminates List Register VM Exit |
-| `hardware-spec-extractor` | IP-XACT parsing, register extraction | Accellera 2022 standard for IP-XACT XML |
+- Python >= 3.11
+- Claude Code CLI (`npm install -g @anthropic-ai/claude-code`) or VS Code with the Claude Code extension
+- git
+- No Docker, no external database, no cloud services required
 
 ---
 
-## Knowledge Graph
-
-The knowledge graph is the trustworthy foundation that eliminates hallucination. It uses **Neo4j** with **GraphRAG** (graph-based retrieval-augmented generation) rather than pure vector search, preserving the causal completeness of hardware topology.
-
-### Schema
-
-- **Node types** are defined in `knowledge-graph/schema/nodes.cypher`.
-  - `Component` (CPU_Core, GPU, NPU, ISP, PMIC, DDR, eMMC)
-  - `PowerDomain`, `ClockSource`, `Register`, `Interrupt`, `FailureMode`
-
-- **Edge types** are defined in `knowledge-graph/schema/edges.cypher`.
-  - `SUPPLIES`, `POWERS`, `CLOCKS`, `DEPENDS_ON_CLOCK`
-  - `TRIGGERS`, `ROUTES_TO`, `TRANSLATES`
-  - `STREAMS_TO`, `DMA_TO`, `SHARED_WITH`
-  - `CAUSED_BY`, `AFFECTS_IF_REMOVED`
-
-Do not create ad-hoc node labels or edges outside this schema.
-
-### Reusable Query Templates
-
-Reusable Cypher templates live in `knowledge-graph/queries/`. Domain skills reference these rather than writing inline Cypher.
-
----
-
-## Tool Safety Classification
-
-Every tool call must be tagged in `config.yaml` with one of three risk levels:
-
-| Level | Meaning | `requires_human_approval` |
-|---|---|---|
-| `READ_ONLY` | Reads logs, files, graph queries | `false` |
-| `CONFIG` | Writes to knowledge graph, modifies tunables | `false` |
-| `DESTRUCTIVE` | Modifies hardware state, triggers builds | `true` — mandatory |
-
-The safety gate is implemented in `tools/safety_gate.py`. **Never bypass it.**
-
----
-
-## Development Phases
-
-The project is built in four sequential phases. See [ROADMAP.md](./ROADMAP.md) for the full milestone breakdown and [BSP_KNOWLEDGE_SKILL_SET_DEV_PLAN.md](./BSP_KNOWLEDGE_SKILL_SET_DEV_PLAN.md) for strategic intent.
-
-| Phase | Period | Goal |
-|---|---|---|
-| **Phase 1** — Knowledge Graph Infrastructure | Month 1–2 | Build grounded knowledge foundation; eliminates skill hallucination |
-| **Phase 2** — Domain Expert Skill Development | Month 3–4 | Six deep-domain skills with validated tool-calling |
-| **Phase 3** — ITS Mentor Engine & Blackboard Integration | Month 5–6 | Wire skills into a coordinated, teachable system |
-| **Phase 4** — Closed-Loop Automation & Knowledge Evolution | Month 7+ | Self-improving system; BSP value visible to stakeholders |
-
-### Phase Exit KPIs
-
-| Metric | Phase 1 | Phase 2 | Phase 3 | Phase 4 |
-|---|---|---|---|---|
-| Knowledge graph nodes | ≥ 500 | ≥ 1,000 | ≥ 1,500 | +50/month |
-| GraphRAG multi-hop success | ≥ 85% | ≥ 90% | ≥ 90% | ≥ 90% |
-| Single-domain diagnosis accuracy | — | ≥ 90% | ≥ 90% | ≥ 90% |
-| Cross-domain diagnosis accuracy | — | — | ≥ 75% | ≥ 80% |
-| Security incidents | 0 | 0 | 0 | 0 |
-
----
-
-## Getting Started
-
-### Prerequisites
-
-- Docker & Docker Compose (for local Neo4j)
-- Python ≥ 3.11
-- Neo4j Community Edition (via `infra/neo4j/docker-compose.yaml`)
-
-### Local Setup
+## Quickstart
 
 ```bash
-# 1. Start Neo4j
-cd infra/neo4j
-docker compose up -d
-
-# 2. Apply schema and seed data
-bash infra/neo4j/init.sh
-
-# 3. Install Python dependencies
-python -m venv .venv
-source .venv/bin/activate
+git clone <repo-url>
+cd ai-bsp-knowledge-skill-sets
 pip install -r requirements.txt
-
-# 4. Verify air-gap isolation
-bash infra/air-gap/verify_isolation.sh
+python scripts/build_base_graph.py      # builds 501-node base graph (~2 min)
+bash scripts/install.sh                 # registers all 7 skills in ~/.claude/skills/
 ```
 
-> **Data Sovereignty:** All BSP document ingestion and inference runs air-gapped (no public cloud egress). The isolation boundary is verified by `infra/air-gap/verify_isolation.sh`. Do not add any code that makes outbound HTTP calls to external APIs with BSP document content.
+Then open Claude Code CLI or the VS Code panel and try:
 
-### Blackboard Multi-Agent Pattern
+```
+/power-thermal-expert   My big cluster is capping at OPP-3 under sustained load even though temperature is fine. How do I debug this?
 
-Complex cross-domain failures (requiring ≥ 3 skills) use the Blackboard pattern implemented in `tools/blackboard_runner.py`. The Arbiter's keyword-routing logic and confidence-weighted convergence rules are documented in Section 7.2 of `BSP_KNOWLEDGE_SKILL_SET_DEV_PLAN.md`.
+/bsp-knowledge-mentor   We have a random reboot after 30 minutes of video recording. Here is the dmesg: [paste log]
+
+/boot-debug-expert      System hangs during cold boot. PMIC log shows VDD_CORE comes up but VDD_IO never follows.
+```
+
+Skills are registered as symlinks, so edits to `skills/*/skill.md` take effect immediately without re-running `install.sh`.
+
+To register skills at project level instead of user level:
+
+```bash
+bash scripts/install.sh --project   # registers to .claude/skills/ in the repo root
+```
+
+---
+
+## MCP tool server (optional)
+
+The MCP server exposes graph query tools and log parsers to the skills. Run it in a separate terminal before starting Claude Code:
+
+```bash
+python mcp/server.py
+```
+
+Run this from the repo root — not from inside `mcp/`. Then configure Claude Code to connect to it. See [docs/mcp-setup.md](docs/mcp-setup.md) for the full configuration steps.
+
+---
+
+## Adding your SoC data
+
+Without proprietary data the skills reason over open-source BSP patterns, which are architecturally representative but not SoC-specific. To add your in-house TRM:
+
+```bash
+# Run this inside your company network only — never commit the output to git
+python scripts/ingest_custom.py --input /path/to/TRM.pdf --soc mt6989
+```
+
+The output writes to `knowledge-graph/custom/`, which is gitignored. Your proprietary register maps and power sequences never enter git history. See [docs/custom-knowledge.md](docs/custom-knowledge.md) for supported formats and options.
+
+---
+
+## Skills reference
+
+| Skill | Invoke | Domain |
+|---|---|---|
+| `bsp-knowledge-mentor` | `/bsp-knowledge-mentor` | Entry point — Socratic teaching, Blackboard coordinator, terminology translation |
+| `power-thermal-expert` | `/power-thermal-expert` | DVFS, EAS, C-states, PMIC, LPDDR5, STR/STD |
+| `boot-debug-expert` | `/boot-debug-expert` | Power sequencing, PLL lock, CoreSight ADIv6, power islands |
+| `multimedia-camera-expert` | `/multimedia-camera-expert` | ISP pipeline, V4L2, DMA-BUF, MIPI CSI-2, eMMC/F2FS |
+| `gpu-rendering-expert` | `/gpu-rendering-expert` | Render pipeline, Overdraw, Draw Call, Perfetto GPU, Vulkan |
+| `interrupt-virtualization-expert` | `/interrupt-virtualization-expert` | GIC-600, ITS, GICv4 virtual injection, KVM ARM vGIC |
+| `hardware-spec-extractor` | `/hardware-spec-extractor` | IP-XACT 2022 parsing, PDF register extraction, graph diff |
+
+---
+
+## Running tests
+
+```bash
+pytest tests/test_safety_gate.py -v            # 82 safety gate tests
+pytest tests/test_mcp_integration.py -v        # 54 tool integration tests
+pytest evals/blackboard_eval.py -v             # 15 Blackboard structural tests
+pytest evals/run_evals.py -v                   # 200 eval case schema validation
+```
+
+---
+
+## Security and data sovereignty
+
+- All inference runs locally via Claude Code — no BSP data is sent to third-party servers beyond Anthropic's API
+- `knowledge-graph/custom/` is gitignored — proprietary SoC data never enters git history
+- The MCP server binds to 127.0.0.1 only — no external network exposure
+- DESTRUCTIVE tools require an explicit human approval flag and will refuse to run without it
+
+---
+
+## Documentation
+
+- [Skill Registration](docs/skill-registration.md)
+- [MCP Server Setup](docs/mcp-setup.md)
+- [Adding Custom Knowledge](docs/custom-knowledge.md)
+- [Development Roadmap](ROADMAP.md)
+- [Architecture and Design](BSP_KNOWLEDGE_SKILL_SET_DEV_PLAN.md)
 
 ---
 
 ## Contributing
 
-1. **Layer 1 first.** Do not add or modify any domain skill until `knowledge-graph/` is populated and Phase 1 exit criteria are met.
-2. **Follow the skill directory convention.** Every skill folder must contain `prompt.md`, `tools.md`, `config.yaml`, and an `evals/` directory with ≥ 30 cases.
-3. **Tag every tool call.** Add a `safety_level` (`READ_ONLY` / `CONFIG` / `DESTRUCTIVE`) in `config.yaml` for each tool. `DESTRUCTIVE` requires `requires_human_approval: true`.
-4. **Stay within the schema.** New node and edge types must be added to `knowledge-graph/schema/` before use in seed data or skill queries.
-5. **No cloud egress.** Do not introduce dependencies that send BSP document content to external APIs.
-6. **Update the Decision Log.** Record any architectural decisions in the Decision Log table in [ROADMAP.md](./ROADMAP.md).
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines. Alpha testers: the most valuable contribution is using a skill on a real BSP problem and opening an issue describing what the response got right and wrong.

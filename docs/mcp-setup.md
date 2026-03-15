@@ -54,10 +54,12 @@ Add the server to your Claude Code configuration (`~/.claude/config.json` or
 
 | Category | Directory | Tools |
 |---|---|---|
-| Graph queries | `mcp/tools/graph_query/` | `query_power_chain`, `query_cross_domain`, `query_interrupt_path`, `query_isp_pipeline` |
-| Log parsers | `mcp/tools/log_parsers/` | `parse_ftrace`, `parse_perf`, `parse_thermal`, `parse_dmesg`, `parse_v4l2`, `parse_pmic`, `parse_irq` |
+| Graph queries | `mcp/tools/graph_query/` | `query_power_chain`, `query_cross_domain_failure`, `query_interrupt_path`, `query_isp_pipeline` |
+| Log parsers — power/thermal | `mcp/tools/log_parsers/` | `parse_ftrace`, `parse_perf_stat`, `parse_thermal_log`, `parse_pmic_log`, `parse_suspend_resume_log`, `parse_pll_log`, `compute_dvfs_efficiency`, `scan_power_islands` |
+| Log parsers — multimedia | `mcp/tools/log_parsers/` | `parse_v4l2_log`, `parse_emmc_io_log`, `parse_camera_hal_errors` |
+| Log parsers — GPU | `mcp/tools/log_parsers/` | `parse_perfetto_gpu`, `parse_agp_report` |
+| Log parsers — interrupt/virt | `mcp/tools/log_parsers/` | `parse_irq_stats`, `parse_vm_exit_stats`, `validate_its_table` |
 | Spec extractors | `mcp/tools/spec_extractor/` | `ingest_pdf`, `parse_ipxact`, `extract_registers`, `validate_registers` |
-| Term translator | `mcp/tools/term_translator/` | `translate_term` |
 | Impact translator | `mcp/tools/impact_translator/` | `translate_to_business_impact` |
 
 ---

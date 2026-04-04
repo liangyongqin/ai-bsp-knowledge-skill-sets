@@ -26,19 +26,7 @@ import json
 import pathlib
 import pytest
 
-
-def pytest_addoption(parser: pytest.Parser) -> None:
-    parser.addoption(
-        "--skill",
-        action="store",
-        default=None,
-        help="Filter eval cases by skill name prefix",
-    )
-
-
-@pytest.fixture
-def skill_filter(request: pytest.FixtureRequest) -> str | None:
-    return request.config.getoption("--skill")
+# pytest_addoption and skill_filter fixture live in evals/conftest.py
 
 CASES_DIR = pathlib.Path(__file__).parent / "cases"
 

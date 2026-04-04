@@ -9,14 +9,14 @@
 
 ## Project Status Summary
 
-**As of 2026-03-15**
+**As of 2026-04-05**
 
 | Phase | Status | Progress |
 |-------|--------|----------|
 | Phase 1 — Knowledge Graph Infrastructure | ✅ Complete | 6/6 milestones done (501 nodes in base graph) |
-| Phase 2 — Domain Expert Skill Development | 🔄 In Progress | ~70% (all 6 skill.md written; 16 log parsers complete; eval cases pending) |
-| Phase 3 — ITS Mentor Engine & Blackboard | 🔄 In Progress | ~85% (all code ✅; exit criteria pending human review) |
-| Phase 4 — Knowledge Evolution & Extensibility | ⬜ Not Started | (CI/CD templates scaffolded as part of M1.1) |
+| Phase 2 — Domain Expert Skill Development | 🔄 In Progress | ~90% (all 6 skill.md written; 16 log parsers; 180 eval cases; exit criteria pending human review) |
+| Phase 3 — ITS Mentor Engine & Blackboard | 🔄 In Progress | ~90% (all code ✅; 20 multi-domain evals; exit criteria pending human review) |
+| Phase 4 — Knowledge Evolution & Extensibility | 🔄 In Progress | M4.4 graph maintenance scripts delivered; eval runner bug fixed |
 
 ### What's Done
 
@@ -305,8 +305,9 @@ skills/<skill-name>/
 
 ---
 
-## Phase 4 — Knowledge Evolution & User Extensibility ⬜ Not Started
+## Phase 4 — Knowledge Evolution & User Extensibility 🔄 In Progress
 **Duration:** Month 7+ (2026-08-30 onwards)
+**Current state:** M4.4 graph maintenance scripts delivered (2026-04-05). Eval runner bug fixed.
 
 ### M4.1 — Knowledge Sedimentation CLI ⬜
 - [ ] Extend `scripts/ingest_custom.py` — parse post-mortem reports (Markdown / plain text) → extract symptom/cause/resolution → write to `knowledge-graph/custom/` as `FailureMode` nodes
@@ -323,8 +324,11 @@ skills/<skill-name>/
 - [ ] Write `docs/ci-integration.md`
 - [ ] Validate GitHub Actions template end-to-end in this repo
 
-### M4.4 — Base Graph Maintenance ⬜
-- [ ] Write `scripts/update_base_graph.sh` — fetch latest ARM public spec release notes, flag changed sections
+### M4.4 — Base Graph Maintenance 🔄 In Progress
+- [x] Write `scripts/graph_maintenance/graph_stats.py` — node/relationship counts by type, namespace breakdown, coverage gap detection
+- [x] Write `scripts/graph_maintenance/validate_graph.py` — orphan nodes, dangling relationships, schema compliance checks
+- [x] Write `scripts/graph_maintenance/refresh_base.py` — clean rebuild of base graph from all seed scripts (wraps build_base_graph.py --clean)
+- [x] Write `scripts/graph_maintenance/diff_graph.py` — compare two graph snapshots, report node additions/removals and relationship deltas
 - [ ] Write `evals/regression_runner.py` — re-run all eval cases, report accuracy drift
 - [ ] Set up GitHub Actions: weekly eval regression run on base graph
 

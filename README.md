@@ -119,6 +119,7 @@ pytest tests/test_safety_gate.py -v            # 82 safety gate tests
 pytest tests/test_mcp_integration.py -v        # 54 tool integration tests
 pytest evals/blackboard_eval.py -v             # 15 Blackboard structural tests
 pytest evals/run_evals.py -v                   # 200 eval case schema validation
+python3 evals/regression_runner.py              # regression report + scorecard snapshot
 ```
 
 ---

@@ -9,14 +9,14 @@
 
 ## Project Status Summary
 
-**As of 2026-04-05**
+**As of 2026-04-06**
 
 | Phase | Status | Progress |
 |-------|--------|----------|
 | Phase 1 — Knowledge Graph Infrastructure | ✅ Complete | 6/6 milestones done (501 nodes in base graph) |
 | Phase 2 — Domain Expert Skill Development | 🔄 In Progress | ~90% (all 6 skill.md written; 16 log parsers; 180 eval cases; exit criteria pending human review) |
 | Phase 3 — ITS Mentor Engine & Blackboard | 🔄 In Progress | ~90% (all code ✅; 20 multi-domain evals; exit criteria pending human review) |
-| Phase 4 — Knowledge Evolution & Extensibility | 🔄 In Progress | M4.4 graph maintenance scripts delivered; eval runner bug fixed |
+| Phase 4 — Knowledge Evolution & Extensibility | 🔄 In Progress | M4.4 graph maintenance scripts + regression runner delivered; eval runner bug fixed |
 
 ### What's Done
 
@@ -329,7 +329,7 @@ skills/<skill-name>/
 - [x] Write `scripts/graph_maintenance/validate_graph.py` — orphan nodes, dangling relationships, schema compliance checks
 - [x] Write `scripts/graph_maintenance/refresh_base.py` — clean rebuild of base graph from all seed scripts (wraps build_base_graph.py --clean)
 - [x] Write `scripts/graph_maintenance/diff_graph.py` — compare two graph snapshots, report node additions/removals and relationship deltas
-- [ ] Write `evals/regression_runner.py` — re-run all eval cases, report accuracy drift
+- [x] Write `evals/regression_runner.py` — re-run all eval cases, report accuracy drift (200 cases validated, 5 Blackboard cases, baseline scorecard saved)
 - [ ] Set up GitHub Actions: weekly eval regression run on base graph
 
 ---

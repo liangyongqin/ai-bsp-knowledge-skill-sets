@@ -1,0 +1,46 @@
+{
+  "timestamp": "2026-04-06T05-03-06",
+  "total_cases": 200,
+  "schema_valid": 200,
+  "schema_invalid": 0,
+  "by_skill": {
+    "boot-debug-expert": {
+      "total": 30,
+      "valid": 30,
+      "invalid": 0
+    },
+    "bsp-knowledge-mentor": {
+      "total": 20,
+      "valid": 20,
+      "invalid": 0
+    },
+    "gpu-rendering-expert": {
+      "total": 30,
+      "valid": 30,
+      "invalid": 0
+    },
+    "hardware-spec-extractor": {
+      "total": 30,
+      "valid": 30,
+      "invalid": 0
+    },
+    "interrupt-virtualization-expert": {
+      "total": 30,
+      "valid": 30,
+      "invalid": 0
+    },
+    "multimedia-camera-expert": {
+      "total": 30,
+      "valid": 30,
+      "invalid": 0
+    },
+    "power-thermal-expert": {
+      "total": 30,
+      "valid": 30,
+      "invalid": 0
+    }
+  },
+  "blackboard_cases": 5,
+  "blackboard_structural_pass": 5,
+  "issues": []
+}

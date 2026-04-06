@@ -9,14 +9,14 @@
 
 ## Project Status Summary
 
-**As of 2026-04-06**
+**As of 2026-04-07**
 
 | Phase | Status | Progress |
 |-------|--------|----------|
 | Phase 1 — Knowledge Graph Infrastructure | ✅ Complete | 6/6 milestones done (501 nodes in base graph) |
 | Phase 2 — Domain Expert Skill Development | 🔄 In Progress | ~90% (all 6 skill.md written; 16 log parsers; 180 eval cases; exit criteria pending human review) |
 | Phase 3 — ITS Mentor Engine & Blackboard | 🔄 In Progress | ~90% (all code ✅; 20 multi-domain evals; exit criteria pending human review) |
-| Phase 4 — Knowledge Evolution & Extensibility | 🔄 In Progress | M4.4 graph maintenance scripts + regression runner delivered; eval runner bug fixed |
+| Phase 4 — Knowledge Evolution & Extensibility | 🔄 In Progress | M4.2 business impact report template + generator delivered; M4.4 graph maintenance scripts + regression runner delivered; eval runner bug fixed |
 
 ### What's Done
 
@@ -307,16 +307,16 @@ skills/<skill-name>/
 
 ## Phase 4 — Knowledge Evolution & User Extensibility 🔄 In Progress
 **Duration:** Month 7+ (2026-08-30 onwards)
-**Current state:** M4.4 graph maintenance scripts delivered (2026-04-05). Eval runner bug fixed.
+**Current state:** M4.2 business impact report template + generator delivered (2026-04-07). M4.4 graph maintenance scripts delivered (2026-04-05). Eval runner bug fixed.
 
 ### M4.1 — Knowledge Sedimentation CLI ⬜
 - [ ] Extend `scripts/ingest_custom.py` — parse post-mortem reports (Markdown / plain text) → extract symptom/cause/resolution → write to `knowledge-graph/custom/` as `FailureMode` nodes
 - [ ] Implement Kuzu graph versioning: tag each ingest with date, source file hash, SoC tag
 - [ ] Write knowledge gap detector: query topology regions with few `FailureMode` nodes
 
-### M4.2 — Business Impact Report Template ⬜
-- [ ] Write `templates/optimization-report.md` — structured report with mandatory business impact section
-- [ ] Write `mcp/tools/impact_translator/report_generator.py` — auto-fill business impact section
+### M4.2 — Business Impact Report Template ✅
+- [x] Write `templates/optimization-report.md` — structured report with mandatory business impact section, 3 worked examples (power regression, boot failure, camera pipeline), Mustache-style placeholders
+- [x] Write `mcp/tools/impact_translator/report_generator.py` — auto-fill business impact section from findings list; CLI with `--findings`/`--metadata`/`--format`/`--output`; registered as `generate_business_impact_report` MCP tool (CONFIG level)
 
 ### M4.3 — CI/CD Integration Templates 🔄 Scaffolded
 - [x] Write `templates/ci-integration/github-actions.yaml` (scaffolded)

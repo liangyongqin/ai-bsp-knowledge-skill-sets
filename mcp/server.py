@@ -36,9 +36,11 @@ Registered tools (log parsers — interrupt/virtualization domain):
 
 Registered tools (business impact translation — CONFIG):
   - translate_to_business_impact — convert BSP metric delta to PM/management language
+  - generate_business_impact_report — batch-translate findings into a structured report
 
 All read-only tools are enforced by the safety gate at READ_ONLY level.
-translate_to_business_impact is CONFIG level (output communicated externally).
+translate_to_business_impact and generate_business_impact_report are CONFIG level
+(output communicated externally).
 
 Environment variables:
   MCP_HOST   — bind host (default: 127.0.0.1)
@@ -479,6 +481,31 @@ def translate_to_business_impact(
         unit=unit,
         product_type=product_type,
     )
+
+
+@mcp.tool()
+def generate_business_impact_report(
+    findings: list[dict],
+    metadata: dict | None = None,
+) -> dict:
+    """Generate a structured business impact report from multiple BSP metric findings.
+
+    Takes a list of BSP metric deltas and produces a full report with executive
+    summary, per-finding business impact, KPI summary, and overall severity.
+
+    Parameters
+    ----------
+    findings:
+        List of dicts, each with keys: ``component``, ``metric``, ``delta``,
+        ``unit``, and optionally ``product_type``.
+    metadata:
+        Optional report context: ``soc_platform``, ``product_type``,
+        ``author``, ``symptom_description``, ``primary_root_cause``,
+        ``fix_description``.
+    """
+    check_approval("generate_business_impact_report")
+    from report_generator import generate_report
+    return generate_report(findings=findings, metadata=metadata)
 
 
 # ---------------------------------------------------------------------------

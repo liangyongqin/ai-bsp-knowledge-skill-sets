@@ -1,0 +1,8 @@
+{
+  "id": "case_202",
+  "skill": "power-thermal-expert",
+  "input": "Our Cortex-X925 prime core cluster reaches 95C junction temp within 30 seconds of sustained ML inference load. The X925's 10-wide decode pipeline generates significantly more heat than the X4 it replaced. Thermal logs show the power_allocator governor capping at 3.0W allocated power, but the actual power draw is 3.8W before throttle kicks in — there's a 200ms overshoot window. cat /sys/class/thermal/thermal_zone0/policy shows 'power_allocator'. We tried reducing sustainable_power from 3000 to 2500 but it tanks performance by 40%. How do we tune the PID coefficients (k_p, k_i, k_d) in the power allocator to reduce overshoot without destroying throughput?",
+  "expected_topics": ["power_allocator", "PID tuning", "sustainable_power", "thermal throttling", "Cortex-X925", "junction temperature", "thermal_zone", "k_p k_i k_d"],
+  "min_score": 4,
+  "tags": ["armv9", "thermal", "power-allocator", "pid-tuning"]
+}

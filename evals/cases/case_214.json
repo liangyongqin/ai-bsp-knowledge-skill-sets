@@ -1,0 +1,8 @@
+{
+  "id": "case_214",
+  "skill": "multimedia-camera-expert",
+  "input": "After switching to a new panel revision (BOE vs-120-rev03), the display fails to initialize. dmesg shows: 'panel-simple: failed to send DCS command 0x29 (set_display_on), err=-110' followed by 'dsi_host: command mode timeout waiting for BTA'. The old panel (rev02) worked with the same init sequence. Comparing datasheets, rev03 requires an extra 20ms delay after exit_sleep_mode (DCS 0x11) before accepting further commands, and the VCOM voltage setting (DCS 0xC5) parameter changed from 2 bytes to 3 bytes. Our panel driver hardcodes the init sequence in panel_init_cmds[]. How do we properly handle panel revision differences in the DCS init sequence, and is there a standard way to detect panel revision at runtime via MIPI DCS read commands?",
+  "expected_topics": ["DCS command", "panel init sequence", "MIPI DSI", "BTA timeout", "exit_sleep_mode", "panel revision", "set_display_on", "VCOM"],
+  "min_score": 4,
+  "tags": ["display", "dsi", "dcs-commands", "panel-init", "bringup"]
+}

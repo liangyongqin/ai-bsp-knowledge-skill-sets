@@ -1,0 +1,8 @@
+{
+  "id": "case_205",
+  "skill": "interrupt-virtualization-expert",
+  "input": "We are passing a network NIC through to a KVM guest using VFIO on our ARM64 SoC with SMMUv3. The guest boots fine, but when the NIC driver inside the guest starts DMA, we get: 'arm-smmu-v3: nested translation fault at IPA 0x2_40000000, stage 2 fault'. The host SMMU is configured for stage-2 only passthrough (SMMU_S2CR type BYPASS was set), but with nested translation enabled we now need proper stage-1 context for the guest. VFIO reports: 'Failed to attach device to IOMMU group 7'. How do we configure nested stage-1/stage-2 SMMU translation for VFIO passthrough, and does the current mainline kernel (6.8+) support SMMUv3 nested translation?",
+  "expected_topics": ["SMMUv3 nested translation", "VFIO passthrough", "stage-1 stage-2", "KVM", "IOMMU group", "S2CR", "DMA", "device assignment"],
+  "min_score": 4,
+  "tags": ["smmuv3", "kvm", "vfio", "nested-translation", "passthrough"]
+}

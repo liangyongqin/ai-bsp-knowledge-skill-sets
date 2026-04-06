@@ -163,6 +163,45 @@ _FAILURE_MODES = [
      "Watchdog bark: CPU0 hung; system hard reset",
      "Kernel deadlock in spinlock path blocks watchdog pet thread; timer not serviced",
      "system", "Android Watchdog documentation", "critical"),
+    # --- Added 2026-04-07: display, interconnect, and IOMMU failure modes ---
+    ("FM-Display-FIFO-Underflow",
+     "Display shows blank lines or color banding; display controller underflow interrupt fires",
+     "Display RDMA bandwidth starved by concurrent camera/GPU DMA; increase display QoS or reduce resolution",
+     "display", "Linux DRM/KMS documentation", "high"),
+    ("FM-DSI-Command-Timeout",
+     "Panel init or brightness command hangs; DSI command mode timeout",
+     "Panel not responding to DCS commands; check DSI LP clock, panel reset GPIO timing, and TE signal",
+     "display", "MIPI DSI-2 specification", "medium"),
+    ("FM-NoC-Timeout",
+     "NoC timeout error; peripheral access hangs; bus error reported",
+     "Network-on-Chip timeout due to target slave not responding; power domain of target may be gated "
+     "or clock may be disabled; check interconnect firewall and PM state",
+     "interconnect", "ARM CoreLink NIC/NoC TRM", "critical"),
+    ("FM-CHI-Snoop-Filter-Overflow",
+     "Performance degradation; excessive memory traffic; CMN PMU shows high snoop rate",
+     "CHI snoop filter capacity exceeded; back-invalidation evicts tracked lines causing redundant "
+     "DRAM fetches; increase snoop filter entries or reduce sharing across clusters",
+     "interconnect", "ARM CHI spec IHI0050 / CMN-700 TRM", "medium"),
+    ("FM-PCIe-ATS-Fault",
+     "PCIe device DMA fails; SMMU reports ATS translation fault; device error",
+     "PCIe device uses ATS (Address Translation Service) but SMMU ATS support not enabled or "
+     "ATC (Address Translation Cache) in device stale after IOMMU invalidation",
+     "pcie", "ARM SMMUv3 spec / PCIe ATS specification", "high"),
+    ("FM-USB-Enumeration-Fail",
+     "USB device not detected after plug-in; xhci_hcd timeout in dmesg",
+     "USB PHY PLL not locked or VBUS supply not enabled; check USB regulator enable sequence "
+     "and PHY init in platform driver; also verify USB-C CC detection",
+     "usb", "Linux USB documentation / xHCI spec", "medium"),
+    ("FM-UFS-Hibern8-Stuck",
+     "UFS storage access stalls; UFS controller stuck in Hibern8 state; IO timeout",
+     "UFS UniPro link hibernation exit fails; PHY PLL re-lock timeout; "
+     "check UFS refclk gating and UniPro PA_Hibern8Time parameter",
+     "storage", "UFS JEDEC specification / Linux drivers/ufs/", "high"),
+    ("FM-eMMC-HS400-Tuning-Fail",
+     "eMMC read/write errors after boot; HS400 mode not stable; fallback to HS200",
+     "eMMC HS400 strobe DLL tuning failed; DLL lock not achieved due to PVT variation; "
+     "adjust DLL delay taps in platform data or reduce bus clock",
+     "storage", "JEDEC eMMC 5.1 spec / LKML", "medium"),
 ]
 
 

@@ -1,0 +1,8 @@
+{
+  "id": "case_213",
+  "skill": "multimedia-camera-expert",
+  "input": "During simultaneous 4K video recording and display preview, we see periodic horizontal tearing artifacts on the display. dmesg shows: 'dsi_display: underrun detected, lbuf_ctrl=0x8012, fifo_status=0x3'. The DSI link is configured for 4 lanes at 1.5Gbps per lane (6Gbps total) which should be sufficient for 2400x1080@120Hz (requires ~4.8Gbps with DSC 3:1). However, when the camera ISP writes its output buffers via a shared DRAM port, the display DMA read latency spikes from 2us to 15us — visible in the arm_cmn/hnf_txdat_stall/ PMU counter. The underrun happens because the DSI line buffer drains before the next scanline arrives. How do we isolate display DRAM bandwidth from camera writeback traffic, and should we configure QoS priorities at the interconnect level?",
+  "expected_topics": ["DSI underrun", "bandwidth contention", "line buffer", "QoS", "camera ISP", "DRAM port", "display DMA", "DSC"],
+  "min_score": 4,
+  "tags": ["display", "dsi", "underrun", "bandwidth", "camera-contention"]
+}

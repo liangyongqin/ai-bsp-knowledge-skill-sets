@@ -1,0 +1,8 @@
+{
+  "id": "case_201",
+  "skill": "interrupt-virtualization-expert",
+  "input": "After bringing up a new ARMv9 SoC (Cortex-A720 cores), our Android native NDK library that uses SVE2 intrinsics triggers a SIGILL in userspace. dmesg shows: 'Unsupported SVE vector length 256 requested'. We confirmed the hardware supports SVE2 via ID_AA64ZFR0_EL1 reads, but the kernel was built with CONFIG_ARM64_SVE=n. After enabling the config, the SIGILL changed to a different instruction. Is there a mismatch between SVE and SVE2 feature detection? How do we verify kernel advertises correct HWCAP2_SVE2 to userspace, and what is the correct way to probe supported vector lengths at runtime?",
+  "expected_topics": ["SVE2", "CONFIG_ARM64_SVE", "SIGILL", "HWCAP2", "ID_AA64ZFR0_EL1", "vector length", "ARMv9"],
+  "min_score": 4,
+  "tags": ["armv9", "sve2", "kernel-config", "userspace-abi"]
+}

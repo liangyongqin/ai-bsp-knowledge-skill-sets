@@ -1,0 +1,8 @@
+{
+  "id": "case_207",
+  "skill": "power-thermal-expert",
+  "input": "Our CMN-700 mesh interconnect PMU counters (via perf stat -e arm_cmn/hnf_cache_miss/) show a 78% miss rate on the System Level Cache (SLC) during mixed ML + camera workloads. The SLC is 8MB shared across all requesters. perf reports show the NPU's streaming DMA traffic is evicting camera ISP working set from the SLC. We know MPAM (Memory Partitioning and Monitoring) can partition cache ways, but we have not enabled it. What are the kernel requirements for MPAM on CMN-700, how do we assign PARTID values to specific devices/cgroups, and can we reserve 2MB of SLC exclusively for the ISP while letting the NPU use the remaining 6MB?",
+  "expected_topics": ["CMN-700", "SLC", "MPAM", "cache partitioning", "arm_cmn PMU", "hnf_cache_miss", "PARTID", "cache thrashing"],
+  "min_score": 4,
+  "tags": ["amba-chi", "cmn-700", "mpam", "cache-partitioning", "pmu"]
+}

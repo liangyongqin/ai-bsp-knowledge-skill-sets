@@ -1,0 +1,8 @@
+{
+  "id": "case_209",
+  "skill": "power-thermal-expert",
+  "input": "Memory-intensive benchmarks on our CMN-700 SoC show unexpectedly high DRAM latency — 180ns average when the LPDDR5 controller should deliver 80-90ns. perf stat with arm_cmn/hnf_sf_hit/ and arm_cmn/hnf_sf_evict/ shows the snoop filter is working, but arm_cmn/xp_txflit_stall/ on cross-points XP(2,1) and XP(2,2) shows 45% stall rate. The mesh is 4x4 with DRAM controllers at the edges. We suspect traffic from the GPU (at XP(0,0)) to DRAM (at XP(3,3)) is saturating intermediate cross-points. Is there a way to configure QoS priority on the CMN-700 XP nodes, and should we look at adjusting the mesh routing algorithm from XY to adaptive?",
+  "expected_topics": ["CMN-700 cross-point", "XP stall", "mesh routing", "QoS", "DRAM latency", "txflit_stall", "snoop filter", "LPDDR5"],
+  "min_score": 4,
+  "tags": ["amba-chi", "cmn-700", "interconnect-congestion", "qos", "memory-latency"]
+}

@@ -1,0 +1,8 @@
+{
+  "id": "case_212",
+  "skill": "power-thermal-expert",
+  "input": "Users report the phone feels uncomfortably hot during video recording, but the Android thermal HAL reports skin temperature at only 38C — well below the 42C throttling threshold. The virtual skin thermal zone uses a weighted sum of 5 internal TSENS sensors with coefficients from the device tree: coefficients = <120 80 50 30 20>, intercept = <-8500>. We suspect the coefficients were tuned for a different chassis design. The actual IR camera measurement shows 44C skin temp when the virtual sensor reads 38C — a 6C drift. The PMIC temp sensor (sensor 4) which is closest to the back panel has coefficient 30, which seems too low. How do we recalibrate the virtual skin temperature model, and what test methodology should we use to generate a proper coefficient set?",
+  "expected_topics": ["virtual skin temperature", "thermal zone coefficients", "thermal HAL", "sensor calibration", "IR camera", "TSENS weighting", "intercept", "chassis thermal model"],
+  "min_score": 4,
+  "tags": ["thermal-framework", "skin-temperature", "calibration", "android-thermal"]
+}

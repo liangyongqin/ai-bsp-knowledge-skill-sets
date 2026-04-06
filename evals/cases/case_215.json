@@ -1,0 +1,8 @@
+{
+  "id": "case_215",
+  "skill": "gpu-rendering-expert",
+  "input": "Our AMOLED panel supports VRR (Variable Refresh Rate) between 10Hz and 120Hz, but users report visible flicker when the refresh rate drops below 30Hz during static content. The display driver sets the refresh rate via DSI TE (tearing effect) signal frequency. When the GPU renders at low FPS (e.g., 24fps for video), the panel controller switches to 24Hz, but the AMOLED pixel luminance decay becomes visible between refreshes. Android SurfaceFlinger logs show: 'setActiveConfig: fps=24, vsyncPeriod=41666666ns'. The panel vendor says the minimum flicker-free rate is 48Hz for this OLED material. How do we configure a VRR floor in the display HAL so the refresh rate never drops below 48Hz, and should we use panel self-refresh (PSR) with frame insertion instead of true low-frequency drive for content below 48fps?",
+  "expected_topics": ["VRR", "variable refresh rate", "AMOLED flicker", "TE signal", "SurfaceFlinger", "refresh rate floor", "panel self-refresh", "frame insertion"],
+  "min_score": 4,
+  "tags": ["display", "vrr", "amoled", "flicker", "refresh-rate"]
+}

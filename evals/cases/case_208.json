@@ -1,0 +1,8 @@
+{
+  "id": "case_208",
+  "skill": "boot-debug-expert",
+  "input": "We have a hard system hang on our CHI-based SoC during stress testing. All 8 cores are stuck — CoreSight CTI shows all PEs in debug halt state but none hit a breakpoint. The CMN-700 debug register dump shows several HN-F nodes with outstanding snoops that never completed: hnf_pocq_reqs_recvd is incrementing but hnf_pocq_reqs_done is frozen. The watchdog fires after 10 seconds. We suspect a CHI protocol deadlock — possibly a snoop filter conflict where two RN-F nodes hold conflicting cache lines and neither can complete the Snoop sequence. How do we use CMN-700 DTC (Debug Trace Controller) to capture the CHI transaction sequence leading to the hang, and what are common deadlock patterns in CHI mesh interconnects?",
+  "expected_topics": ["CHI deadlock", "CMN-700 DTC", "snoop filter", "HN-F", "RN-F", "POCQ", "CoreSight CTI", "system hang"],
+  "min_score": 4,
+  "tags": ["amba-chi", "deadlock", "coresight", "cmn-700", "debug"]
+}

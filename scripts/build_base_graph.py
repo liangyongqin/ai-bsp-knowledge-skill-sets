@@ -34,13 +34,22 @@ INGEST_SCRIPTS = [
     "arm-gic-600.py",
     "arm-amba-axi.py",
     "arm-cpu-cluster.py",
+    "arm-cortex-v9.py",
+    "arm-smmu-v3.py",
+    "arm-gicv5.py",
+    "arm-trustzone-tfa.py",
+    "amba-chi-interconnect.py",
     "linux-dvfs-eas.py",
+    "linux-devfreq-qos.py",
     "linux-suspend-hibernate.py",
     "linux-platform-devices.py",
     "linux-clock-tree.py",
+    "linux-thermal-framework.py",
     "mipi-camera-subsystem.py",
+    "mipi-dsi-display.py",
     "gpu-subsystem.py",
     "common-failure-modes.py",
+    "arm-registers-key.py",
 ]
 
 

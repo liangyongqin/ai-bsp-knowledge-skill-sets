@@ -1,0 +1,8 @@
+{
+  "id": "case_211",
+  "skill": "power-thermal-expert",
+  "input": "Our thermal management suddenly stops throttling and the SoC hits critical shutdown at 115C. dmesg shows repeated: 'tsens: sensor 3 read timeout, last valid temp 72000 mC'. The TSENS ADC conversion register (TSENS_Sn_STATUS offset 0x44) reads 0xFFFFFFFF which means the sensor is not responding. After this, the thermal zone enters polling mode but get_temp() returns the stale 72C value indefinitely — the governor thinks everything is fine. The TSENS block sits on an APB bus clocked by a peripheral clock that we suspect gets gated during a clock optimization pass. How do we verify the TSENS peripheral clock state, and is there a kernel mechanism to mark a thermal zone as invalid when sensor reads fail so the governor takes a safe fallback action?",
+  "expected_topics": ["TSENS", "sensor timeout", "thermal zone", "critical shutdown", "APB clock gating", "get_temp", "stale reading", "thermal safety"],
+  "min_score": 4,
+  "tags": ["thermal-framework", "tsens", "sensor-failure", "safety"]
+}

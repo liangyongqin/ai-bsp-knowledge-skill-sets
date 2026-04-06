@@ -1,0 +1,8 @@
+{
+  "id": "case_204",
+  "skill": "gpu-rendering-expert",
+  "input": "Our Mali-G925 GPU fails to render after boot with SMMUv3 enabled. dmesg shows: 'arm-smmu-v3 11000000.iommu: event 0x10 received -- translation fault, SID=0x120, SSID=0x0, addr=0x00000008_80000000, stage 1'. The GPU driver allocates buffers via dma_alloc_attrs() but the stream ID 0x120 is not present in the SMMU stream table. We confirmed the device tree has the correct iommus property pointing to the SMMU node with the right #stream-id-cells. The stream table base register (STRTAB_BASE) looks correct. Why would the SID not be in the stream table, and how do we verify the stream table entry was programmed by the kernel SMMU driver?",
+  "expected_topics": ["SMMUv3", "translation fault", "stream ID", "stream table", "GPU DMA", "iommus property", "STRTAB_BASE", "arm-smmu-v3"],
+  "min_score": 4,
+  "tags": ["smmuv3", "iommu", "gpu", "translation-fault", "device-tree"]
+}

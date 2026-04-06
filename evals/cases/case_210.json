@@ -1,0 +1,8 @@
+{
+  "id": "case_210",
+  "skill": "power-thermal-expert",
+  "input": "The power_allocator thermal governor on our SoC overshoots the target temperature by 8C before settling. Tracing thermal_power_allocator_pid shows k_po=50, k_pu=100, k_i=5, k_d=0. The dynamic_power_table in our OPP entries was copied from a reference design and lists the Cortex-A78 coefficients, but we have Cortex-A715 cores which have different dynamic capacitance. cat /sys/class/thermal/thermal_zone0/sustainable_power reads 4000 (mW). When we run a bursty workload, the granted power swings between 1200mW and 5800mW per control interval (100ms). The integral term accumulates too much during the initial ramp. How do we properly calibrate the dynamic power model coefficients for our actual silicon, and should we add anti-windup to the integral term?",
+  "expected_topics": ["power_allocator", "PID overshoot", "dynamic_power_table", "sustainable_power", "k_po k_pu k_i", "anti-windup", "power model calibration", "OPP"],
+  "min_score": 4,
+  "tags": ["thermal-framework", "power-allocator", "pid-tuning", "calibration"]
+}

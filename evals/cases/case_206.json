@@ -1,0 +1,8 @@
+{
+  "id": "case_206",
+  "skill": "interrupt-virtualization-expert",
+  "input": "Under heavy GPU and display DMA load, we see periodic 50ms stalls across all I/O devices. ftrace shows arm_smmu_cmdq_issue_cmd taking 48ms in some cases. The SMMUv3 command queue (CMDQ) is 4096 entries deep but CMDQ_PROD and CMDQ_CONS registers show the queue is consistently full. We suspect TLB invalidation commands (TLBI_NH_ALL) are flooding the queue because the GPU driver calls iommu_flush_iotlb_all() on every buffer unmap. SMMU GERROR register shows CMDQ_ERR bit set intermittently. How do we diagnose command queue saturation, and is there a way to batch or defer TLB invalidations to prevent the queue from backing up?",
+  "expected_topics": ["SMMUv3 command queue", "CMDQ", "TLB invalidation", "TLBI batching", "iommu_flush_iotlb_all", "GERROR", "CMDQ_PROD CMDQ_CONS", "DMA stall"],
+  "min_score": 4,
+  "tags": ["smmuv3", "tlb-invalidation", "command-queue", "performance"]
+}

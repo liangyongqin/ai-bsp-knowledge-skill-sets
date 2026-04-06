@@ -1,0 +1,8 @@
+{
+  "id": "case_203",
+  "skill": "interrupt-virtualization-expert",
+  "input": "We enabled MTE (Memory Tagging Extension) in synchronous mode on our ARMv9 SoC running Android 15. A native camera HAL process keeps getting killed with SIGSEGV code SEGV_MTESERR at address 0x0b00007f8a3c1230. logcat shows: 'Fault at tag-mismatched address, expected tag 0x0b, found 0x0a'. This looks like a use-after-free since the allocation was freed and re-tagged. We want to use MTE to find the exact offending code path. How do we configure the kernel to log the allocation/deallocation stack traces for the faulting address? Is there a way to get KASAN-like reports from MTE in production builds, and what is the performance overhead of sync vs async MTE mode?",
+  "expected_topics": ["MTE", "SEGV_MTESERR", "use-after-free", "tag mismatch", "sync vs async MTE", "KASAN", "stack trace", "memory tagging"],
+  "min_score": 4,
+  "tags": ["armv9", "mte", "memory-safety", "android", "debugging"]
+}

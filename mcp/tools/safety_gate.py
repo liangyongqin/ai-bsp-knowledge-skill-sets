@@ -73,6 +73,8 @@ TOOL_RISK_LEVELS: dict[str, RiskLevel] = {
     "ingest_custom_pdf": RiskLevel.CONFIG,
     "ingest_custom_ipxact": RiskLevel.CONFIG,
     "update_custom_graph": RiskLevel.CONFIG,
+    # Post-mortem ingestion — CONFIG because it writes to the knowledge graph
+    "ingest_postmortem": RiskLevel.CONFIG,
     # Business impact translator — CONFIG because output is communicated externally
     "translate_to_business_impact": RiskLevel.CONFIG,
     "generate_business_impact_report": RiskLevel.CONFIG,

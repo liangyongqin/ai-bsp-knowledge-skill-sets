@@ -38,6 +38,9 @@ Registered tools (business impact translation — CONFIG):
   - translate_to_business_impact — convert BSP metric delta to PM/management language
   - generate_business_impact_report — batch-translate findings into a structured report
 
+Registered tools (knowledge sedimentation — CONFIG):
+  - ingest_postmortem — parse post-mortem reports and ingest as FailureMode nodes
+
 All read-only tools are enforced by the safety gate at READ_ONLY level.
 translate_to_business_impact and generate_business_impact_report are CONFIG level
 (output communicated externally).
@@ -70,12 +73,14 @@ _TOOLS_DIR = os.path.join(_HERE, "tools")
 _GRAPH_QUERY_DIR = os.path.join(_TOOLS_DIR, "graph_query")
 _LOG_PARSERS_DIR = os.path.join(_TOOLS_DIR, "log_parsers")
 _IMPACT_TRANSLATOR_DIR = os.path.join(_TOOLS_DIR, "impact_translator")
+_SCRIPTS_DIR = os.path.join(_REPO_ROOT, "scripts")
 
 sys.path.insert(0, _QUERIES_DIR)
 sys.path.insert(0, _TOOLS_DIR)
 sys.path.insert(0, _GRAPH_QUERY_DIR)
 sys.path.insert(0, _LOG_PARSERS_DIR)
 sys.path.insert(0, _IMPACT_TRANSLATOR_DIR)
+sys.path.insert(0, _SCRIPTS_DIR)
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -506,6 +511,61 @@ def generate_business_impact_report(
     check_approval("generate_business_impact_report")
     from report_generator import generate_report
     return generate_report(findings=findings, metadata=metadata)
+
+
+@mcp.tool()
+def ingest_postmortem(
+    input_path: str,
+    namespace: str = "custom",
+    fmt: str = "auto",
+    dry_run: bool = False,
+    validate: bool = False,
+) -> dict:
+    """Ingest a post-mortem report into the knowledge graph as FailureMode nodes.
+
+    Parses structured post-mortem reports (Markdown or JSON) and creates
+    FailureMode nodes with CAUSED_BY relationships to Component nodes.
+    Supports dry-run preview and schema validation.
+
+    Parameters
+    ----------
+    input_path:
+        Absolute path to the post-mortem report file.
+    namespace:
+        Graph namespace: ``"base"`` (open-source) or ``"custom"`` (proprietary).
+        Defaults to ``"custom"``.
+    fmt:
+        Input format: ``"auto"``, ``"markdown"``, or ``"json"``.
+    dry_run:
+        If ``True``, parse and return preview without writing to the graph.
+    validate:
+        If ``True``, validate extracted entities against the Kuzu schema.
+    """
+    check_approval("ingest_postmortem")
+    from ingest_postmortem import parse_file, validate_entries, write_to_graph
+
+    entries = parse_file(input_path, fmt if fmt != "auto" else
+                         ("markdown" if input_path.endswith((".md", ".txt")) else "json"))
+
+    result = {"entries_parsed": len(entries), "entries": []}
+    for e in entries:
+        result["entries"].append({
+            "name": e.name,
+            "symptom": e.symptom[:120],
+            "domain": e.affected_domain,
+            "severity": e.severity,
+            "components": e.affected_components or [],
+        })
+
+    if validate:
+        result["validation"] = validate_entries(entries)
+
+    if not dry_run:
+        stats = write_to_graph(entries, namespace)
+        result["write_stats"] = stats
+
+    result["dry_run"] = dry_run
+    return result
 
 
 # ---------------------------------------------------------------------------

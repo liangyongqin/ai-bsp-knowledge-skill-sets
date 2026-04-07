@@ -1,0 +1,8 @@
+{
+  "id": "case_225",
+  "skill": "bsp-knowledge-mentor",
+  "input": "I'm an app-layer engineer trying to understand why our AI inference workload is slower on the new C1 cores with SME2 than on the old Cortex-A725 with NEON. The vendor says SME2 should accelerate matrix operations. We're using a quantized INT8 model. Could the MXFP6 support in ARMv9.7 help, and what's the difference between running inference on CPU via SME2 vs offloading to NPU? I need a business-level summary for my manager too.",
+  "expected_topics": ["SME2", "MXFP6", "C1 cores", "AI inference", "quantization", "NEON", "NPU", "business impact", "learner level", "app-layer"],
+  "min_score": 4,
+  "tags": ["mentor", "cross-domain", "sme2", "ai-inference", "business-impact"]
+}

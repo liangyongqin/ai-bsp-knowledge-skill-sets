@@ -1,0 +1,8 @@
+{
+  "id": "case_223",
+  "skill": "bsp-knowledge-mentor",
+  "input": "I'm a driver-level BSP engineer. We're evaluating CHI C2C for a next-gen chiplet SoC. Cross-chip DMA transactions sometimes stall and both sides show credit exhaustion in CHI link debug registers. We've also seen rare ordering violations where a remote observer sees stale data after a DSB. Can you guide me through diagnosing whether this is a DMT ordering issue or a C2C credit deadlock, and what the relationship is between these two failure modes?",
+  "expected_topics": ["CHI C2C", "credit deadlock", "DMT", "ordering violation", "DSB", "chiplet", "cross-chip DMA", "flow control", "Socratic"],
+  "min_score": 4,
+  "tags": ["mentor", "cross-domain", "chi-c2c", "interconnect", "ordering"]
+}

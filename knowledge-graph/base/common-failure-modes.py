@@ -202,6 +202,45 @@ _FAILURE_MODES = [
      "eMMC HS400 strobe DLL tuning failed; DLL lock not achieved due to PVT variation; "
      "adjust DLL delay taps in platform data or reduce bus clock",
      "storage", "JEDEC eMMC 5.1 spec / LKML", "medium"),
+
+    # --- New failure modes added 2026-04-08 (research session) ---
+
+    ("FM-CSI2-ECC-Uncorrectable",
+     "MIPI CSI-2 receiver reports uncorrectable ECC errors; frames dropped or corrupted",
+     "Physical layer signal integrity issue on CSI-2 lanes; check PHY training, lane "
+     "termination resistors, and clock/data skew; may indicate ribbon cable degradation "
+     "or connector contamination; MIPI CSI-2 v4.2 adds D-PHY ECM for better error resilience",
+     "multimedia", "MIPI CSI-2 v4.2 specification / LKML media subsystem", "high"),
+    ("FM-MIPI-DSI-Timeout-Underflow",
+     "Display shows corruption or goes blank; DSI command timeout followed by FIFO underflow",
+     "DSI host clock too slow for panel refresh rate at target resolution; check DSI PLL "
+     "configuration, lane count, and bits-per-pixel vs panel requirements; "
+     "increase lane bandwidth or enable DSC compression",
+     "display", "MIPI DSI-2 specification / DRM mailing list", "high"),
+    ("FM-Devfreq-QoS-Conflict",
+     "Device frequency stuck at min despite load; PM QoS constraint prevents scaling",
+     "Conflicting PM QoS requests from multiple consumers; one consumer holds MIN_FREQ "
+     "constraint while another needs MAX_FREQ; check /sys/class/devfreq/*/trans_stat "
+     "and pm_qos debug interface for constraint holders",
+     "dvfs", "Linux Documentation/power/pm_qos_interface.rst", "medium"),
+    ("FM-Interconnect-Bandwidth-Starve",
+     "Memory-intensive workload stutters; CPU/GPU wait cycles high; NoC saturated",
+     "Interconnect bandwidth path not requested or requested at too low a level; "
+     "devfreq interconnect provider not voting for required bandwidth; "
+     "check /sys/kernel/debug/interconnect/ for path bandwidth allocations",
+     "interconnect", "Linux Documentation/interconnect/interconnect.rst", "medium"),
+    ("FM-TFA-BL2-Load-Fail",
+     "Boot stuck at BL2; serial console shows FIP image authentication failure",
+     "TF-A BL2 cannot load or authenticate BL31/BL32/BL33 from FIP image; "
+     "check ROT key hash in OTP, FIP layout, and TBBR chain of trust configuration; "
+     "may indicate OTP key provisioning mismatch or FIP build error",
+     "boot", "TF-A documentation — trustedfirmware.org / ARM TBBR spec", "critical"),
+    ("FM-Genpd-Power-Off-With-Active-Child",
+     "Kernel warning: PM domain powered off with active sub-domain; device crashes",
+     "Generic power domain (genpd) turned off while child device still active; "
+     "runtime PM reference counting error in BSP driver; audit pm_runtime_get/put "
+     "pairs in driver probe/remove paths; check genpd debugfs for domain hierarchy",
+     "power", "Linux Documentation/power/runtime_pm.rst", "high"),
 ]
 
 

@@ -1,0 +1,8 @@
+{
+  "id": "case_224",
+  "skill": "multimedia-camera-expert",
+  "input": "We're using MIPI CSI-2 v4.2 with a new event-based vision sensor (EVS) that outputs sparse pixel events rather than full frames. The V4L2 driver receives the data but our ISP pipeline expects raster-scan frames. MIPI CSI-2 v4.2 added standardized ESP (Event-based Sensor Protocol) support. How should we configure the V4L2 media controller pipeline for event-based sensors, and what changes are needed in the ISP DMA-BUF allocation for sparse event data vs full frames?",
+  "expected_topics": ["CSI-2 v4.2", "event-based sensor", "EVS", "ESP", "V4L2", "media controller", "ISP", "DMA-BUF", "sparse data"],
+  "min_score": 4,
+  "tags": ["multimedia", "mipi", "csi2-v4.2", "event-sensor", "esp"]
+}

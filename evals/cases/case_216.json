@@ -1,0 +1,8 @@
+{
+  "id": "case_216",
+  "skill": "power-thermal-expert",
+  "input": "We're bringing up a new SoC with ARM C1-Ultra, C1-Pro, and C1-Nano cores in a 1+3+4 big.MEDIUM.LITTLE configuration. The EAS scheduler keeps placing heavy tasks on C1-Nano instead of C1-Ultra. The energy model shows all three tiers but the capacity values seem wrong — C1-Nano shows capacity 512 and C1-Ultra shows capacity 800. How should we calibrate the Energy Model for this 3-tier C1 setup, and does the runtime-modifiable EM (Linux 6.9+) help us tune this without rebuilding the kernel?",
+  "expected_topics": ["C1-Ultra", "C1-Pro", "C1-Nano", "EAS", "energy model", "runtime-modifiable EM", "capacity", "task placement", "3-tier"],
+  "min_score": 4,
+  "tags": ["power", "eas", "c1-family", "scheduling"]
+}

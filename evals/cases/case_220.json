@@ -1,0 +1,8 @@
+{
+  "id": "case_220",
+  "skill": "power-thermal-expert",
+  "input": "We have a MediaTek MT8188 board running Linux 6.11. The GPU keeps thermal throttling even at moderate workloads. The MT6358 PMIC AUXADC thermal readings look 15°C higher than an external thermocouple. Could the PMIC ADC calibration be wrong? How does the MT6358 AUXADC feed into the Linux thermal framework, and how can we verify the calibration?",
+  "expected_topics": ["MT8188", "MT6358", "PMIC AUXADC", "thermal calibration", "thermal framework", "ADC offset", "throttling"],
+  "min_score": 4,
+  "tags": ["power", "thermal", "mediatek", "pmic", "adc"]
+}

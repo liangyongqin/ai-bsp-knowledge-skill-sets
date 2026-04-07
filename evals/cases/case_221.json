@@ -1,0 +1,8 @@
+{
+  "id": "case_221",
+  "skill": "interrupt-virtualization-expert",
+  "input": "Our SoC has ARM RAS v2 extensions. We're seeing EDAC reports of correctable L3 ECC errors increasing over time — about 50 per hour now. The rasdaemon SQLite database shows errors clustered on one L3 slice. At what point do correctable errors become a reliability concern? Should we proactively offline memory pages before an uncorrectable error occurs? How does the Linux memory poisoning (HWPoison) mechanism interact with RAS FHIR?",
+  "expected_topics": ["RASv2", "EDAC", "ECC", "L3 cache", "correctable errors", "rasdaemon", "HWPoison", "memory poisoning", "FHIR", "proactive offlining"],
+  "min_score": 4,
+  "tags": ["interrupt", "ras", "ecc", "edac", "memory-poison"]
+}

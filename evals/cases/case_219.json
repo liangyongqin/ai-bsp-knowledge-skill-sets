@@ -1,0 +1,8 @@
+{
+  "id": "case_219",
+  "skill": "boot-debug-expert",
+  "input": "Our bootloader doesn't recognize the new ARM C1 CPU cores — it falls back to generic ARMv9 code paths and skips per-core errata workarounds. The MIDR_EL1 values for C1-Ultra and C1-Nano are not in the BL31 CPU library. We're on TF-A 2.12 — do we need to upgrade to get C1 support, and what TF-A CPU ops need to be added?",
+  "expected_topics": ["MIDR_EL1", "C1-Ultra", "C1-Nano", "TF-A", "BL31", "CPU ops", "errata", "TF-A 2.14", "Lumex"],
+  "min_score": 4,
+  "tags": ["boot", "tfa", "c1-family", "midr", "cpu-ops"]
+}

@@ -1,0 +1,8 @@
+{
+  "id": "case_217",
+  "skill": "interrupt-virtualization-expert",
+  "input": "We're working on a multi-chip SoC design using CHI C2C for inter-die coherency. VM workloads on chip 0 need to access device memory on chip 1 via IOMMU passthrough. We see GPT faults when the Realm VM tries to access cross-chip memory. The GPC on chip 1 rejects the access. How do we synchronize Granule Protection Tables across chiplets for ARM CCA Realm support?",
+  "expected_topics": ["CHI C2C", "GPT", "GPC", "Realm", "CCA", "multi-chip", "chiplet", "IOMMU", "cross-chip memory"],
+  "min_score": 4,
+  "tags": ["interrupt", "security", "chi-c2c", "cca", "multi-chip"]
+}

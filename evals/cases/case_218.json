@@ -1,0 +1,8 @@
+{
+  "id": "case_218",
+  "skill": "gpu-rendering-expert",
+  "input": "After upgrading to Linux 6.10 we switched from Panfrost to the Panthor driver for our Mali-G710 GPU. Games that worked fine under Panfrost now show 'group scheduling error' and 'CSF progress timeout' in dmesg, followed by GPU reset. The tiler heap usage seems to spike on complex scenes. What's different about CSF vs Job Manager, and how do we debug Panthor tiler heap issues?",
+  "expected_topics": ["Panthor", "CSF", "Command Stream Frontend", "Job Manager", "tiler heap", "GPU timeout", "Mali-G710", "Panfrost"],
+  "min_score": 4,
+  "tags": ["gpu", "panthor", "csf", "tiler-heap", "mali"]
+}

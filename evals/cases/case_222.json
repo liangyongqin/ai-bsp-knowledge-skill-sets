@@ -1,0 +1,8 @@
+{
+  "id": "case_222",
+  "skill": "power-thermal-expert",
+  "input": "We need to partition LLC (Last Level Cache) between CPU clusters and a real-time audio workload using MPAMv2. The ARMv9.7-A spec mentions independent PARTIDs and 16-bit PMGs. Currently our cache partitioning via resctrl only gives 8 partitions. How do we configure MPAMv2 for finer-grained partitioning, and what happens if we exhaust the PARTID space with too many VMs each wanting their own partition?",
+  "expected_topics": ["MPAMv2", "PARTID", "PMG", "resctrl", "cache partitioning", "QoS", "ARMv9.7", "LLC", "real-time"],
+  "min_score": 4,
+  "tags": ["power", "qos", "mpam", "cache-partition", "armv9.7"]
+}

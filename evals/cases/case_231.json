@@ -1,0 +1,8 @@
+{
+  "id": "case_231",
+  "skill": "bsp-knowledge-mentor",
+  "input": "I'm a driver engineer. We're seeing performance regression in a multi-threaded AI inference workload after moving to a new SoC with DSU-120. L3 miss rate jumped 3x compared to the old SoC with DSU-110. The workload hasn't changed. What could cause this, and how should I investigate?",
+  "expected_topics": ["DSU-120", "DSU-110", "L3 cache", "snoop filter", "back-invalidation", "false sharing", "cacheline alignment", "L3 slice", "PMU counters", "multi-threaded", "driver level"],
+  "min_score": 4,
+  "tags": ["mentor", "interconnect", "dsu", "cache", "performance"]
+}

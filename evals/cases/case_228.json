@@ -1,0 +1,8 @@
+{
+  "id": "case_228",
+  "skill": "multimedia-camera-expert",
+  "input": "We're evaluating event-based vision sensors (neuromorphic cameras) for our ADAS product. The sensor uses MIPI CSI-2 but outputs event data instead of frames. Does MIPI CSI-2 v4.2 support this natively? What are the key differences from traditional frame-based cameras for our ISP pipeline?",
+  "expected_topics": ["event-based vision", "EVS", "CSI-2 v4.2", "neuromorphic", "dynamic vision sensor", "asynchronous pixel", "low latency", "ISP pipeline", "ADAS", "D-PHY ECM"],
+  "min_score": 4,
+  "tags": ["multimedia", "mipi-csi2-v4.2", "evs", "adas", "camera"]
+}

@@ -241,6 +241,28 @@ _FAILURE_MODES = [
      "runtime PM reference counting error in BSP driver; audit pm_runtime_get/put "
      "pairs in driver probe/remove paths; check genpd debugfs for domain hierarchy",
      "power", "Linux Documentation/power/runtime_pm.rst", "high"),
+
+    # --- New failure modes added 2026-04-09 (research session) ---
+
+    ("FM-GICv5-IRS-Config-Mismatch",
+     "Interrupts not delivered after GICv5 migration; device IRQs silent",
+     "GICv5 replaces Distributor+Redistributor with IRS (Interrupt Routing Service); "
+     "driver code configuring GICD/GICR registers directly fails on GICv5; "
+     "must use IRS table-based configuration; check DT interrupt-controller compatible string",
+     "interrupt", "ARM GICv5 specification AES0070 / LWN.net GICv5 driver patches", "high"),
+    ("FM-GICv5-IWB-Wire-Bridge-Missing",
+     "Legacy wired interrupts not delivered on GICv5 SoC; only MSIs work",
+     "GICv5 requires Interrupt Wire Bridge (IWB) to convert wired IRQ signals to "
+     "IRS-compatible format; if IWB not instantiated in SoC or not described in DT, "
+     "legacy SPI/PPI wired interrupts cannot reach IRS; check SoC integration guide",
+     "interrupt", "ARM GICv5 specification — IWB component", "critical"),
+    ("FM-AutoFDO-ETE-Trace-Corrupt",
+     "AutoFDO profile generation fails; perf report shows truncated trace",
+     "ETE (Embedded Trace Extension) trace buffer undersized for workload; "
+     "TRBE overflow causes trace data loss; increase TRBE buffer size via "
+     "perf record --aux-size or reduce trace scope with address filtering; "
+     "also check CPU idle does not gate trace clock",
+     "debug", "Linux kernel Documentation/trace/coresight/ / Android AutoFDO guide", "low"),
 ]
 
 

@@ -1,0 +1,8 @@
+{
+  "id": "case_232",
+  "skill": "multimedia-camera-expert",
+  "input": "Our UFS storage link keeps falling back from HS-Gear4 to HS-Gear3 on the new board revision. The camera app stutters during 4K video recording because of reduced storage bandwidth. dmesg shows 'ufshcd: link negotiation failed at HS-G4'. What's going on with M-PHY?",
+  "expected_topics": ["M-PHY v6.0", "HS-Gear4", "UFS link negotiation", "PLL jitter", "UniPro", "PA_TxHsG4RateSeriesA", "signal integrity", "reference clock", "HS-Gear3 fallback"],
+  "min_score": 4,
+  "tags": ["multimedia", "storage", "ufs", "mphy", "bandwidth"]
+}

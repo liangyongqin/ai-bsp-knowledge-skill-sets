@@ -1,0 +1,8 @@
+{
+  "id": "case_227",
+  "skill": "gpu-rendering-expert",
+  "input": "Our GPU keeps hitting job timeouts and resetting — we see 'drm_sched_job_timedout' in dmesg repeatedly. After 5-6 resets the GPU becomes completely unusable until we reboot. What's the DRM scheduler's recovery flow and why might it fail to recover?",
+  "expected_topics": ["drm_sched_fault", "GPU reset", "drm_sched_job_timedout", "DRM scheduler", "job resubmit", "firmware state", "thermal throttle", "PCIe FLR", "drm coredump"],
+  "min_score": 4,
+  "tags": ["gpu", "gpu-reset", "drm-scheduler", "fault-recovery"]
+}

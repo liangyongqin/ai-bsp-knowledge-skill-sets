@@ -9,14 +9,14 @@
 
 ## Project Status Summary
 
-**As of 2026-04-08**
+**As of 2026-04-09**
 
 | Phase | Status | Progress |
 |-------|--------|----------|
 | Phase 1 — Knowledge Graph Infrastructure | ✅ Complete | 6/6 milestones done (501 nodes in base graph) |
 | Phase 2 — Domain Expert Skill Development | 🔄 In Progress | ~90% (all 6 skill.md written; 16 log parsers; 180 eval cases; exit criteria pending human review) |
 | Phase 3 — ITS Mentor Engine & Blackboard | 🔄 In Progress | ~90% (all code ✅; 20 multi-domain evals; exit criteria pending human review) |
-| Phase 4 — Knowledge Evolution & Extensibility | 🔄 In Progress | M4.1 post-mortem ingestion CLI delivered; M4.2 business impact report template + generator delivered; M4.4 graph maintenance scripts + regression runner delivered; eval runner bug fixed |
+| Phase 4 — Knowledge Evolution & Extensibility | 🔄 In Progress | M4.1 post-mortem ingestion CLI delivered; M4.2 business impact report template + generator delivered; M4.4 graph maintenance + orphan remediation complete; eval runner bug fixed |
 
 ### What's Done
 
@@ -307,7 +307,7 @@ skills/<skill-name>/
 
 ## Phase 4 — Knowledge Evolution & User Extensibility 🔄 In Progress
 **Duration:** Month 7+ (2026-08-30 onwards)
-**Current state:** M4.1 post-mortem ingestion CLI delivered (2026-04-08). M4.2 business impact report template + generator delivered (2026-04-07). M4.4 graph maintenance scripts delivered (2026-04-05). Eval runner bug fixed.
+**Current state:** M4.1 post-mortem ingestion CLI delivered (2026-04-08). M4.2 business impact report template + generator delivered (2026-04-07). M4.4 graph maintenance scripts + orphan remediation delivered (2026-04-09). Eval runner bug fixed.
 
 ### M4.1 — Knowledge Sedimentation CLI 🔄 In Progress
 - [x] Write `scripts/ingest_postmortem.py` — parse post-mortem reports (Markdown / JSON) → extract symptom/cause/resolution/components → write to knowledge graph as `FailureMode` nodes with `CAUSED_BY` relationships
@@ -334,6 +334,7 @@ skills/<skill-name>/
 - [x] Write `scripts/graph_maintenance/refresh_base.py` — clean rebuild of base graph from all seed scripts (wraps build_base_graph.py --clean)
 - [x] Write `scripts/graph_maintenance/diff_graph.py` — compare two graph snapshots, report node additions/removals and relationship deltas
 - [x] Write `evals/regression_runner.py` — re-run all eval cases, report accuracy drift (200 cases validated, 5 Blackboard cases, baseline scorecard saved)
+- [x] Write `knowledge-graph/base/fix-orphan-connectivity.py` — remediate 209 orphan Components, 49 disconnected FailureModes, 8 unlinked PowerDomains, 35 unlinked ClockSources; added 321 relationships; registered in build_base_graph.py as final step; validated: 0 orphan Components, 0 disconnected FailureModes, total relationships 513→834
 - [ ] Set up GitHub Actions: weekly eval regression run on base graph
 
 ---

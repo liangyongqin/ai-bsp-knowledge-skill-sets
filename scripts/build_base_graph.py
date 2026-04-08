@@ -55,6 +55,7 @@ INGEST_SCRIPTS = [
     "gpu-subsystem.py",
     "common-failure-modes.py",
     "arm-registers-key.py",
+    "fix-orphan-connectivity.py",  # must run last — links orphan nodes from all prior scripts
 ]
 
 

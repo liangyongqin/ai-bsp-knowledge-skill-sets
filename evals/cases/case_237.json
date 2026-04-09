@@ -1,0 +1,8 @@
+{
+  "id": "case_237",
+  "skill": "boot-debug-expert",
+  "input": "Our QCS8300 automotive board's PCIe link only trains at x1 lane width instead of the expected x2 dual lane. The NVMe SSD connected to it gets only half the expected bandwidth. dmesg shows 'pci: link trained at x1 instead of x2'. We updated to kernel 6.15 which should support dual-lane PHY on QCS8300.",
+  "expected_topics": ["dual-lane PHY", "QCS8300", "PCIe", "lane count", "link training", "device tree", "phys", "phy-names", "refclk", "PHY driver"],
+  "min_score": 4,
+  "tags": ["boot", "pcie", "qualcomm", "phy", "link-training"]
+}

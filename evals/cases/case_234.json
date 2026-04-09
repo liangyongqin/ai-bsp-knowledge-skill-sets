@@ -1,0 +1,8 @@
+{
+  "id": "case_234",
+  "skill": "power-thermal-expert",
+  "input": "Our Google Tensor GS101 board has intermittent power domain transition failures. dmesg shows 'exynos-acpm: mailbox timeout' when trying to power down the GPU domain during suspend. The ACPM firmware seems unresponsive. What should we check?",
+  "expected_topics": ["ACPM", "mailbox", "firmware", "GS101", "Exynos", "power domain", "genpd", "suspend", "embedded processor", "IRQ", "shared memory"],
+  "min_score": 4,
+  "tags": ["power", "firmware", "exynos", "acpm", "suspend"]
+}

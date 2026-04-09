@@ -1,0 +1,8 @@
+{
+  "id": "case_233",
+  "skill": "power-thermal-expert",
+  "input": "We're running a guest VM on our ARM SoC with KVM and the EAS scheduler inside the guest is making terrible task placement decisions. Tasks keep landing on the efficiency cluster even when the performance cluster is idle. The host is using virtual-cpufreq for the guest. What could be wrong with the frequency invariance?",
+  "expected_topics": ["virtual cpufreq", "MMIO", "FIE", "frequency invariance", "AMU", "PELT", "EAS", "guest VM", "KVM", "scaling factor", "polling"],
+  "min_score": 4,
+  "tags": ["power", "virtualization", "cpufreq", "eas", "kvm"]
+}

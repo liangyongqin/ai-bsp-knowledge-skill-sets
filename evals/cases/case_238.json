@@ -1,0 +1,8 @@
+{
+  "id": "case_238",
+  "skill": "bsp-knowledge-mentor",
+  "input": "I'm a driver-level engineer working on bringing up KVM guests on our ARM CCA platform. The Realm VM can boot but can't access the assigned GPU. I see SMMU faults. This involves both interrupt virtualization (GICv4 direct injection for the GPU IRQs) and the RME granule protection for device memory. Can you help me debug this cross-domain issue?",
+  "expected_topics": ["RME", "GPT", "CCA", "Realm", "GICv4", "direct injection", "SMMU", "device assignment", "interrupt", "GPU passthrough", "granule protection"],
+  "min_score": 4,
+  "tags": ["mentor", "cross-domain", "virtualization", "security", "gpu"]
+}

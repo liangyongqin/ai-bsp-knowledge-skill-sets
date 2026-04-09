@@ -1,0 +1,8 @@
+{
+  "id": "case_236",
+  "skill": "interrupt-virtualization-expert",
+  "input": "We're trying to pass a PCIe NVMe device directly to a Realm VM using ARM CCA. The device assignment fails with SMMU GPC fault events in dmesg: 'arm-smmu-v3: EVTQ GPC fault'. The GPT seems to block the device MMIO access from the Realm. How does RME v1.2 device assignment work?",
+  "expected_topics": ["RME", "v1.2", "Realm", "CCA", "GPT", "granule protection", "SMMU", "GPC", "device assignment", "SMMU_ROOT_CR0", "GPCEN", "RMM"],
+  "min_score": 4,
+  "tags": ["security", "virtualization", "rme", "cca", "smmu", "device-passthrough"]
+}

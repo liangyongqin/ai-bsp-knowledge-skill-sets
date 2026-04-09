@@ -1,0 +1,8 @@
+{
+  "id": "case_235",
+  "skill": "power-thermal-expert",
+  "input": "Snapdragon X1 laptop running Linux hits thermal shutdown during sustained GPU workloads. The GPU thermal zone doesn't seem to have proper cooling device bindings. We're on kernel 6.15. What was the fix in 6.15.1?",
+  "expected_topics": ["Snapdragon X1", "GPU thermal zone", "critical temperature", "cooling device", "trip point", "thermal shutdown", "device tree", "6.15.1"],
+  "min_score": 4,
+  "tags": ["thermal", "gpu", "qualcomm", "snapdragon", "cooling"]
+}

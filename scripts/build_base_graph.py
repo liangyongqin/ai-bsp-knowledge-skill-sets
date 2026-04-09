@@ -58,6 +58,7 @@ INGEST_SCRIPTS = [
     "linux-drm-panic-gpu-recovery.py",
     "mipi-evs-thermal-netlink.py",
     "linux-regulator-arm-memory.py",
+    "linux-virt-cpufreq-acpm.py",
     "fix-orphan-connectivity.py",  # must run last — links orphan nodes from all prior scripts
 ]
 

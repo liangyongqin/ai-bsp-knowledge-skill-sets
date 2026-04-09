@@ -57,6 +57,7 @@ INGEST_SCRIPTS = [
     "arm-registers-key.py",
     "linux-drm-panic-gpu-recovery.py",
     "mipi-evs-thermal-netlink.py",
+    "linux-regulator-arm-memory.py",
     "fix-orphan-connectivity.py",  # must run last — links orphan nodes from all prior scripts
 ]
 

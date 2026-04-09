@@ -9,14 +9,14 @@
 
 ## Project Status Summary
 
-**As of 2026-04-09**
+**As of 2026-04-10**
 
 | Phase | Status | Progress |
 |-------|--------|----------|
 | Phase 1 — Knowledge Graph Infrastructure | ✅ Complete | 6/6 milestones done (501 nodes in base graph) |
 | Phase 2 — Domain Expert Skill Development | 🔄 In Progress | ~90% (all 6 skill.md written; 16 log parsers; 180 eval cases; exit criteria pending human review) |
 | Phase 3 — ITS Mentor Engine & Blackboard | 🔄 In Progress | ~90% (all code ✅; 20 multi-domain evals; exit criteria pending human review) |
-| Phase 4 — Knowledge Evolution & Extensibility | 🔄 In Progress | M4.1 post-mortem ingestion CLI delivered; M4.2 business impact report template + generator delivered; M4.4 graph maintenance + orphan remediation complete; eval runner bug fixed |
+| Phase 4 — Knowledge Evolution & Extensibility | 🔄 In Progress | M4.1 post-mortem CLI + knowledge gap detector delivered; M4.2 report template + generator delivered; M4.4 graph maintenance + orphan remediation complete; **graph reached 1005 nodes** (Phase 4 target ≥1000 ✅) |
 
 ### What's Done
 
@@ -307,7 +307,7 @@ skills/<skill-name>/
 
 ## Phase 4 — Knowledge Evolution & User Extensibility 🔄 In Progress
 **Duration:** Month 7+ (2026-08-30 onwards)
-**Current state:** M4.1 post-mortem ingestion CLI delivered (2026-04-08). M4.2 business impact report template + generator delivered (2026-04-07). M4.4 graph maintenance scripts + orphan remediation delivered (2026-04-09). Eval runner bug fixed.
+**Current state:** M4.1 post-mortem ingestion CLI + knowledge gap detector delivered. M4.2 business impact report template + generator delivered (2026-04-07). M4.4 graph maintenance scripts + orphan remediation + 1005-node graph delivered. Eval runner bug fixed.
 
 ### M4.1 — Knowledge Sedimentation CLI 🔄 In Progress
 - [x] Write `scripts/ingest_postmortem.py` — parse post-mortem reports (Markdown / JSON) → extract symptom/cause/resolution/components → write to knowledge graph as `FailureMode` nodes with `CAUSED_BY` relationships
@@ -316,7 +316,7 @@ skills/<skill-name>/
 - [x] Register `ingest_postmortem` MCP tool in `safety_gate.py` (CONFIG level) and `mcp/server.py`
 - [x] Write `tests/test_ingest_postmortem.py` — 44 pytest tests covering parsing, validation, graph writing, idempotency, CLI
 - [ ] Implement Kuzu graph versioning: tag each ingest with date, source file hash, SoC tag
-- [ ] Write knowledge gap detector: query topology regions with few `FailureMode` nodes
+- [x] Write `scripts/graph_maintenance/knowledge_gap_detector.py` — detects: Components without FailureMode links, low-connectivity nodes, underrepresented node types, domain coverage gaps, sparse relationship types; `--json` output mode; prioritized action list
 
 ### M4.2 — Business Impact Report Template ✅
 - [x] Write `templates/optimization-report.md` — structured report with mandatory business impact section, 3 worked examples (power regression, boot failure, camera pipeline), Mustache-style placeholders
@@ -335,6 +335,7 @@ skills/<skill-name>/
 - [x] Write `scripts/graph_maintenance/diff_graph.py` — compare two graph snapshots, report node additions/removals and relationship deltas
 - [x] Write `evals/regression_runner.py` — re-run all eval cases, report accuracy drift (200 cases validated, 5 Blackboard cases, baseline scorecard saved)
 - [x] Write `knowledge-graph/base/fix-orphan-connectivity.py` — remediate 209 orphan Components, 49 disconnected FailureModes, 8 unlinked PowerDomains, 35 unlinked ClockSources; added 321 relationships; registered in build_base_graph.py as final step; validated: 0 orphan Components, 0 disconnected FailureModes, total relationships 513→834
+- [x] Write `knowledge-graph/base/linux-regulator-arm-memory.py` — Linux regulator framework (11 PowerDomain, 10 Component) + ARM memory subsystem (16 Component, 12 Register) + 10 FailureModes + 43 relationships; pushed graph to **1005 nodes** (Phase 4 target ≥1000 ✅)
 - [ ] Set up GitHub Actions: weekly eval regression run on base graph
 
 ---

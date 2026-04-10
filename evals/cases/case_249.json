@@ -1,0 +1,8 @@
+{
+  "id": "case_249",
+  "skill": "bsp-knowledge-mentor",
+  "input": "Our product manager is asking why GPU performance degradation is causing user complaints about laggy UI and wants to know the business impact for the quarterly review presentation. I need to translate the technical root cause — tile-based deferred rendering stalls due to excessive render pass fragmentation consuming on-chip memory bandwidth — into language the management team can understand, including projected impact on user retention and device return rates. Can you help me frame this?",
+  "expected_topics": ["GPU performance", "business impact", "terminology translation", "render pass", "user retention", "management communication", "latency", "UX", "technical-to-business"],
+  "min_score": 4,
+  "tags": ["bsp-knowledge-mentor", "terminology-translation", "management", "gpu-rendering", "business-impact"]
+}

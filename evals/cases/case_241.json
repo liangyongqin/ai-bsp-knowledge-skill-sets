@@ -1,0 +1,8 @@
+{
+  "id": "case_241",
+  "skill": "power-thermal-expert",
+  "input": "After enabling LPDDR5 deep sleep (DSM) on my MediaTek platform, system-level leakage current is 15 mA higher than spec during display-off idle. The PMIC rail for VDDQ shows 0 mV as expected, but the CA/DQ termination resistors on the PHY side don't appear to be tri-stated. How do I trace whether the DDR PHY power island is failing to fully collapse, and which Linux DFI stress and devfreq PM hooks should I instrument to confirm DSM entry?",
+  "expected_topics": ["LPDDR5", "deep sleep mode", "DSM", "leakage current", "VDDQ", "DDR PHY", "power island", "devfreq", "DFI", "tri-state"],
+  "min_score": 4,
+  "tags": ["power-thermal", "lpddr5", "power-island", "leakage"]
+}

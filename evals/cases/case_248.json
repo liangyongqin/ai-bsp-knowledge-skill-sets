@@ -1,0 +1,8 @@
+{
+  "id": "case_248",
+  "skill": "bsp-knowledge-mentor",
+  "input": "My platform hangs during boot — it gets past the bootloader but stalls before the kernel prints 'Freeing init memory'. Early console output shows the clock framework reporting a PLL lock timeout on MMPLL, immediately followed by the PMIC sequencer logging a power rail enable request for VDD_GPU that never completes. I suspect a race between the PLL lock sequence and the GPU power island enable, but I don't know if the PLL needs to be stable before the power domain is energized or vice versa. How do I determine the correct bring-up ordering and what debug steps should I take first?",
+  "expected_topics": ["PLL lock", "clock tree", "power sequencing", "MMPLL", "PMIC", "power domain", "boot hang", "clock framework", "Linux clk driver", "race condition"],
+  "min_score": 4,
+  "tags": ["bsp-knowledge-mentor", "cross-domain", "boot-debug", "power-thermal", "clock-tree", "power-sequencing"]
+}

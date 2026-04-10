@@ -1,0 +1,8 @@
+{
+  "id": "case_244",
+  "skill": "multimedia-camera-expert",
+  "input": "I'm bringing up a quad-camera system using two MIPI CSI-2 D-PHY receivers (4-lane each) that share a single ISP input port via a virtual channel multiplexer. Under simultaneous streaming from all four sensors, I observe periodic lane de-sync errors logged by the DPHY_ERR_SOT_SYNC_HS register on the second receiver. The sensors use different pixel rates (60 Mpix/s and 90 Mpix/s) and I've set separate VC IDs (0–3). What lane merger arbitration constraints and DPHY settling time parameters should I check in the CSI-2 PHY configuration to eliminate the SOT sync faults?",
+  "expected_topics": ["MIPI CSI-2", "D-PHY", "virtual channel", "lane de-sync", "SOT_SYNC_HS", "ISP", "pixel rate", "VC ID", "lane merger", "settling time"],
+  "min_score": 4,
+  "tags": ["multimedia", "camera", "mipi-csi2", "multi-camera", "dphy"]
+}

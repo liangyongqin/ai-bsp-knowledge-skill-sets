@@ -1,0 +1,8 @@
+{
+  "id": "case_242",
+  "skill": "power-thermal-expert",
+  "input": "I'm calibrating the EAS (Energy Aware Scheduling) energy model on a DynamIQ cluster with 4x Cortex-A55 (LITTLE) and 3x Cortex-A710 (big). After running `power_model_calibration.py` with perf-PMU data, the computed capacity values for the A710 cores are 18% lower than what I measure with hardware PMU cycles. The em_perf_domain OPP table looks correct in the device tree, but EAS keeps migrating tasks to LITTLE cores under moderate load. Where in the Linux EAS pipeline — em_cpu_energy, schedutil governor, or the OPP framework — should I focus my investigation?",
+  "expected_topics": ["EAS", "Energy Aware Scheduling", "DynamIQ", "Cortex-A55", "Cortex-A710", "em_perf_domain", "OPP", "schedutil", "capacity", "perf-PMU"],
+  "min_score": 4,
+  "tags": ["power-thermal", "EAS", "DynamIQ", "heterogeneous-cluster"]
+}

@@ -1,0 +1,8 @@
+{
+  "id": "case_243",
+  "skill": "boot-debug-expert",
+  "input": "During cold boot on a new board bring-up, the ADIv6 debug link between my external JTAG probe and the CoreSight SoC-600 DAP times out at the JTAG-DP IDCODE read phase. The SWD clock is 10 MHz, power-on-reset has de-asserted, and VDDIO is stable at 1.8 V. The timeout occurs consistently at DPIDR read before the CTRL/STAT power-up request. What is the most likely cause — APBDP not powered, incorrect JTAG pin-mux on the SoC, or a TRST# assertion issue — and what SWD/JTAG sequence should I use to isolate the root cause without a working debug session?",
+  "expected_topics": ["ADIv6", "CoreSight", "DAP", "JTAG", "SWD", "IDCODE", "DPIDR", "CTRL/STAT", "TRST", "cold boot", "pin-mux"],
+  "min_score": 4,
+  "tags": ["boot-debug", "ADIv6", "CoreSight", "JTAG", "cold-boot"]
+}

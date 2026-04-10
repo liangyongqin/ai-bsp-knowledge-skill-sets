@@ -1,0 +1,8 @@
+{
+  "id": "case_246",
+  "skill": "interrupt-virtualization-expert",
+  "input": "We're running KVM guests on an ARMv8.4 platform with GICv4.1 and observing 80–120 µs vSGI injection latency spikes under a workload that triggers ~50k vSGI/s. The host kernel reports no ITS command queue stalls in /proc/interrupts, and the GICR_VPENDBASER is mapped correctly per GICv4.1 spec. The spikes correlate with vcpu migrations across physical CPUs. What GICv4.1 VPE scheduling interactions — specifically around VMAPP/VMOVP ITS commands and GICR doorbell IRQ handling — should I investigate, and which Linux KVM vGIC tracepoints will confirm whether the latency originates in the ITS command path or the vcpu schedule path?",
+  "expected_topics": ["GICv4.1", "vSGI", "ITS", "VMAPP", "VMOVP", "GICR_VPENDBASER", "VPE", "KVM", "vGIC", "vcpu migration", "doorbell IRQ"],
+  "min_score": 4,
+  "tags": ["interrupt-virtualization", "GICv4.1", "vSGI", "KVM", "ITS", "VPE"]
+}

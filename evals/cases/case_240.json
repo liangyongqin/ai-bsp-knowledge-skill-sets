@@ -1,0 +1,8 @@
+{
+  "id": "case_240",
+  "skill": "hardware-spec-extractor",
+  "input": "When I run the PDF register extraction pipeline on a 400-page SoC TRM, the bit-field boundaries for multi-row register tables come out misaligned — the MSB/LSB columns from row 2 onward get merged into the previous register's description column. The PDF was scanned rather than digitally authored. What preprocessing steps and heuristics should I apply before passing the table to the extractor to recover correct bit-field alignment?",
+  "expected_topics": ["PDF extraction", "register table", "bit-field", "MSB", "LSB", "TRM", "OCR", "heuristics", "alignment", "preprocessing"],
+  "min_score": 4,
+  "tags": ["hardware-spec-extractor", "pdf-parsing", "register-extraction"]
+}

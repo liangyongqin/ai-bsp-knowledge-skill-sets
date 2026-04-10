@@ -1,0 +1,8 @@
+{
+  "id": "case_239",
+  "skill": "hardware-spec-extractor",
+  "input": "I'm parsing a vendor IP-XACT 2022 file from a third-party memory controller IP and the spirit:vendorExtensions block contains a custom <mem:timingConstraints> element with nested attributes. My extractor silently drops these elements during node serialization. How should I handle unknown vendor extension namespaces so the data survives round-trip to the Kuzu graph without schema violations?",
+  "expected_topics": ["IP-XACT", "vendorExtensions", "namespace", "schema", "serialization", "round-trip", "Kuzu", "Accellera"],
+  "min_score": 4,
+  "tags": ["hardware-spec-extractor", "ip-xact", "vendor-extension"]
+}

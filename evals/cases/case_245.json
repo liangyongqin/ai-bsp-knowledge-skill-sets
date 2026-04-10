@@ -1,0 +1,8 @@
+{
+  "id": "case_245",
+  "skill": "gpu-rendering-expert",
+  "input": "I'm profiling a Vulkan application on a mobile GPU using Android GPU Inspector and I see a recurring GPU stall of ~3 ms every 16th frame. The render graph uses a tile-based deferred rendering (TBDR) approach with a G-buffer pass followed by a lighting subpass. The AGP report flags 'external dependency flush' between the geometry and lighting subpasses. I've already merged them into a single render pass with proper subpass dependencies (VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT). What other render pass or framebuffer attachment configurations could still force an on-chip tile eviction and cause this periodic stall?",
+  "expected_topics": ["Vulkan", "TBDR", "tile-based deferred rendering", "render pass", "subpass", "G-buffer", "tile eviction", "AGP", "Android GPU Inspector", "VkSubpassDependency"],
+  "min_score": 4,
+  "tags": ["gpu-rendering", "vulkan", "TBDR", "render-pass", "mobile-gpu"]
+}

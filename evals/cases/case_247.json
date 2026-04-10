@@ -1,0 +1,8 @@
+{
+  "id": "case_247",
+  "skill": "bsp-knowledge-mentor",
+  "input": "My camera pipeline is dropping 1 out of every 4 frames under sustained recording load on a device that also runs a heavy compute workload. dmesg shows thermal throttling events on the CPU cluster at the same time as the frame drops, and I also see devfreq frequency reductions on the ISP and DRAM. I'm not sure whether the frame drops are caused by the ISP clock being throttled, DDR bandwidth starvation due to DVFS scaling down the memory bus, or a CPU stall in the camera HAL. How do I isolate which domain is the bottleneck?",
+  "expected_topics": ["thermal throttling", "DVFS", "frame drop", "ISP", "devfreq", "DDR bandwidth", "camera HAL", "DMA-BUF", "ftrace", "cross-domain"],
+  "min_score": 4,
+  "tags": ["bsp-knowledge-mentor", "cross-domain", "thermal", "multimedia", "DVFS", "power-thermal"]
+}

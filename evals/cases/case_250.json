@@ -1,0 +1,8 @@
+{
+  "id": "case_250",
+  "skill": "bsp-knowledge-mentor",
+  "input": "I'm an algorithm engineer working on an on-device LLM inference pipeline. My transformer model achieves only 45 TOPS on the NPU instead of the 80 TOPS peak spec. I've profiled the model and the roofline analysis shows the bottleneck is memory bandwidth, not compute — the attention layers are bandwidth-bound at the DRAM level, not the NPU SRAM level. I want to understand whether this is a DRAM scheduling issue, an NPU DMA descriptor configuration problem, or a model partitioning issue causing excessive DRAM round-trips between NPU tiles.",
+  "expected_topics": ["NPU", "inference latency", "roofline model", "TOPS", "memory bandwidth", "DRAM", "DMA descriptor", "attention layer", "bandwidth-bound", "NPU SRAM", "model partitioning"],
+  "min_score": 4,
+  "tags": ["bsp-knowledge-mentor", "learner-level-detection", "algorithm-engineer", "NPU", "roofline", "inference"]
+}

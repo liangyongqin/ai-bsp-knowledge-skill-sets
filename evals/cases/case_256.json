@@ -1,0 +1,8 @@
+{
+  "id": "case_256",
+  "skill": "interrupt-virtualization-expert",
+  "input": "On our GIC-700 platform we've enabled RT-SPIs (extended SPI range, INTID 4096–5119) for a real-time CAN bus controller. The CAN interrupt has GICD_IPRIORITYRn set to 0x00 (highest priority) and preemption enabled (GICC_PMR=0xFF, GICC_BPR=0x0). A non-RT Ethernet IRQ at INTID 128 has priority 0x80. Under load we observe the CAN SPI latency spiking to 800 µs, far above our 50 µs budget. ftrace shows the Ethernet IRQ handler running at the time of the CAN spike. The GIC-700 GICD_CTLR.DS=0 (security model active). The Linux IRQ affinity for both IRQs is CPU0. We have not set GICD_NSACR for the RT-SPI range. How does GIC-700 priority arbitration interact with the extended SPI INTID range, and what GIC-700 register fields or Linux irq-chip settings could cause a lower-priority SPI to block a higher-priority RT-SPI, producing this inversion?",
+  "expected_topics": ["GIC-700", "RT-SPI", "priority inversion", "extended SPI", "GICD_IPRIORITYR", "GICC_PMR", "GICC_BPR", "preemption", "GICD_NSACR", "IRQ affinity", "priority arbitration", "real-time latency", "Linux irq-chip"],
+  "min_score": 4,
+  "tags": ["interrupt-virtualization", "gic-700", "rt-spi", "priority-inversion", "real-time", "irq-latency"]
+}

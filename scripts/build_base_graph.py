@@ -59,6 +59,9 @@ INGEST_SCRIPTS = [
     "mipi-evs-thermal-netlink.py",
     "linux-regulator-arm-memory.py",
     "linux-virt-cpufreq-acpm.py",
+    "arm-css-v2-2024.py",
+    "arm-gic-700.py",
+    "linux-thermal-pcie-cooling.py",
     "fix-orphan-connectivity.py",  # links orphan nodes from all prior scripts
     "fix-orphan-connectivity-2.py",  # must run last — remaining orphans + sparse rels + hw-spec FMs
 ]

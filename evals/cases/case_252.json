@@ -1,0 +1,8 @@
+{
+  "id": "case_252",
+  "skill": "power-thermal-expert",
+  "input": "On our ARM CSS v2 platform with DSU-120, the L3 cache slice power gating is stuck in the gated state after we resume from system suspend. The cluster comes back online and all eight cores are active according to /sys/devices/system/cpu/cpu*/online, but L3 cache hit rates are near zero and memory bandwidth is saturated, which we'd expect only if the L3 is inactive. The DSU-120 CLUSTERACTLR_EL1 register reads 0x0000000000000001 (only slice 0 active bit set) even though we have four slices. The CLUSTERPWRCTLR_EL1 shows all slice power bits as 1 (ungated), which contradicts the observed behavior. Idle power after resume is 40 mW higher than a fresh boot. How do I determine whether the slice power gates failed to open, the cache ways are disabled via a stuck CLUSTERECTLR_EL1, or whether a DVFS state transition during resume corrupted the DSU-120 power management state machine?",
+  "expected_topics": ["DSU-120", "L3 cache slice", "power gating", "ARM CSS v2", "CLUSTERPWRCTLR_EL1", "CLUSTERACTLR_EL1", "system suspend resume", "cache way disable", "power state machine", "L3 hit rate", "idle power"],
+  "min_score": 4,
+  "tags": ["power-thermal", "arm-css-v2", "dsu-120", "l3-cache", "power-gating", "suspend-resume"]
+}

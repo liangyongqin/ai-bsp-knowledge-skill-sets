@@ -263,6 +263,39 @@ _FAILURE_MODES = [
      "perf record --aux-size or reduce trace scope with address filtering; "
      "also check CPU idle does not gate trace clock",
      "debug", "Linux kernel Documentation/trace/coresight/ / Android AutoFDO guide", "low"),
+
+    # --- New failure modes added 2026-04-11 (research session) ---
+
+    ("FM-SVE2-VL-Mismatch-Migration",
+     "SIGILL on SVE2 instruction after task migrated between heterogeneous CPU clusters",
+     "SVE vector length differs between big and LITTLE cores; task migrated without "
+     "adjusting ZCR_EL1.LEN; check prctl(PR_SVE_SET_VL) compatibility across all "
+     "cluster types; ensure DT cpu-feature-override or KVM ZCR_EL2 alignment",
+     "cpu", "ARM Architecture Reference Manual ARMv9.2-A §SVE2 / LKML", "high"),
+    ("FM-DSU120-L3-Slice-Leak",
+     "Unexpected power consumption during idle; DSU-120 L3 cache slices not powering down",
+     "DSU-120 dynamic L3 slice power gating FSM stuck in active state; check DSU "
+     "power controller registers via CoreSight; may be caused by pending snoop filter "
+     "entry holding slice active; workaround: force L3 flush before idle entry",
+     "power", "ARM DSU-120 TRM §5.3 (dynamic L3 slice power gating)", "medium"),
+    ("FM-GIC700-vSGI-Stale-vPE",
+     "KVM guest hangs waiting for IPI; host reports vSGI pending but vPE not scheduled",
+     "After vCPU migration, GICR_VPENDBASER on new physical CPU not updated with "
+     "correct vPE table address; ITS VMOVP command not issued or completed before "
+     "next vSGI write; audit KVM vGIC migration sequence",
+     "interrupt", "ARM GICv4.1 Architecture Spec §5.4 / KVM ARM vGIC", "high"),
+    ("FM-PCIe-Thermal-Throttle-Timeout",
+     "NVMe I/O timeout after PCIe link speed reduced by thermal cooling driver",
+     "PCIe cooling driver (CONFIG_PCIE_THERMAL, kernel 6.13) reduced link speed "
+     "but NVMe driver not handling link speed change event; ASPM L1 substates "
+     "misconfigured for reduced speed; check thermal trip point spacing",
+     "thermal", "Linux kernel 6.13 PCIe cooling driver / LKML", "medium"),
+    ("FM-MIPI-CSI2-v42-ECM-Miscfg",
+     "Camera frames corrupted despite MIPI CSI-2 v4.2 ECM enabled; ECC errors persistent",
+     "D-PHY Enhanced Continuous Mode (ECM) requires matching configuration on both "
+     "transmitter (sensor) and receiver (SoC CSI-2 RX); one-sided ECM enable causes "
+     "clock recovery failure; verify both sides via I2C register dump",
+     "multimedia", "MIPI CSI-2 v4.2 specification — D-PHY ECM", "high"),
 ]
 
 

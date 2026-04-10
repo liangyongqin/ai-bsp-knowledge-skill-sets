@@ -1,0 +1,8 @@
+{
+  "id": "case_253",
+  "skill": "interrupt-virtualization-expert",
+  "input": "We're running an asymmetric workload across Cortex-X925 and Cortex-A520 cores in an ARM CSS v2 big.LITTLE configuration. A multithreaded SVE2 application crashes with SIGILL when threads migrate from X925 (SVE2 vector length 512-bit) to A520 (SVE2 vector length 256-bit). The kernel SVE/SIMD context switch log shows:\n\n  [   58.102347] sve: CPU4 SVE VL=512 bits\n  [   58.102361] sve: CPU0 SVE VL=256 bits\n  [   58.204812] kernel: unhandled level 0 translation fault (11) at 0x00007fff8a200010, esr=0x9600004f\n\nThe task is not pinned to a CPU set and prctl(PR_SVE_GET_VL) returns 512 before the crash. The kernel is 6.12 with ARM64_SVE enabled. It appears the thread's SVE context is saved with VL=512 and restored on an A520 core that only supports VL=256, leading to a stack corruption or vector register overflow. How should the kernel or the runtime handle asymmetric SVE vector lengths in a heterogeneous CSS cluster, and what scheduling constraints or prctl calls are required to prevent this migration hazard?",
+  "expected_topics": ["SVE2", "vector length", "Cortex-X925", "Cortex-A520", "asymmetric multiprocessing", "ARM CSS v2", "context switch", "prctl PR_SVE_SET_VL", "cpuset", "SIGILL", "ESR", "big.LITTLE", "CPU affinity"],
+  "min_score": 4,
+  "tags": ["interrupt-virtualization", "arm-css-v2", "sve2", "context-switch", "heterogeneous-cores", "cpu-affinity"]
+}

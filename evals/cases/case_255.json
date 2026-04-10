@@ -1,0 +1,8 @@
+{
+  "id": "case_255",
+  "skill": "interrupt-virtualization-expert",
+  "input": "We have a multi-chip GIC-700 deployment: two SoC dies connected via a proprietary coherent fabric, each die has its own GIC-700 redistributor set. The primary die hosts the GIC-700 distributor and ITS. Cross-chip LPIs from peripherals on die 1 (the secondary) are not reaching VMs running on CPUs of die 0 (the primary). The ITS command log on die 0 shows MAPC commands for the secondary die's redistributors completed with no error. GITS_TYPER.PTA=0 on both dies, so we're using RDbase addressing. The GITS_BASER for device tables is the same physical mapping on both dies. Interrupts from local peripherals on die 0 work correctly; only cross-chip MSIs from die 1 fail. The fabric interconnect supports 64-bit physical address forwarding. The secondary die's GICR_CTLR.EnableLPIs=1. What GIC-700 multi-chip configuration registers and fabric address-decode settings should I audit, and what is the expected flow for an MSI issued on die 1 to reach a vCPU on die 0?",
+  "expected_topics": ["GIC-700", "multi-chip", "LPI", "cross-chip interrupt", "ITS", "MAPC command", "GITS_TYPER", "RDbase", "GITS_BASER", "redistributor", "MSI", "coherent fabric", "physical address translation"],
+  "min_score": 4,
+  "tags": ["interrupt-virtualization", "gic-700", "multi-chip", "lpi", "msi", "its", "cross-die"]
+}

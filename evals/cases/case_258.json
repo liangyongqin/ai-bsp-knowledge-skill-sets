@@ -1,0 +1,8 @@
+{
+  "id": "case_258",
+  "skill": "power-thermal-expert",
+  "input": "On Linux 6.13 we're using the thermal user-space notification interface via /dev/thermal to receive POLLIN events when a user-defined threshold is crossed. We set the threshold via THERMAL_GENL_CMD_TZ_GET_TEMP and the threshold ioctl to 70°C on thermal_zone2 (the SoC core cluster zone). The zone is sampled at a 250 ms polling interval. When we run a workload that causes the temperature to ramp from 65°C to 85°C in under 500 ms, we observe the threshold crossing in the hardware sensor but our poll() on /dev/thermal never returns — the user process does not receive the netlink notification for the 70°C crossing. The kernel log shows the thermal zone temperature update at 78°C logged after the 250 ms timer fires, with no indication the 70°C threshold notification was emitted. On a slower ramp (65°C to 72°C over 2 seconds) the notification arrives correctly. What Linux 6.12–6.13 thermal framework changes affect threshold notification delivery when the temperature crosses and then exceeds the threshold within a single polling interval?",
+  "expected_topics": ["thermal user threshold", "THERMAL_GENL", "netlink notification", "thermal zone polling", "threshold crossing", "polling interval", "Linux 6.12", "Linux 6.13", "POLLIN", "thermal notification", "missed event", "hysteresis"],
+  "min_score": 4,
+  "tags": ["power-thermal", "thermal-framework", "linux-6.13", "user-threshold", "netlink", "polling"]
+}

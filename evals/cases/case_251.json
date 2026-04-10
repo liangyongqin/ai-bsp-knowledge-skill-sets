@@ -1,0 +1,8 @@
+{
+  "id": "case_251",
+  "skill": "power-thermal-expert",
+  "input": "We're seeing intermittent L2 ECC correctable errors on Cortex-X925 cores in our ARM CSS v2 cluster under sustained compute load. The kernel log shows:\n\n  [  142.381204] EDAC MC0: 1 CE L2 ECC error on CPU4 (location: set=0x1f way=0x3 bank=0x0)\n  [  142.381291] EDAC MC0: total module reports: CE: 12 UE: 0\n\nThe X925 runs at 3.2 GHz on a 0.85 V rail. Thermal sensor on the big-core cluster reads 87°C at time of event. DVFS is in use with schedutil governor. I suspect the L2 SRAM is marginal at high voltage-temperature combinations, but I'm not sure whether this is a timing margin issue, a power noise problem on the core VDD rail, or a silicon defect. What diagnostic steps should I take to distinguish these causes, and which ARM CSS v2 RAS registers should I read to get more fault detail?",
+  "expected_topics": ["Cortex-X925", "L2 ECC", "ARM CSS v2", "RAS registers", "EDAC", "voltage margin", "thermal derating", "power noise", "DVFS", "schedutil", "correctable error", "silicon margin"],
+  "min_score": 4,
+  "tags": ["power-thermal", "arm-css-v2", "cortex-x925", "ecc-error", "ras", "thermal"]
+}

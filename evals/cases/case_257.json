@@ -1,0 +1,8 @@
+{
+  "id": "case_257",
+  "skill": "power-thermal-expert",
+  "input": "Our platform runs Linux 6.12 with an NVMe SSD connected over PCIe Gen4 x4. Under sustained sequential write workloads the drive starts throwing I/O timeout errors after about 90 seconds:\n\n  [   91.443201] nvme nvme0: I/O 23 QID 1 timeout, reset controller\n  [   91.443288] nvme nvme0: Abort command id 0x17, sq 1\n  [   92.100441] nvme nvme0: Device shutdown timeout set to 8 seconds\n\nThe NVMe drive's SMART log shows a media temperature of 72°C. The PCIe root complex thermal sensor in /sys/class/thermal/thermal_zone3/temp reads 78000 (78°C). The system thermal daemon has a PCIe thermal zone with a passive trip point at 75°C tied to a cpufreq cooling device, not a PCIe bandwidth cooling device. The PCIe link shows no AER errors; the link stays at Gen4 x4. I suspect the thermal throttling path is incorrect — the PCIe root complex is thermal-throttling the link throughput at the hardware level in response to its own temperature, causing NVMe command timeouts, but the kernel's thermal framework is only throttling CPUs rather than reducing PCIe bandwidth or issuing ASPM L1.2 transitions. How should the PCIe thermal zone be configured in Linux 6.12 to correctly apply backpressure to the NVMe device rather than the CPU?",
+  "expected_topics": ["PCIe thermal throttling", "NVMe timeout", "Linux thermal framework", "thermal zone", "cooling device", "ASPM L1.2", "trip point", "PCIe bandwidth throttle", "thermal daemon", "AER", "devfreq cooling", "Linux 6.12"],
+  "min_score": 4,
+  "tags": ["power-thermal", "pcie", "nvme", "thermal-throttling", "linux-6.12", "aspm", "thermal-zone"]
+}

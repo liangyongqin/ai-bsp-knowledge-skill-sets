@@ -1,0 +1,8 @@
+{
+  "id": "case_254",
+  "skill": "interrupt-virtualization-expert",
+  "input": "We're running KVM guests on a platform with GIC-700 (GICv4.1). Virtual SGIs (vSGIs) from one vCPU to another within the same guest are not being delivered when the target vCPU is in WFI inside the VM. The GIC-700 ITS command queue shows the VSGI command completed successfully (CWRITER advanced, no ERR bit), but the target vCPU never wakes. When we manually kick the vCPU via KVM_KICK_VCPU ioctl from the host, the guest resumes and the interrupt is then delivered. The GICR_VPENDBASER for the target vCPU has Valid=1 and the vPE table pointer is correctly populated. GITS_BASER for the vPE table shows VALID=1, InnerCache=RaWb, OuterCache=SameAsInner. The GICR_VSCTLR.EnableLPIs is set. We're running Linux 6.12 with KVM ARM and vGIC-v4 driver. What sequence of GIC-700 and KVM state should I verify to determine why the direct vSGI injection is not waking the target vCPU?",
+  "expected_topics": ["GIC-700", "GICv4.1", "vSGI", "KVM", "vPE", "ITS", "GICR_VPENDBASER", "GITS_BASER", "vGIC-v4", "WFI", "direct interrupt injection", "vCPU wakeup", "VSGI command"],
+  "min_score": 4,
+  "tags": ["interrupt-virtualization", "gic-700", "gicv4.1", "vsgi", "kvm", "vgic", "its"]
+}

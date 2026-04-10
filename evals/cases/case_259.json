@@ -1,0 +1,8 @@
+{
+  "id": "case_259",
+  "skill": "power-thermal-expert",
+  "input": "We're using Linux 6.12's DTPM (Dynamic Thermal Power Management) subsystem to enforce a 5 W power budget on a Cortex-A cluster. The DTPM hierarchy has a CPU DTPM node under a platform DTPM root. The power budget is set via the dtpm sysfs interface: echo 5000000 > /sys/bus/platform/devices/dtpm/power_limit_uw. Under burst workloads the cluster regularly exceeds 7 W for 200–400 ms intervals before DTPM clamps the OPP back down. The kernel log during the burst shows:\n\n  [  310.881042] dtpm_cpu: CPU cluster power=7240000 uW exceeds budget=5000000 uW\n  [  310.881099] dtpm_cpu: setting OPP to 1804800 kHz\n\nDespite the OPP clamp, the actual power (measured via INA226 on the CPU rail) stays above budget for an additional 180 ms because the CPUfreq transition latency to the new OPP takes ~60 ms and several runnable tasks are woken by timer interrupts during the transition. How does DTPM calculate the power budget distribution between hierarchy nodes in Linux 6.12, and what tuning knobs — such as the DTPM weight, the OPP transition governor, or a cooling device weight adjustment — can reduce the overshoot duration without starving the workload?",
+  "expected_topics": ["DTPM", "dynamic thermal power management", "power budget", "OPP", "CPUfreq", "OPP transition latency", "power hierarchy", "cooling device", "INA226", "Linux 6.12", "power overshoot", "sysfs power_limit_uw"],
+  "min_score": 4,
+  "tags": ["power-thermal", "dtpm", "linux-6.12", "opp", "cpufreq", "power-budget", "thermal-cooling"]
+}

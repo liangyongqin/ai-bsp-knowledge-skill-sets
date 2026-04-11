@@ -1,0 +1,8 @@
+{
+  "id": "case_300",
+  "skill": "bsp-knowledge-mentor",
+  "input": "We have a cross-domain issue on our MT6989 platform: the camera subsystem uses MIPI CSI-2 SROI to crop a 12MP region from a 50MP sensor, then the ISP output goes to the GPU for real-time AI super-resolution upscaling. Under sustained load, the SoC thermal zone hits 85C and the thermal framework throttles both the ISP clock and GPU frequency, causing frame drops.\n\ndmesg:\n  [  30.100] csi2_rx: SROI active, crop 4032x3024 from 8192x6144, bw_saved=42%\n  [  30.101] isp_fe: output 4032x3024 NV12 -> dmabuf fd=47\n  [  30.102] mali 13000000.gpu: import dmabuf fd=47, 4032x3024 NV12\n  [  30.103] mali 13000000.gpu: compute dispatch: sr_upscale_4x kernel\n  [  30.500] thermal_zone0: temp=85200 (trip_point_1=85000 type=passive)\n  [  30.501] thermal_cooling: gpu freq capped 800MHz -> 400MHz\n  [  30.502] thermal_cooling: isp_clk capped 600MHz -> 300MHz\n  [  30.510] isp_fe: frame drop detected, pipeline stall 12ms\n  [  30.520] mali 13000000.gpu: compute timeout, sr_upscale_4x exceeded 16ms deadline\n  [  30.600] camera_hal: frame delivery missed, fps dropped 30 -> 18\n\nThe ISP and GPU are in different power domains but share the same thermal zone. The SROI crop saves 42% MIPI bandwidth but the GPU compute load for 4x super-resolution is very high. How should we approach this cross-domain thermal-performance tradeoff? Should we reduce SROI crop size, lower the upscale ratio, or implement a dynamic thermal-aware pipeline?",
+  "expected_topics": ["SROI", "CSI-2", "GPU", "thermal", "throttle", "ISP", "bandwidth", "cross-domain", "pipeline"],
+  "min_score": 4,
+  "tags": ["bsp-knowledge-mentor", "cross-domain", "camera", "gpu", "thermal", "sroi", "pipeline"]
+}

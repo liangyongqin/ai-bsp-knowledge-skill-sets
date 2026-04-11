@@ -1,0 +1,8 @@
+{
+  "id": "case_297",
+  "skill": "interrupt-virtualization-expert",
+  "input": "We enabled GICv3.3 Non-Maskable Interrupts (NMI) for our hardware watchdog on an ARM Cortex-A78AE safety-island, but the watchdog NMI is not being delivered during a kernel spinlock critical section. The system eventually triple-faults instead of entering the NMI handler.\n\ndmesg (before hang):\n  [   1.200] GICv3: FEAT_NMI supported, GICD_TYPER.NMI=1\n  [   1.201] GICv3: IRQ 42 (watchdog-bark) configured as NMI, priority=0x00\n  [   1.202] GICv3: GICD_INMIR0 = 0x00000400 (SPI 42 marked non-maskable)\n\nRegister dump at hang:\n  ICC_PMR_EL1  = 0x00  (all priorities masked!)\n  PSTATE.ALLINT = 1     (ALLINT set — NMI supermask active)\n  ICC_CTLR_EL1.PMHE = 0\n  DAIF = 0x3C0 (IRQ+FIQ masked)\n\nThe kernel spinlock path calls local_irq_disable() which on this platform also sets PSTATE.ALLINT=1 via the ALLINT MSR. This effectively suppresses even NMI-priority interrupts. The watchdog bark fires at PMR priority 0x00 but ALLINT overrides PMR-based NMI delivery. How should we configure the system so that the watchdog NMI is truly non-maskable even during spinlock critical sections?",
+  "expected_topics": ["GICv3.3", "NMI", "non-maskable", "FEAT_NMI", "ALLINT", "ICC_PMR", "GICD_INMIR", "watchdog"],
+  "min_score": 4,
+  "tags": ["interrupt-virtualization-expert", "gicv3", "nmi", "allint", "watchdog", "safety"]
+}

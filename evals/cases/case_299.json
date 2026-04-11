@@ -1,0 +1,8 @@
+{
+  "id": "case_299",
+  "skill": "interrupt-virtualization-expert",
+  "input": "We are losing perf PMU samples on our arm64 platform when using pseudo-NMI for the PMU overflow interrupt. Under heavy interrupt load, approximately 15-20% of expected PMU samples are missing compared to the same workload on x86 with hardware NMI.\n\nperf stat comparison:\n  Expected cycles samples (based on frequency): ~100,000\n  Actual collected: 82,341 (17.7% loss)\n\ndmesg:\n  [   0.800] GICv3: pseudo-NMI enabled for PMU overflow (IRQ 23, priority=0x20)\n  [   0.801] GICv3: normal IRQ priority=0x80, PMR threshold=0xF0\n\nftrace irq_handler_entry (sampled):\n  irq_handler_entry: irq=23 name=arm-pmu\n    read ICC_PMR_EL1 = 0x20  <-- PMR lowered by another pseudo-NMI handler\n    PMU overflow IRQ masked by PMR! sample lost\n    write ICC_PMR_EL1 = 0xF0  (restore)\n  ---\n  irq_handler_entry: irq=18 name=arch_timer\n    in pseudo-NMI context, ICC_PMR_EL1 = 0x20\n    PMU overflow at same priority, cannot nest\n    duration: 1.2us (PMU sample window missed)\n\nThe PMU and arch_timer pseudo-NMIs share the same priority group (0x20). When the arch_timer pseudo-NMI handler is running, it lowers PMR to 0x20, masking the PMU overflow at the same priority. Is this a known limitation of Linux pseudo-NMI, and how do we assign different priorities to avoid the race?",
+  "expected_topics": ["pseudo-NMI", "PMR", "ICC_PMR_EL1", "perf", "PMU", "arm64", "race-condition", "priority"],
+  "min_score": 4,
+  "tags": ["interrupt-virtualization-expert", "pseudo-nmi", "pmr", "pmu", "perf", "priority-race"]
+}

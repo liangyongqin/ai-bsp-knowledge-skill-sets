@@ -1,0 +1,8 @@
+{
+  "id": "case_293",
+  "skill": "multimedia-camera-expert",
+  "input": "After enabling MIPI CSI-2 Multi-Pixel Compression (MPC) on our 108MP sensor to reduce bandwidth from RAW12 to ~8bpp visually-lossless compressed format, we see periodic block artifacts in the ISP output — roughly 1 in every 200 frames shows a horizontal band of corrupted pixels at seemingly random vertical positions.\n\ndmesg:\n  [  14.201] csi2_rx: MPC enabled, compression_ratio=1.50 (RAW12 -> ~8bpp)\n  [  14.201] csi2_rx: mpc_format=0x2E dt=0x30 (compressed RAW12)\n  [  14.880] isp_fe: MPC decode error at line 2847, block_offset=64\n  [  14.880] isp_fe: mpc_decoder: header CRC mismatch, expected=0x3A1F got=0x3A1E\n  [  14.881] isp_fe: mpc_decoder: fallback to previous block predictor\n  [  14.881] isp_fe: frame 47: decode_errors=3, affected_pixels=192\n\nCSI-2 PHY stats (over 1000 frames):\n  total_frames: 1000\n  crc_errors: 0\n  ecc_1bit_corrected: 7\n  ecc_2bit_uncorrectable: 0\n  mpc_decode_failures: 5\n\nThe CSI-2 link CRC shows zero errors, but we have 7 single-bit ECC corrections. The MPC decode failures correlate with frames that had ECC corrections. Is the MPC compression format more sensitive to bit errors than uncompressed RAW? How do we diagnose whether this is a PHY signal integrity issue or an MPC encoder/decoder bug?",
+  "expected_topics": ["MPC", "compression", "CSI-2", "visually-lossless", "ISP", "decoder", "bandwidth", "artifacts"],
+  "min_score": 4,
+  "tags": ["multimedia-camera-expert", "mpc", "compression", "csi2", "signal-integrity", "artifacts"]
+}

@@ -1,0 +1,8 @@
+{
+  "id": "case_294",
+  "skill": "gpu-rendering-expert",
+  "input": "Our Mali-G610 GPU using the Panthor driver hangs intermittently under sustained Vulkan compute workloads. The GPU becomes unresponsive and dmesg shows CSF firmware timeout errors. After the hang, the GPU does not recover and requires a full module reload.\n\ndmesg:\n  [  45.812] panthor 13000000.gpu: [drm] *ERROR* group 1 queue 0: CSF timeout (cmd_ptr=0x00000000FA034080)\n  [  45.812] panthor 13000000.gpu: [drm] *ERROR* CSF slot 3: STATUS=0x2 (SUSPENDED_ON_FAULT)\n  [  45.813] panthor 13000000.gpu: [drm] *ERROR* group 1: FAULT_STATUS=0x48 (GPU_PAGE_FAULT_1)\n  [  45.813] panthor 13000000.gpu: [drm] firmware state dump initiated\n  [  45.814] panthor 13000000.gpu: [drm] devcoredump captured (128KB)\n  [  45.815] panthor 13000000.gpu: [drm:drm_sched_job_timedout] *ERROR* ring 0 timeout\n  [  46.815] panthor 13000000.gpu: [drm] *ERROR* FW PING timeout — firmware unresponsive\n  [  46.816] panthor 13000000.gpu: [drm] *ERROR* GPU reset failed, needs full power cycle\n\nThe workload uses multiple Vulkan compute queues with shared SSBO buffers. The fault address 0xFA034080 is within the GPU VA range assigned to the compute SSBO pool. We suspect either a UAF (use-after-free) in the buffer management or a firmware deadlock in CSF queue group scheduling. How do we analyze the devcoredump and identify the root cause?",
+  "expected_topics": ["panthor", "CSF", "firmware", "Mali-G610", "queue-group", "devcoredump", "drm_sched", "GPU-hang"],
+  "min_score": 4,
+  "tags": ["gpu-rendering-expert", "panthor", "csf", "mali", "gpu-hang", "firmware-timeout"]
+}

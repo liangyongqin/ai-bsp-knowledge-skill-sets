@@ -1,0 +1,8 @@
+{
+  "id": "case_298",
+  "skill": "interrupt-virtualization-expert",
+  "input": "Our KVM/ARM64 hypervisor uses GICv4.2 with virtual NMI (vNMI) support for a real-time guest VM. The guest configures a virtual watchdog interrupt as vNMI but the interrupt is never injected when the guest masks normal interrupts. The guest RT task misses its 500us deadline and the VM watchdog fires on the host side instead.\n\ndmesg (host):\n  [   3.100] kvm: GICv4.2 vNMI support detected (ICH_VTR_EL2.NMI=1)\n  [   3.101] kvm: VM 1 vCPU 0: vNMI enabled for VINTID 32 (guest watchdog)\n  [  18.540] kvm: VM 1 vCPU 0: vNMI pending but not delivered (guest PSTATE.ALLINT=1)\n  [  18.541] kvm: VM 1 vCPU 0: ICH_HCR_EL2.TALL1=0 ICH_LR0_EL2.NMI=1 prio=0x00\n  [  18.542] kvm: VM 1 vCPU 0: guest ICC_PMR_EL1=0x00, PSTATE.ALLINT=1\n  [  18.543] kvm: VM 1 watchdog expired, injecting external abort\n\nGuest dmesg (before watchdog):\n  [  18.530] rt_task: entering critical section, local_irq_disable()\n  [  18.540] -- no further output --\n\nThe VMAPP command was issued with V=1, alloc=1 for the vPE. The ITS VMOVI mapped VINTID 32 to the vPE with doorbell enabled. The ICH_LR has NMI=1 but the guest's PSTATE.ALLINT=1 blocks even vNMI delivery. Is this expected GICv4.2 behavior or a KVM vGIC configuration issue?",
+  "expected_topics": ["GICv4.2", "vNMI", "virtual-NMI", "KVM", "vGIC", "ITS", "VMAPP", "real-time"],
+  "min_score": 4,
+  "tags": ["interrupt-virtualization-expert", "gicv4", "vnmi", "kvm", "vgic", "real-time"]
+}

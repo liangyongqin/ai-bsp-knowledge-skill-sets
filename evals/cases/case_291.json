@@ -1,0 +1,8 @@
+{
+  "id": "case_291",
+  "skill": "multimedia-camera-expert",
+  "input": "After enabling Smart ROI (SROI) on our 50MP sensor over MIPI CSI-2 v4.0, the ISP output shows partial frames — the bottom ~20% of the cropped region is missing or contains garbage data. The sensor is configured for 4:3 SROI crop from full 8192x6144 down to a 4096x3072 ROI window.\n\ndmesg:\n  [  12.341] csi2_rx: SROI metadata received, crop_x=2048 crop_y=1536 w=4096 h=3072\n  [  12.341] csi2_rx: frame_start vc=0 dt=0x2b (RAW10)\n  [  12.345] isp_fe: input resolution mismatch: expected 4096x3072, got 4096x2448\n  [  12.345] isp_fe: line_count=2448, missing 624 lines (20.3%)\n  [  12.346] isp_fe: SROI crop_y=1536 not aligned to 16-line boundary\n  [  12.346] csi2_rx: short_packet: frame_end received early at line 2448\n\nV4L2 subdev query:\n  $ v4l2-ctl --get-crop -d /dev/v4l-subdev3\n  Crop: Left 2048, Top 1536, Width 4096, Height 3072\n\nThe sensor datasheet says SROI crop origin must be 8-pixel aligned, but the ISP requires 16-line alignment. What is causing the partial frame and how do we fix the SROI crop parameters?",
+  "expected_topics": ["SROI", "CSI-2", "crop", "ROI", "pixel-alignment", "ISP", "V4L2", "bandwidth-reduction"],
+  "min_score": 4,
+  "tags": ["multimedia-camera-expert", "sroi", "csi2", "crop-alignment", "isp"]
+}

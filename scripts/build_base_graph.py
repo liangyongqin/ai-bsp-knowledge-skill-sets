@@ -62,6 +62,9 @@ INGEST_SCRIPTS = [
     "arm-css-v2-2024.py",
     "arm-gic-700.py",
     "linux-thermal-pcie-cooling.py",
+    "mipi-csi2-v4-features.py",
+    "linux-panthor-drm-csf.py",
+    "arm-gic-nmi-v42.py",
     "fix-orphan-connectivity.py",  # links orphan nodes from all prior scripts
     "fix-orphan-connectivity-2.py",  # remaining orphans + sparse rels + hw-spec FMs
     "fix-orphan-connectivity-3.py",  # must run last — final 2 orphan Components + 5 disconnected FMs

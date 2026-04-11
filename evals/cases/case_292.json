@@ -1,0 +1,8 @@
+{
+  "id": "case_292",
+  "skill": "multimedia-camera-expert",
+  "input": "We are integrating a Samsung/Sony event-based vision sensor (EVS/DVS) via MIPI CSI-2 v4.2 Event Sensing Protocol (ESP). The sensor streams asynchronous brightness-change events for a 640x480 pixel array, but we see periodic gaps of 2-5ms where no events arrive, causing the downstream neuromorphic processing pipeline to stall.\n\ndmesg:\n  [   8.102] csi2_rx: ESP stream started on vc=2 dt=0x32 (user-defined)\n  [   8.105] csi2_rx: esp_event_count=12403 in 1ms window\n  [   8.107] csi2_rx: esp_event_count=11892\n  [   8.109] csi2_rx: esp_event_count=0  <-- gap start\n  [   8.111] csi2_rx: esp_event_count=0\n  [   8.113] csi2_rx: esp_event_count=14201  <-- gap end, burst\n  [   8.113] csi2_rx: fifo_overflow on vc=2, 3841 events dropped\n\nThe CSI-2 link is shared: vc=0 carries conventional RGB frames at 30fps, vc=2 carries ESP events. During the gap windows, vc=0 is transferring a full 1080p frame. The total lane bandwidth is 2.5 Gbps (4 lanes x 625 Mbps). Is the EVS stream being starved by the conventional frame transfer? How should we configure virtual channel arbitration or bandwidth partitioning?",
+  "expected_topics": ["EVS", "ESP", "dynamic-vision-sensor", "CSI-2", "event-based", "bandwidth", "virtual-channel", "neuromorphic"],
+  "min_score": 4,
+  "tags": ["multimedia-camera-expert", "evs", "esp", "csi2", "event-sensing", "bandwidth"]
+}

@@ -1,0 +1,8 @@
+{
+  "id": "case_295",
+  "skill": "gpu-rendering-expert",
+  "input": "Our system hangs completely when running a mixed render+compute Vulkan workload. The GPU scheduler (drm_sched) reports timeout on both the render and compute rings simultaneously. We suspect a fence dependency deadlock between the two queues.\n\ndmesg:\n  [  32.100] [drm:drm_sched_job_timedout] *ERROR* ring 0 (render) timeout, last signaled fence=142, pending=143\n  [  32.100] [drm:drm_sched_job_timedout] *ERROR* ring 1 (compute) timeout, last signaled fence=88, pending=89\n  [  32.101] gpu 13000000.gpu: job 143 (render) waiting on fence from ring 1 (compute) seq=89\n  [  32.101] gpu 13000000.gpu: job 89 (compute) waiting on fence from ring 0 (render) seq=143\n  [  32.102] gpu 13000000.gpu: DEADLOCK DETECTED: render <-> compute circular dependency\n\nftrace gpu_fence:\n  gpu_fence_wait: ring=0 job=143 waiting_for=compute:89 implicit_sync=1\n  gpu_fence_wait: ring=1 job=89 waiting_for=render:143 implicit_sync=1\n\nThe application uses implicit sync (no explicit Vulkan timeline semaphores). Both jobs access the same dma-buf backed VkImage — the render pass writes it, the compute pass reads it, but the implicit sync layer has created a bidirectional dependency. How do we break this deadlock and what is the proper fix?",
+  "expected_topics": ["drm_sched", "fence", "deadlock", "dependency", "GPU-scheduler", "render", "compute", "implicit-sync"],
+  "min_score": 4,
+  "tags": ["gpu-rendering-expert", "drm-sched", "fence-deadlock", "implicit-sync", "vulkan"]
+}

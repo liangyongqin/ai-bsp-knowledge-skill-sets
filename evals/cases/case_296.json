@@ -1,0 +1,8 @@
+{
+  "id": "case_296",
+  "skill": "gpu-rendering-expert",
+  "input": "On our MT8188 board with Mali-G57 MC2 using the Panfrost driver, the GPU is stuck at 400 MHz and never reaches the peak 800 MHz OPP. GPU-intensive workloads show low performance and the GPU utilization stays at 100% but frequency does not scale up.\n\ndmesg:\n  [   2.310] panfrost 13040000.gpu: clock rate 400000000\n  [   2.311] panfrost 13040000.gpu: mali-g57 id 0x9005 major 9 minor 0 status 0\n  [   2.312] panfrost 13040000.gpu: Features: 00000000,00000000 Issues: 00000000\n  [   2.313] panfrost 13040000.gpu: shader_present=0x3 l2_present=0x1\n\nDevice tree gpu node:\n  gpu@13040000 {\n    compatible = \"mediatek,mt8188-mali\", \"arm,mali-valhall-jm\";\n    operating-points-v2 = <&gpu_opp_table>;\n    #cooling-cells = <2>;\n  };\n\n  gpu_opp_table: opp-table {\n    opp-400000000 { opp-hz = /bits/ 64 <400000000>; opp-microvolt = <650000>; };\n    opp-600000000 { opp-hz = /bits/ 64 <600000000>; opp-microvolt = <750000>; };\n    opp-800000000 { opp-hz = /bits/ 64 <800000000>; opp-microvolt = <850000>; };\n  };\n\n  $ cat /sys/class/devfreq/13040000.gpu/available_frequencies\n  400000000\n  $ cat /sys/class/devfreq/13040000.gpu/governor\n  simple_ondemand\n\nOnly one frequency is listed in devfreq despite three OPPs in device tree. The regulator and clock nodes exist but the higher OPPs seem to not register. What could cause the OPP table to be partially loaded?",
+  "expected_topics": ["panfrost", "MT8188", "Mali-G57", "OPP", "device-tree", "frequency", "regulator", "voltage"],
+  "min_score": 4,
+  "tags": ["gpu-rendering-expert", "panfrost", "opp", "devfreq", "mediatek", "frequency-scaling"]
+}

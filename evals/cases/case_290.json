@@ -1,0 +1,8 @@
+{
+  "id": "case_290",
+  "skill": "power-thermal-expert",
+  "input": "Our suspend-to-RAM (STR) resume is taking 3x longer than expected. The target is 200ms from resume trigger to display-on, but we're measuring 620ms. The resume path seems to have long delays in device driver resume callbacks.\n\nftrace suspend_resume + device_pm_callback:\n  suspend_resume: resume_noirq start\n    dpm_run_callback: pmic_i2c resume_noirq -> 2.1ms\n    dpm_run_callback: mmc0 resume_noirq -> 5.3ms\n    dpm_run_callback: usb0 resume_noirq -> 1.2ms\n  suspend_resume: resume_noirq end (12ms)\n\n  suspend_resume: resume_early start\n    dpm_run_callback: clk_provider resume_early -> 45.2ms  <-- PLL relock\n    dpm_run_callback: ddr_controller resume_early -> 82.1ms  <-- DDR retrain!\n    dpm_run_callback: gpu resume_early -> 3.1ms\n  suspend_resume: resume_early end (145ms)\n\n  suspend_resume: resume start\n    dpm_run_callback: display resume -> 180.3ms  <-- panel init sequence\n    dpm_run_callback: camera resume -> 95.2ms  <-- why is camera resuming?\n    dpm_run_callback: wifi resume -> 42.1ms\n    dpm_run_callback: bluetooth resume -> 38.5ms\n  suspend_resume: resume end (412ms)\n\nTotal resume: 12 + 145 + 412 = 569ms (+ 51ms kernel overhead = 620ms)\n\nKey suspects: DDR retrain (82ms), display panel init (180ms), and camera resume (95ms) when camera app isn't even running. How do we get this under 200ms?",
+  "expected_topics": ["suspend-to-RAM", "STR", "resume-latency", "dev_pm_ops", "resume_noirq", "resume_early", "PLL-relock", "DDR-retrain", "display-init", "lazy-resume", "runtime-PM", "async-resume", "device-driver", "PSCI", "dpm_callback"],
+  "min_score": 4,
+  "tags": ["power-thermal-expert", "str", "suspend-resume", "latency", "optimization"]
+}

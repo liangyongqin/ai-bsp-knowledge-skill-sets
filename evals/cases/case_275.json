@@ -1,0 +1,8 @@
+{
+  "id": "case_275",
+  "skill": "interrupt-virtualization-expert",
+  "input": "Under heavy MSI-X load from NVMe + network devices, the GIC ITS command queue is overflowing. We see ITS command timeouts and some LPIs are not being delivered. The system has 4 ITS nodes and ~2000 active LPI mappings.\n\nITS command queue status (from debug registers):\n  ITS0 GITS_CREADR: 0x0000FF80\n  ITS0 GITS_CWRITER: 0x0000FFA0  (only 32 bytes ahead of reader -- nearly full)\n  ITS1 GITS_CREADR: 0x00000100\n  ITS1 GITS_CWRITER: 0x00000100  (idle)\n  ITS2 GITS_CREADR: 0x00000200\n  ITS2 GITS_CWRITER: 0x00000200  (idle)\n  ITS3 GITS_CREADR: 0x00000100\n  ITS3 GITS_CWRITER: 0x00000100  (idle)\n\ndmesg:\n[  180.400] its@2f020000: ITS command queue timeout (MAPTI)\n[  180.401] its@2f020000: GITS_CREADR=0x0000FF80 GITS_CWRITER=0x0000FFA0\n[  180.402] its@2f020000: retrying command...\n[  180.500] nvme 0000:01:00.0: I/O timeout, resetting controller\n[  180.501] mlx5_core 0000:02:00.0: missed completion on CQ 12\n\n/proc/interrupts shows ITS0 handling 1800 of 2000 LPIs. The other 3 ITS nodes are barely used. How do we rebalance?",
+  "expected_topics": ["ITS", "command-queue", "overflow", "MSI-X", "LPI", "GITS_CREADR", "GITS_CWRITER", "MAPTI", "load-balancing", "affinity", "multi-ITS", "device-table", "collection-table", "NVMe", "network"],
+  "min_score": 4,
+  "tags": ["interrupt-virtualization-expert", "its", "command-queue", "msi-x", "load-balancing"]
+}

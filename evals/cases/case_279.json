@@ -1,0 +1,8 @@
+{
+  "id": "case_279",
+  "skill": "gpu-rendering-expert",
+  "input": "Perfetto GPU counters show our Mali-G720 is 98% fragment bound, but Android GPU Inspector shows zero overdraw. The scene is a simple 2D UI with no transparency and no overlapping draw calls. We expected to be vertex bound or even CPU bound given the simplicity.\n\nPerfetto GPU metrics (1-second window):\n  GPU Utilization: 78%\n  Fragment Bound: 98.2%\n  Non-Fragment Bound: 1.8%\n  Shader Core Cycles: 142,000,000\n  Fragment Jobs: 60\n  Non-Fragment Jobs: 60\n  L2 Cache Miss Rate: 45%\n  Texture Fetch Stalls: 89,000,000 cycles\n\nAGI overdraw analysis:\n  Overdraw 1x: 100%\n  Overdraw 2x: 0%\n  Overdraw 3x: 0%\n  Overdraw 4x+: 0%\n\nThe frame renders 6 layers at 1080x2400 resolution. Each layer is a full-screen textured quad with a 4K texture source (center-crop). Total texture memory accessed per frame: ~120MB.\n\nWith no overdraw, why is fragment shading the bottleneck?",
+  "expected_topics": ["fragment-bound", "texture-fetch", "L2-cache-miss", "bandwidth", "Mali", "Perfetto", "GPU-Inspector", "overdraw", "texture-resolution", "center-crop", "cache-thrashing", "tile-based-renderer", "texture-compression", "ASTC", "memory-bandwidth"],
+  "min_score": 4,
+  "tags": ["gpu-rendering-expert", "perfetto", "fragment-bound", "texture", "bandwidth", "mali"]
+}

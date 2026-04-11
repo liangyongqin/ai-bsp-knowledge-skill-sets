@@ -1,0 +1,8 @@
+{
+  "id": "case_266",
+  "skill": "bsp-knowledge-mentor",
+  "input": "We're seeing display glitches (green frames) during camera preview when GPU composition is active. The camera ISP writes to DMA-BUF buffers that are consumed by the GPU compositor, but under load the ISP seems to underrun and the GPU reads stale/partial data.\n\nLogcat:\n04-10 14:22:01.234 CameraHAL: ISP frame 4201 write complete, fence fd=42\n04-10 14:22:01.236 SurfaceFlinger: acquired buffer slot 3, fence fd=42\n04-10 14:22:01.237 SurfaceFlinger: GPU composition start, 4 layers\n04-10 14:22:01.239 CameraHAL: WARNING: ISP DMA underrun on channel 2, bytes_remaining=32768\n04-10 14:22:01.240 SurfaceFlinger: fence fd=42 signaled (GPU read started)\n04-10 14:22:01.241 MALI: Job completed with INSTR_INVALID_PC\n04-10 14:22:01.242 SurfaceFlinger: display frame 8844: composition error, fallback to client\n\ndmesg:\n[14222.301] isp-dma: ch2 underrun, FIFO empty at line 1920\n[14222.302] isp-dma: recovery: reset ch2, restart from line 1920\n[14222.305] mali 13000000.gpu: GPU fault 0x50 at 0x0000000280100000\n[14222.306] mali 13000000.gpu: AS0 page fault reading at address 0x0000000280100000\n\nIs the fence signaling too early, or is the ISP DMA genuinely underrunning?",
+  "expected_topics": ["ISP", "DMA-BUF", "GPU-composition", "fence-signaling", "buffer-underrun", "SurfaceFlinger", "camera-preview", "FIFO", "sync-fence", "page-fault", "implicit-sync", "explicit-sync", "MALI-GPU", "display-glitch", "zero-copy"],
+  "min_score": 4,
+  "tags": ["bsp-knowledge-mentor", "cross-domain", "multimedia-camera", "gpu-rendering", "isp", "dma-buf", "fence"]
+}

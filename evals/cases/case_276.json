@@ -1,0 +1,8 @@
+{
+  "id": "case_276",
+  "skill": "power-thermal-expert",
+  "input": "Our adaptive polling PM governor (menu governor with adaptive tick) is not entering deep C-states (C3/C4) on an ARM DynamIQ platform. The CPUs stay in C1 (WFI) even during extended idle periods. Power consumption at idle is 400mW higher than expected.\n\nC-state residency from /sys/devices/system/cpu/cpu0/cpuidle/:\n  state0 (WFI):     usage=4502981  time=892000000us  (dominant)\n  state1 (retention): usage=12       time=480us\n  state2 (power-down): usage=0       time=0us\n\nftrace cpuidle:\n  <idle>-0 [000] 600.100: cpu_idle: state=0 cpu_id=0\n  <idle>-0 [000] 600.101: cpu_idle: state=4294967295 cpu_id=0  (exit)\n  <idle>-0 [000] 600.102: cpu_idle: state=0 cpu_id=0  (re-enter C0/WFI immediately)\n\n/sys/devices/system/cpu/cpu0/cpuidle/state2/disable: 0\n/sys/devices/system/cpu/cpu0/cpuidle/state2/latency: 500 (us)\n/sys/devices/system/cpu/cpu0/cpuidle/state2/residency: 2000 (us)\n\nThe menu governor predicted idle time is always below the C2 target residency. Timer frequency from /proc/timer_list shows 200+ timers firing within 1ms windows. Is timer consolidation the issue?",
+  "expected_topics": ["cpuidle", "C-state", "menu-governor", "WFI", "power-down", "retention", "idle-residency", "target-residency", "exit-latency", "timer-consolidation", "tick-broadcast", "DynamIQ", "PSCI", "predicted-idle", "power-consumption"],
+  "min_score": 4,
+  "tags": ["power-thermal-expert", "cpuidle", "c-state", "governor", "idle-power"]
+}

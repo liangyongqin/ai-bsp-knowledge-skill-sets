@@ -1,0 +1,8 @@
+{
+  "id": "case_263",
+  "skill": "bsp-knowledge-mentor",
+  "input": "Running KVM guests on an ARMv9 platform with GIC-700. Virtual SGIs (vSGIs) to a specific vPE are silently being dropped, causing the guest to hang waiting for IPI completion. The host side shows the vSGI was submitted but the guest never receives it. Physical SGIs between host CPUs work fine.\n\nHost dmesg:\n[   5.200] kvm [142]: vGIC: GICv4.1 direct injection enabled\n[   5.201] kvm [142]: ITS: vPE table configured at 0x80000000, 256 entries\n\nGuest hung state (from host debug):\n[  301.882] kvm [142]: VCPU 2 blocked, waiting for IRQ\n[  301.882] kvm [142]: vSGI pending bitmap: 0x00000004 (SGI#2)\n[  301.883] kvm [142]: GICR_VPENDBASER: 0x0000000080004000 (Valid=1, PendingLast=0)\n[  301.884] kvm [142]: vPE resident on CPU3, target CPU3\n\n/proc/interrupts on host shows ITS maintenance IRQ count not incrementing:\n  38:       1204       1198       1203          0   GICv4.1-maint   ITS-vPE\n\nCPU3 maintenance IRQ stuck at 0. What's happening?",
+  "expected_topics": ["GIC-700", "GICv4.1", "vSGI", "vPE", "KVM", "ITS", "direct-injection", "GICR_VPENDBASER", "maintenance-interrupt", "IPI", "pending-bitmap", "vPE-scheduling", "doorbell", "redistributor", "affinity"],
+  "min_score": 4,
+  "tags": ["bsp-knowledge-mentor", "cross-domain", "interrupt-virt", "gic", "kvm", "vsgi"]
+}

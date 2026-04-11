@@ -1,0 +1,8 @@
+{
+  "id": "case_267",
+  "skill": "bsp-knowledge-mentor",
+  "input": "Our SoC is hitting thermal shutdown during heavy PCIe traffic. The root cause appears to be an MSI interrupt storm from a misconfigured PCIe endpoint. The endpoint is generating thousands of MSIs per second, and each one causes a GIC SPI that the kernel is servicing. This heats up the CPU cluster and eventually triggers emergency thermal shutdown.\n\n/proc/interrupts (sampled over 1 second):\n 128:   45201   44987   45102   45330   GICv3  160 Level   pcie-msi-0000:01:00.0\n\ndmesg:\n[  300.100] pcieport 0000:00:01.0: PME: Spurious native interrupt!\n[  300.101] irq 128: nobody cared (try booting with irqpoll)\n[  300.500] thermal_zone0: critical temperature reached (105000 mC), shutting down\n\nftrace irq_handler_entry:\n irq_handler_entry: irq=128 name=pcie-msi handler=0xffffffc0104a2000\n  duration: 2.1us  (x45000/sec = ~95ms/sec CPU time)\n\nGIC ITS device table shows the endpoint mapped to a single collection targeting CPU0-3 round-robin. How do we stop the storm without disabling the device entirely?",
+  "expected_topics": ["MSI", "interrupt-storm", "PCIe", "GIC", "thermal-shutdown", "irq-coalescing", "MSI-X", "interrupt-affinity", "ITS", "collection", "CPU-time", "irqbalance", "threaded-irq", "rate-limiting", "SPI"],
+  "min_score": 4,
+  "tags": ["bsp-knowledge-mentor", "cross-domain", "interrupt-virt", "power-thermal", "pcie", "msi", "thermal"]
+}

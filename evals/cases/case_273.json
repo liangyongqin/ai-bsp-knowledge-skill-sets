@@ -1,0 +1,8 @@
+{
+  "id": "case_273",
+  "skill": "multimedia-camera-expert",
+  "input": "We're trying to synchronize capture from three cameras using the V4L2 Request API. Two of the three cameras capture in sync, but the third consistently misses its frame by 1-2 frame periods. All three sensors are on separate MIPI CSI-2 interfaces with hardware sync triggers.\n\nv4l2-ctl output:\n  Camera 0 (IMX577): /dev/video0, streaming at 30fps, request fd=10\n  Camera 1 (IMX577): /dev/video2, streaming at 30fps, request fd=11\n  Camera 2 (OV13B): /dev/video4, streaming at 30fps, request fd=12\n\nTimestamp analysis (CLOCK_MONOTONIC, nanoseconds):\n  Frame N:   cam0=500000000  cam1=500100000  cam2=533400000  (cam2 late by 33.4ms)\n  Frame N+1: cam0=533333333  cam1=533433333  cam2=566700000  (cam2 late by 33.4ms)\n  Frame N+2: cam0=566666666  cam1=566766666  cam2=600100000  (cam2 late by 33.4ms)\n\ndmesg:\n[   30.100] imx577 2-001a: hardware trigger mode enabled\n[   30.101] imx577 3-001a: hardware trigger mode enabled\n[   30.102] ov13b 4-0036: hardware trigger mode enabled\n[   30.103] ov13b 4-0036: WARNING: FSIN delay register = 0x0100 (256 lines)\n\nThe OV13B has a different FSIN (frame sync input) delay configuration. Is this the cause?",
+  "expected_topics": ["V4L2", "Request-API", "multi-camera", "synchronization", "MIPI-CSI-2", "FSIN", "frame-sync", "hardware-trigger", "timestamp", "IMX577", "OV13B", "sensor-delay", "exposure-start", "readout-time", "CLOCK_MONOTONIC"],
+  "min_score": 4,
+  "tags": ["multimedia-camera-expert", "v4l2", "multi-camera", "sync", "request-api"]
+}

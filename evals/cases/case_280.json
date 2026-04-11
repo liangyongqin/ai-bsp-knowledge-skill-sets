@@ -1,0 +1,8 @@
+{
+  "id": "case_280",
+  "skill": "interrupt-virtualization-expert",
+  "input": "Our KVM/ARM64 host is experiencing a VM exit storm caused by vGIC maintenance interrupts. The guest is running a real-time workload with tight interrupt handling. The host CPU spending 60% of time in KVM exit handlers.\n\nperf stat on host (1 second sample):\n  142,301  kvm:kvm_exit  (reason: IRQ)\n  141,987  kvm:kvm_entry\n   89,201  kvm:kvm_exit  (reason: TRAP)\n    3,102  kvm:kvm_exit  (reason: HVC)\n\nftrace kvm_exit breakdown:\n  kvm_exit: reason=IRQ info=0x19 (maintenance IRQ)\n    handle_exit: gic_handle_maintenance -> list_reg_sync\n    duration: 2.8us\n  (repeats 142K times/sec)\n\n/proc/interrupts on host:\n  29:  142301  142100  141899  142502  GICv3  25  Level  kvm-vgic-maintenance\n\nGuest /proc/interrupts:\n  IPI0:  45000  44800  45100  44900  Rescheduling interrupts\n  IPI1:  12000  11800  12100  11900  Function call interrupts\n  LOC:   90000  89800  90100  89900  Local timer interrupts\n\nThe guest timer frequency is 90KHz per CPU (4 CPUs = 360KHz total) but host maintenance IRQ count is 142KHz per CPU. Where are the extra maintenance interrupts coming from?",
+  "expected_topics": ["vGIC", "maintenance-interrupt", "VM-exit", "KVM", "list-register", "ICH_MISR", "EOI", "trap", "GICv3", "hypervisor", "real-time", "interrupt-coalescing", "direct-injection", "GICv4", "exit-storm"],
+  "min_score": 4,
+  "tags": ["interrupt-virtualization-expert", "vgic", "kvm", "vm-exit", "maintenance-irq", "performance"]
+}

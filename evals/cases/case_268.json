@@ -1,0 +1,8 @@
+{
+  "id": "case_268",
+  "skill": "bsp-knowledge-mentor",
+  "input": "We upgraded our camera module to a sensor supporting MIPI CSI-2 v4.2 with extended ECC (ECM). After integration, we see persistent ECC errors in the received frames even though the physical link looks clean (no CRC errors on short packets). The ISP reports corrupted long packet headers.\n\nCSI-2 receiver register dump:\n  CSI2_ERR_STATUS: 0x00000204\n    bit[2]: ECC_MULTI_BIT = 1\n    bit[9]: ECM_DECODE_ERR = 1\n  CSI2_DATA_TYPE_FILTER: 0x2B (RAW10)\n  CSI2_VC_SELECT: 0x0F (VC0-3 enabled)\n  CSI2_PROTOCOL_VER: 0x01 (CSI-2 v1.x mode)\n\ndmesg:\n[   10.400] mipi-csi2 15040000.csi: ECC multi-bit error on VC0, frame 12\n[   10.401] mipi-csi2 15040000.csi: header decode: DT=0x2B WC=0x1400 expected, got DT=0xFF WC=0x0000\n[   10.402] isp 15050000.isp: frame 12 dropped (header error)\n[   10.433] mipi-csi2 15040000.csi: ECC multi-bit error on VC0, frame 13\n\nThe sensor datasheet says it transmits with ECM (6-byte extended header). Is our CSI-2 receiver not configured for v4.2?",
+  "expected_topics": ["MIPI-CSI-2", "ECC", "ECM", "extended-header", "v4.2", "long-packet", "short-packet", "virtual-channel", "data-type", "RAW10", "protocol-version", "header-decode", "CRC", "D-PHY", "receiver-configuration"],
+  "min_score": 4,
+  "tags": ["bsp-knowledge-mentor", "cross-domain", "multimedia-camera", "hardware-spec", "mipi", "csi2", "ecc"]
+}

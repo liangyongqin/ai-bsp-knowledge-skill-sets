@@ -1,0 +1,8 @@
+{
+  "id": "case_286",
+  "skill": "gpu-rendering-expert",
+  "input": "I'm trying to optimize our rendering pipeline and I'm confused about some concepts. We're using OpenGL ES 3.2 but I want to add Vulkan-style render passes for better performance. I wrote this code:\n\n```c\n// OpenGL ES code trying to use Vulkan concepts\nglBeginRenderPass(GL_COLOR_ATTACHMENT0);  // This doesn't exist\nglSubpassDependency(GL_FRAGMENT_SHADER_BIT, GL_COLOR_ATTACHMENT_OUTPUT_BIT);\nglEndRenderPass();\n```\n\nThe compiler says these functions don't exist. Also, I heard that in Vulkan you need to use vkCmdPipelineBarrier for synchronization, but in GLES we use glMemoryBarrier. Are these the same thing? Can I mix GLES and Vulkan in the same application on Android?\n\nAnd one more thing -- I'm calling glFinish() after every draw call for synchronization. The GPU profiler shows my frame time is 33ms (should be 16ms). Is glFinish the problem?",
+  "expected_topics": ["OpenGL-ES", "Vulkan", "API-confusion", "render-pass", "pipeline-barrier", "memory-barrier", "glFinish", "synchronization", "frame-time", "interop", "EGL-image", "implicit-sync", "explicit-sync", "draw-call-batching", "GPU-pipeline-stall"],
+  "min_score": 4,
+  "tags": ["gpu-rendering-expert", "negative-test", "api-confusion", "gles-vulkan", "boundary"]
+}

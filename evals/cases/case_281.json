@@ -1,0 +1,8 @@
+{
+  "id": "case_281",
+  "skill": "power-thermal-expert",
+  "input": "I'm working on a Windows laptop with an Intel CPU and I need help configuring the Windows power plan for better battery life. The laptop uses Connected Standby (Modern Standby) and I want to optimize the DRIPS (Deepest Runtime Idle Platform State) residency. Can you help me tune the powercfg settings?\n\nOutput from powercfg /sleepstudy:\n  Modern Standby: Capable\n  DRIPS residency: 45%\n  Top offenders:\n    Wi-Fi (Intel AX211): 30% active time\n    USB Hub: 15% active time\n    Audio device: 10% active time",
+  "expected_topics": ["out-of-scope", "Linux-focus", "redirect", "Windows-vs-Linux", "power-management", "ACPI", "suspend-states"],
+  "min_score": 4,
+  "tags": ["power-thermal-expert", "negative-test", "out-of-scope", "windows", "boundary"]
+}

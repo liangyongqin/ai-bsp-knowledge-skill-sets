@@ -1,0 +1,8 @@
+{
+  "id": "case_272",
+  "skill": "boot-debug-expert",
+  "input": "After system suspend/resume (STR), our CoreSight ETM trace data is corrupted. The ETM was tracing kernel functions before suspend. After resume, the trace buffer contains garbage data mixed with valid trace packets. This makes post-mortem debugging of resume issues impossible.\n\nBefore suspend (valid trace via perf):\n  perf record -e cs_etm/@tmc_etr0/ -a sleep 1\n  [ perf data: 2.4MB valid trace ]\n\nAfter resume:\n  perf record -e cs_etm/@tmc_etr0/ -a sleep 1\n  [ perf data: 2.4MB, decoder reports 847 sync errors ]\n\nCoresight register dump after resume:\n  TRCSTATR: 0x00000001 (Idle=1, but TraceStat unexpected)\n  TRCCONFIGR: 0x00000000 (all event tracing disabled?!)\n  TRCAUTHSTATUS: 0x000000CC (NSID=3, NSD=3 -- OK)\n  TMC_RSZ: 0x00100000 (1MB -- correct)\n  TMC_STS: 0x00000005 (Full=1, TMCReady=1)\n  TMC_RRP: 0x00040000\n  TMC_RWP: 0x00040000 (RRP==RWP, buffer appears empty but STS.Full=1)\n\ndmesg:\n[  200.300] PM: suspend entry (deep)\n[  200.500] PM: suspend exit\n[  200.501] coresight tmc_etr0: TMC-ETR enabled\n[  200.502] coresight etm4x: ETM restored, TRCPRGCTLR=0x1\n\nThe ETM pm_ops resume handler runs but something is not being restored correctly. What registers are we missing?",
+  "expected_topics": ["CoreSight", "ETM", "suspend-resume", "TMC-ETR", "trace-corruption", "TRCSTATR", "TRCCONFIGR", "pm_ops", "save-restore", "TRCPRGCTLR", "trace-buffer", "sync-packets", "ADIv6", "claim-tags", "self-hosted-trace"],
+  "min_score": 4,
+  "tags": ["boot-debug-expert", "coresight", "etm", "suspend-resume", "trace"]
+}

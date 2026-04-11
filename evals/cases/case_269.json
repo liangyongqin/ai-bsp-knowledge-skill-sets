@@ -1,0 +1,8 @@
+{
+  "id": "case_269",
+  "skill": "bsp-knowledge-mentor",
+  "input": "We implemented a carbon-aware scheduling extension that adjusts EAS energy coefficients based on grid carbon intensity signals. During benchmarking, we see a 35% regression in Geekbench multi-core score compared to stock EAS. The scheduler is over-aggressively packing tasks onto LITTLE cores even when thermal headroom exists on big cores.\n\nftrace sched_switch + energy model:\n  <idle>-0 [000] 200.100: sched_switch: prev_pid=0 next_pid=1842 next_comm=geekbench\n  <idle>-0 [000] 200.101: energy_model: pd=LITTLE cap=446 power=120 carbon_coeff=1.0\n  <idle>-0 [000] 200.101: energy_model: pd=BIG    cap=1024 power=800 carbon_coeff=3.2\n  geekbench-1842 [000] 200.150: sched_migrate_task: pid=1842 dest_cpu=1 (LITTLE)\n  geekbench-1843 [001] 200.151: sched_migrate_task: pid=1843 dest_cpu=2 (LITTLE)\n\ncarbon_scheduler sysfs:\n  /sys/devices/system/cpu/carbon_aware/enabled: 1\n  /sys/devices/system/cpu/carbon_aware/grid_intensity: 450 (gCO2/kWh)\n  /sys/devices/system/cpu/carbon_aware/big_penalty_factor: 3.2\n  /sys/devices/system/cpu/carbon_aware/thermal_override: 0\n\nThe carbon penalty factor of 3.2x on big cores makes them appear 3.2x more expensive to EAS. How should we tune this to preserve performance for latency-sensitive workloads?",
+  "expected_topics": ["EAS", "energy-model", "carbon-aware", "scheduling", "big.LITTLE", "performance-regression", "task-packing", "capacity", "power-coefficient", "thermal-headroom", "latency-sensitive", "sched_energy_aware", "uclamp", "cpufreq-governor", "Geekbench"],
+  "min_score": 4,
+  "tags": ["bsp-knowledge-mentor", "cross-domain", "power-thermal", "scheduling", "carbon-aware", "eas"]
+}

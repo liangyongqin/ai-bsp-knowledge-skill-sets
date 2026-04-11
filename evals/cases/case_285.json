@@ -1,0 +1,8 @@
+{
+  "id": "case_285",
+  "skill": "bsp-knowledge-mentor",
+  "input": "I'm on the algorithm team working on our NPU inference pipeline. The BSP team keeps telling me there's 'insufficient compute bandwidth' for our model but I don't understand what that means in hardware terms. Our model needs 15 TOPS for real-time inference at 30fps, and the NPU spec says it supports 20 TOPS. So why is it slow?\n\nOur model profile:\n  - ResNet-50 backbone: 4.1 GFLOPs per frame\n  - Custom detection head: 2.3 GFLOPs per frame\n  - Total: 6.4 GFLOPs per frame @ 30fps = 192 GFLOPs/s\n  - Model weights: 98MB (INT8 quantized)\n  - Activation memory peak: 24MB\n  - Batch size: 1\n\nThe BSP team mentioned 'memory bandwidth bottleneck' and 'Roofline model' but I need these concepts explained in terms I can relate to my algorithm work.",
+  "expected_topics": ["NPU", "TOPS", "Roofline-model", "memory-bandwidth", "compute-bound", "memory-bound", "arithmetic-intensity", "INT8", "quantization", "inference-latency", "terminology-translation", "algorithm-perspective", "operational-intensity", "peak-performance", "bandwidth-ceiling"],
+  "min_score": 4,
+  "tags": ["bsp-knowledge-mentor", "negative-test", "terminology-translation", "learner-level", "algorithm-team"]
+}

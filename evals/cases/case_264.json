@@ -1,0 +1,8 @@
+{
+  "id": "case_264",
+  "skill": "bsp-knowledge-mentor",
+  "input": "On our ARMv9 platform with DSU-120 L3 cache, we observe two issues that seem related:\n1. L3 cache slice 2 power consumption is 40% higher than other slices at idle\n2. DVFS transitions on the big cluster are overshooting target voltage by 15-20mV\n\nPower rail measurements:\n  VDD_DSU: expected 0.75V idle, measured 0.81V (slice 2 contributing)\n  VDD_BIG: target 0.80V @ 1.8GHz, measured 0.82V\n  VDD_BIG: target 0.65V @ 1.0GHz, measured 0.67V\n\nDSU PMU counters:\n  L3D_CACHE_REFILL (slice 0): 142,301\n  L3D_CACHE_REFILL (slice 1): 139,877\n  L3D_CACHE_REFILL (slice 2): 891,204  <-- anomalous\n  L3D_CACHE_REFILL (slice 3): 140,550\n\nftrace DVFS transitions:\n  <idle>-0  [004] 100.200: cpu_frequency: state=1800000 cpu_id=4\n  <idle>-0  [004] 100.201: regulator_set_voltage: name=vdd_big min=800000 max=800000\n  <idle>-0  [004] 100.204: regulator_set_voltage_complete: name=vdd_big val=820000\n\nAre these related? Is the L3 slice leak causing DVFS calibration issues?",
+  "expected_topics": ["DSU-120", "L3-cache", "power-leak", "DVFS", "voltage-overshoot", "PMU-counters", "cache-refill", "power-domain", "regulator", "PMIC", "voltage-calibration", "slice-power-gating", "leakage-current", "OPP-table", "DynamIQ-shared-unit"],
+  "min_score": 4,
+  "tags": ["bsp-knowledge-mentor", "cross-domain", "power-thermal", "boot-debug", "dsu", "dvfs", "armv9"]
+}

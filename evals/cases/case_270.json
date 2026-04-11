@@ -1,0 +1,8 @@
+{
+  "id": "case_270",
+  "skill": "bsp-knowledge-mentor",
+  "input": "Multi-domain boot failure. Our platform enters a boot loop: PLL fails to lock, clocks don't propagate, kernel hangs waiting for a peripheral, and the watchdog fires a reset. This repeats every 8 seconds.\n\nUART bootloader log:\n[BL2] PLL_CON0 (MAINPLL): 0x800F0180\n[BL2] PLL lock check: MAINPLL... TIMEOUT (bit[31]=0 after 100us)\n[BL2] WARNING: MAINPLL not locked, proceeding with bypass clock (26MHz)\n[BL2] CLK_CFG_0: mux_axi = 0x0 (26MHz bypass)\n[BL2] DDR init: using backup 26MHz path... OK (reduced speed)\n[BL2] Jump to kernel\n\nKernel dmesg:\n[    0.000] Booting Linux on physical CPU 0x0\n[    1.200] clk: failed to set rate for mainpll_ck: PLL not locked\n[    1.201] clk: arm_pll_ck rate stuck at 26000000 Hz\n[    1.500] mmc0: timeout waiting for hardware interrupt\n[    1.501] mmc0: mmc_select_hs400: error -110\n[    2.000] i2c 11007000.i2c: timeout waiting for bus idle\n[    2.001] i2c 11007000.i2c: addr: 0x34 transfer timed out\n[    5.000] watchdog: BUG: soft lockup - CPU#0 stuck for 5s! [init:1]\n[    8.000] Restarting system with reason: watchdog\n\nThis only happens in cold boot below 0C ambient. Warm reboot works fine. Is the PLL failing due to temperature?",
+  "expected_topics": ["PLL", "lock-failure", "clock-tree", "boot-hang", "watchdog", "cold-boot", "temperature", "bypass-clock", "MAINPLL", "voltage-ramp", "eMMC-timeout", "I2C-timeout", "soft-lockup", "clock-mux", "crystal-oscillator"],
+  "min_score": 4,
+  "tags": ["bsp-knowledge-mentor", "cross-domain", "boot-debug", "power-thermal", "pll", "clock", "watchdog", "cold-boot"]
+}

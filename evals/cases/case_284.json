@@ -1,0 +1,8 @@
+{
+  "id": "case_284",
+  "skill": "boot-debug-expert",
+  "input": "My board doesn't boot. I see nothing on UART. What's wrong?",
+  "expected_topics": ["insufficient-information", "diagnostic-questions", "UART-configuration", "baud-rate", "voltage-levels", "boot-media", "power-supply", "JTAG", "SoC-model", "bootloader", "serial-console"],
+  "min_score": 4,
+  "tags": ["boot-debug-expert", "negative-test", "insufficient-data", "boundary"]
+}

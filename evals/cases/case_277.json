@@ -1,0 +1,8 @@
+{
+  "id": "case_277",
+  "skill": "boot-debug-expert",
+  "input": "Our platform hangs during cold boot in ARM Trusted Firmware (TF-A) BL31 when trying to bring up secondary CPUs via PSCI CPU_ON. The primary CPU (CPU0) boots fine through BL1->BL2->BL31->BL33->kernel, but the PSCI CPU_ON call for CPU1-7 never returns.\n\nUART log (BL31 debug level):\n[BL31] PSCI: CPU_ON request for MPIDR=0x100 (CPU1)\n[BL31] psci_cpu_on_start: target affinity=0x100\n[BL31] psci_cpu_on_start: setting target state to ON_PENDING\n[BL31] css_pwr_domain_on: writing PPONR for cluster0.cpu1\n[BL31] css_pwr_domain_on: polling PSTATE for cpu1...\n[BL31] css_pwr_domain_on: TIMEOUT waiting for cpu1 PSTATE (stuck at OFF)\n[BL31] PSCI: CPU_ON for 0x100 failed: PSCI_E_INTERN_FAIL\n\nSCP firmware log (if available via MHU):\n[SCP] PD_ON request received for PD3 (cpu1)\n[SCP] PPU: setting PD3 to ON... voltage check FAIL\n[SCP] PPU: VDD_CPU1 rail not detected (PMIC channel 3)\n[SCP] PD_ON denied for PD3\n\nThis is a new board revision where the PMIC was changed. The SCP firmware seems to be checking voltage rails that don't match the new PMIC layout.",
+  "expected_topics": ["TF-A", "BL31", "PSCI", "CPU_ON", "MPIDR", "SCP", "PPU", "power-domain", "PMIC", "voltage-rail", "MHU", "cold-boot", "secondary-CPU", "affinity", "board-revision"],
+  "min_score": 4,
+  "tags": ["boot-debug-expert", "tf-a", "psci", "scp", "cold-boot", "pmic"]
+}

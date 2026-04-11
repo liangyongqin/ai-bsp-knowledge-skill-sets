@@ -1,0 +1,8 @@
+{
+  "id": "case_274",
+  "skill": "gpu-rendering-expert",
+  "input": "Our Vulkan application causes a GPU hang on a tile-based renderer (Mali-G720). The hang occurs during a specific render pass that has subpass dependencies. The validation layer reports no errors, but the GPU job times out.\n\nMali GPU fault log:\n  GPU Fault 0x58 (IMPRECISE_FAULT) at address 0x0000000300200000\n  Fault type: AS_FAULTSTATUS_ACCESS_TYPE_READ\n  Source ID: LSC (Load/Store Cache)\n  Job slot 0 (Fragment)\n\nVulkan render pass structure:\n  Subpass 0: G-buffer pass (4 color attachments + depth)\n    - layout: COLOR_ATTACHMENT_OPTIMAL\n  Subpass 1: Lighting pass (reads G-buffer as input attachments)\n    - layout: SHADER_READ_ONLY_OPTIMAL\n  Subpass 2: Post-process (reads lighting result)\n    - layout: SHADER_READ_ONLY_OPTIMAL\n\n  Dependency 0->1:\n    srcStage = COLOR_ATTACHMENT_OUTPUT\n    dstStage = FRAGMENT_SHADER\n    srcAccess = COLOR_ATTACHMENT_WRITE\n    dstAccess = INPUT_ATTACHMENT_READ\n    dependencyFlags = BY_REGION_BIT\n\n  Dependency 1->2:\n    srcStage = COLOR_ATTACHMENT_OUTPUT\n    dstStage = FRAGMENT_SHADER\n    srcAccess = COLOR_ATTACHMENT_WRITE\n    dstAccess = INPUT_ATTACHMENT_READ\n    dependencyFlags = 0  <-- missing BY_REGION_BIT\n\nIs the missing BY_REGION_BIT on dependency 1->2 causing the hang on tile-based renderers?",
+  "expected_topics": ["Vulkan", "render-pass", "subpass-dependency", "tile-based-renderer", "Mali", "GPU-hang", "BY_REGION_BIT", "input-attachment", "G-buffer", "deferred-rendering", "fragment-shader", "LSC-fault", "barrier", "tile-buffer", "image-layout-transition"],
+  "min_score": 4,
+  "tags": ["gpu-rendering-expert", "vulkan", "render-pass", "mali", "tile-based", "gpu-hang"]
+}

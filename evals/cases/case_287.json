@@ -1,0 +1,8 @@
+{
+  "id": "case_287",
+  "skill": "interrupt-virtualization-expert",
+  "input": "I'm porting a hypervisor from x86 to ARM64 and I'm confused about interrupt handling differences. On x86 we used the APIC with ICR (Interrupt Command Register) for sending IPIs and the I/O APIC for device interrupts with redirection table entries. How does this map to ARM's GIC?\n\nSpecifically:\n1. What's the ARM equivalent of x86 LAPIC's ICR for sending IPIs?\n2. What replaces the I/O APIC redirection table?\n3. On x86 we used Posted Interrupts with VT-d for direct injection to VMs. What's the ARM equivalent?\n4. MSI on x86 writes to 0xFEExxxxx address range. Where do MSIs target on ARM?\n\nOur x86 implementation:\n  - LAPIC ICR write for IPI: write to MMIO 0xFEE00300\n  - I/O APIC RTE: 64-bit entry with destination, vector, delivery mode\n  - VT-d Posted Interrupts: PI descriptor in memory, notification vector\n  - MSI address: 0xFEE00000 | (dest_apic_id << 12)",
+  "expected_topics": ["x86-to-ARM", "APIC-vs-GIC", "IPI", "SGI", "IO-APIC", "SPI", "LPI", "ITS", "posted-interrupts", "GICv4", "direct-injection", "MSI", "redirection", "ICR", "GICD_SGIR"],
+  "min_score": 4,
+  "tags": ["interrupt-virtualization-expert", "negative-test", "x86-redirect", "apic-vs-gic", "boundary"]
+}

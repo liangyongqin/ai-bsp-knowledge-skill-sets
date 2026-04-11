@@ -1,0 +1,8 @@
+{
+  "id": "case_271",
+  "skill": "power-thermal-expert",
+  "input": "Our LPDDR5 subsystem is causing periodic stalls during dynamic frequency scaling. When the memory controller attempts to transition from 3200MHz to 1600MHz to save power, the self-refresh exit latency exceeds the programmed timeout and the DFS operation stalls for 50-80ms, causing visible UI jank.\n\nftrace output:\n  kworker/0:1-42  [000] 500.100: devfreq_frequency: dev=soc:memory-controller freq=3200000000\n  kworker/0:1-42  [000] 500.101: ddr_sr_entry: latency=1200ns\n  kworker/0:1-42  [000] 500.102: devfreq_set_freq: target=1600000000\n  kworker/0:1-42  [000] 500.103: ddr_sr_exit: START\n  kworker/0:1-42  [000] 500.155: ddr_sr_exit: COMPLETE latency=52400000ns  <-- 52.4ms!\n  kworker/0:1-42  [000] 500.156: devfreq_frequency: dev=soc:memory-controller freq=1600000000\n\nLPDDR5 MR readback:\n  MR4[2:0] = 0x5 (temperature > 85C)\n  MR19 (DQS interval timer): 0x04\n  MR28 (training pattern): unchanged\n\nThe stall only happens when the DRAM temperature is high. At room temp the transition takes <1ms. What's going on?",
+  "expected_topics": ["LPDDR5", "self-refresh", "exit-latency", "DFS", "frequency-scaling", "MR4", "temperature", "JEDEC", "devfreq", "memory-controller", "tREFI", "refresh-rate", "thermal-compensation", "ZQ-calibration", "timing-parameters"],
+  "min_score": 4,
+  "tags": ["power-thermal-expert", "lpddr5", "dfs", "memory", "thermal"]
+}

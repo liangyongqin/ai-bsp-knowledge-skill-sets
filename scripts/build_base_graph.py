@@ -63,7 +63,8 @@ INGEST_SCRIPTS = [
     "arm-gic-700.py",
     "linux-thermal-pcie-cooling.py",
     "fix-orphan-connectivity.py",  # links orphan nodes from all prior scripts
-    "fix-orphan-connectivity-2.py",  # must run last — remaining orphans + sparse rels + hw-spec FMs
+    "fix-orphan-connectivity-2.py",  # remaining orphans + sparse rels + hw-spec FMs
+    "fix-orphan-connectivity-3.py",  # must run last — final 2 orphan Components + 5 disconnected FMs
 ]
 
 

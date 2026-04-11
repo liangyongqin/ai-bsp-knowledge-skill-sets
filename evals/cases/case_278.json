@@ -1,0 +1,8 @@
+{
+  "id": "case_278",
+  "skill": "multimedia-camera-expert",
+  "input": "Camera preview fails intermittently with DMA-BUF allocation errors. The system has 256MB CMA reserved but after running camera + video playback for 30 minutes, allocations start failing. The CMA region appears fragmented.\n\ndmesg:\n[  1800.200] cma: cma_alloc: alloc failed, req-size: 8192 pages, ret: -12\n[  1800.201] isp 15050000.isp: failed to allocate DMA buffer (32MB)\n[  1800.202] videobuf2: vb2_dma_contig_alloc: DMA alloc of size 33554432 failed\n[  1800.203] video0: VIDIOC_REQBUFS failed: -ENOMEM\n\n/proc/meminfo:\n  CmaTotal:        262144 kB\n  CmaFree:          98304 kB  (96MB free, but largest contiguous = 8MB)\n\n/sys/kernel/debug/cma/cma-reserved/count: 65536 (pages)\n/sys/kernel/debug/cma/cma-reserved/used:  40960 (pages = 160MB used)\n/sys/kernel/debug/cma/cma-reserved/maxchunk: 2048 (pages = 8MB)\n\nWe need 32MB contiguous buffers for the ISP but the largest free chunk is only 8MB. CmaFree shows 96MB available but it's fragmented. Video decoder buffers (4MB each) are interleaved with ISP buffers creating the fragmentation.",
+  "expected_topics": ["DMA-BUF", "CMA", "fragmentation", "contiguous-allocation", "ISP", "videobuf2", "ENOMEM", "buffer-pool", "dma-heap", "page-order", "compaction", "reserved-memory", "video-decoder", "buffer-lifetime", "alloc-range"],
+  "min_score": 4,
+  "tags": ["multimedia-camera-expert", "dma-buf", "cma", "fragmentation", "memory"]
+}

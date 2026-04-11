@@ -1,0 +1,8 @@
+{
+  "id": "case_262",
+  "skill": "bsp-knowledge-mentor",
+  "input": "Our NVMe SSD is hitting command timeouts on a Qualcomm platform whenever the thermal cooling driver kicks in. The PCIe link downtrain from Gen4 to Gen3 seems to cause the NVMe controller to lose queued commands. We see this pattern repeatedly in the field:\n\n[  120.445] thermal_zone2: trip_point_1 reached, cur=92000\n[  120.447] thermal_cooling_device3: state changed 0->2\n[  120.448] pcieport 0000:00:01.0: PCIe Bus Error: severity=Correctable, type=Data Link Layer\n[  120.449] pcieport 0000:00:01.0: AER: link retrained, speed downgraded to 8.0 GT/s\n[  120.510] nvme nvme0: I/O 14 (Read) QID 3 timeout, aborting\n[  120.511] nvme nvme0: I/O 15 (Read) QID 3 timeout, aborting\n[  120.530] nvme nvme0: Abort status: 0x0\n[  120.612] nvme nvme0: I/O error on queue 3, cmd_id=14, status=0x4004\n[  121.001] blk_update_request: critical target error, dev nvme0n1, sector 2048576 op 0x0:(READ)\n\nThe storage team says it's a thermal issue, the thermal team says it's a PCIe issue. Who's right and how do we fix it?",
+  "expected_topics": ["PCIe", "NVMe", "thermal-cooling", "link-speed", "Gen4", "Gen3", "AER", "ASPM", "command-timeout", "queue-depth", "trip-point", "cooling-state", "link-retrain", "IO-error", "power-budget"],
+  "min_score": 4,
+  "tags": ["bsp-knowledge-mentor", "cross-domain", "power-thermal", "boot-debug", "pcie", "nvme", "thermal"]
+}

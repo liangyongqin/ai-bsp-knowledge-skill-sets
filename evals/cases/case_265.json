@@ -1,0 +1,8 @@
+{
+  "id": "case_265",
+  "skill": "bsp-knowledge-mentor",
+  "input": "After an OTA update our MediaTek platform fails to boot. The PMIC voltage sequencing was modified in the update and now the SoC hangs before Linux starts. We captured UART logs from the bootloader:\n\n[PL] PMIC init start\n[PL] BUCK1 (VDD_CORE): set 0.75V -> OK\n[PL] BUCK2 (VDD_SRAM): set 0.80V -> OK\n[PL] BUCK3 (VDD_GPU): set 0.65V -> OK\n[PL] BUCK4 (VDD_MODEM): set 0.70V -> OK\n[PL] LDO1 (VDD_IO18): set 1.80V -> OK\n[PL] Sequencing delay: BUCK1->BUCK2 = 100us (was 500us)\n[PL] Sequencing delay: BUCK2->BUCK3 = 100us (was 300us)\n[PL] Power-on sequence complete\n[PL] DDR init start\n[PL] DDR: LPDDR5 detected, 8GB\n[PL] DDR training... FAIL (timeout at MR18 read)\n[PL] DDR: Retry 1... FAIL\n[PL] DDR: Retry 2... FAIL\n[PL] FATAL: DDR init failed, entering download mode\n\nThe previous OTA had longer sequencing delays. Is this a timing issue?",
+  "expected_topics": ["PMIC", "voltage-sequencing", "OTA-update", "boot-failure", "LPDDR5", "DDR-training", "BUCK-regulator", "power-on-sequence", "ramp-rate", "VDD_SRAM", "VDD_CORE", "mode-register", "MR18", "preloader", "sequencing-delay"],
+  "min_score": 4,
+  "tags": ["bsp-knowledge-mentor", "cross-domain", "boot-debug", "power-thermal", "pmic", "ddr", "ota"]
+}

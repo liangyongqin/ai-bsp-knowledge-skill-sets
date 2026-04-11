@@ -1,0 +1,8 @@
+{
+  "id": "case_261",
+  "skill": "bsp-knowledge-mentor",
+  "input": "We're seeing random SIGILL crashes on our ARMv9 big.LITTLE platform when tasks migrate from Cortex-A720 (big) to Cortex-A520 (LITTLE) cores. The big cores have SVE2 VL=256 but LITTLE cores report VL=128. EAS keeps migrating compute-heavy tasks to LITTLE during thermal throttling. Here's the relevant dmesg:\n\n[  42.301] CPU4 (A720): sve: vector length 256 bits\n[  42.305] CPU0 (A520): sve: vector length 128 bits\n[  84.112] Internal error: Oops - Loss of SVE state: 0000000e [#1] PREEMPT SMP\n[  84.112] CPU: 0 PID: 3421 Comm: render_thread Tainted: G        W\n[  84.113] pc : 0x7f8a003c40 (libSVE_kernels.so+0x3c40)\n[  84.114] Code: SVE2 instruction with VL=256 assumption\n[  84.201] thermal_zone0: temperature=85000, throttling active\n[  84.203] sugov: CPU4-7 freq capped to 1200MHz\n\nHow do we fix this without disabling SVE2 entirely? The workload needs vector operations.",
+  "expected_topics": ["SVE2", "vector-length", "big.LITTLE", "task-migration", "EAS", "energy-aware-scheduling", "thermal-throttling", "SIGILL", "VL-agnostic", "cpuset", "sched_domain", "ZCR_EL1", "DynamIQ", "frequency-capping", "affinity-mask"],
+  "min_score": 4,
+  "tags": ["bsp-knowledge-mentor", "cross-domain", "power-thermal", "interrupt-virt", "sve2", "eas"]
+}

@@ -9,14 +9,14 @@
 
 ## Project Status Summary
 
-**As of 2026-04-11**
+**As of 2026-04-12**
 
 | Phase | Status | Progress |
 |-------|--------|----------|
 | Phase 1 — Knowledge Graph Infrastructure | ✅ Complete | 6/6 milestones done (501 nodes in base graph) |
 | Phase 2 — Domain Expert Skill Development | 🔄 In Progress | ~90% (all 6 skill.md written; 16 log parsers; 180 eval cases; exit criteria pending human review) |
 | Phase 3 — ITS Mentor Engine & Blackboard | 🔄 In Progress | ~90% (all code ✅; 20 multi-domain evals; exit criteria pending human review) |
-| Phase 4 — Knowledge Evolution & Extensibility | 🔄 In Progress | M4.1 post-mortem CLI + knowledge gap detector delivered; M4.2 report template + generator delivered; M4.3 CI/CD integration docs delivered; M4.4 graph maintenance + second orphan remediation complete; **graph reached 1025 nodes, 1003 relationships** (Phase 4 target ≥1000 ✅); **250 eval cases** |
+| Phase 4 — Knowledge Evolution & Extensibility | 🔄 In Progress | M4.1 post-mortem CLI + knowledge gap detector delivered; M4.2 report template + generator delivered; M4.3 CI/CD integration docs delivered; M4.4 graph maintenance + third orphan remediation complete (0 orphan Components, 0 disconnected FailureModes); **1076 nodes, 1026 relationships** (Phase 4 target ≥1000 ✅); **290 eval cases** |
 
 ### What's Done
 
@@ -336,7 +336,9 @@ skills/<skill-name>/
 - [x] Write `evals/regression_runner.py` — re-run all eval cases, report accuracy drift (200 cases validated, 5 Blackboard cases, baseline scorecard saved)
 - [x] Write `knowledge-graph/base/fix-orphan-connectivity.py` — remediate 209 orphan Components, 49 disconnected FailureModes, 8 unlinked PowerDomains, 35 unlinked ClockSources; added 321 relationships; registered in build_base_graph.py as final step; validated: 0 orphan Components, 0 disconnected FailureModes, total relationships 513→834
 - [x] Write `knowledge-graph/base/linux-regulator-arm-memory.py` — Linux regulator framework (11 PowerDomain, 10 Component) + ARM memory subsystem (16 Component, 12 Register) + 10 FailureModes + 43 relationships; pushed graph to **1005 nodes** (Phase 4 target ≥1000 ✅)
-- [x] Write `knowledge-graph/base/fix-orphan-connectivity-2.py` — remediate remaining 7 orphan Components, 10 disconnected PowerDomains, 4 unlinked FailureModes; add 4 hardware-spec FailureModes + 1 Component; strengthen sparse relationship types (SUPPLIES, TRANSLATES, SHARED_WITH, TRIGGERS, DEPENDS_ON_CLOCK, AFFECTS_IF_REMOVED); **1025 nodes, 1003 relationships** (validation down to 1 warning from 4)
+- [x] Write `knowledge-graph/base/fix-orphan-connectivity-2.py` — remediate remaining 7 orphan Components, 10 disconnected PowerDomains, 4 unlinked FailureModes; add 4 hardware-spec FailureModes + 1 Component; strengthen sparse relationship types (SUPPLIES, TRANSLATES, SHARED_WITH, TRIGGERS, DEPENDS_ON_CLOCK, AFFECTS_IF_REMOVED)
+- [x] Write `knowledge-graph/base/fix-orphan-connectivity-3.py` — remediate final 2 orphan Components (adaptive-polling-pm, carbon-aware-scheduling) + 5 disconnected FailureModes (SVE2-VL-Mismatch, DSU120-L3-Slice-Leak, GIC700-vSGI-Stale, PCIe-Thermal-Throttle, MIPI-CSI2-ECM-Miscfg); validation down to 1 informational warning (FIQ type); **1076 nodes, 1026 relationships**
+- [x] Write 30 new eval cases (case_261–case_290): 10 cross-domain mentor scenarios, 10 domain edge cases, 10 negative/boundary tests; **290 eval cases total**
 - [ ] Set up GitHub Actions: weekly eval regression run on base graph
 
 ---

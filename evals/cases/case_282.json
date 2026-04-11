@@ -1,0 +1,8 @@
+{
+  "id": "case_282",
+  "skill": "bsp-knowledge-mentor",
+  "input": "I'm a product manager and need to explain to our executive team why the camera module integration is delayed by 3 weeks. The BSP team mentioned something about 'ISP buffer underruns' and 'DMA-BUF CMA fragmentation' causing frame drops. I don't need technical details -- I need to understand:\n1. What is the business impact of this issue?\n2. How does it affect our product timeline?\n3. What resources are needed to fix it?\n4. Is this a design flaw or an implementation bug?\n\nPlease give me a management-level summary I can present to the C-suite without any register addresses or code.",
+  "expected_topics": ["business-impact", "management-summary", "timeline-impact", "resource-allocation", "risk-assessment", "camera-quality", "user-experience", "frame-drop", "memory-management", "hardware-software-boundary", "non-technical-explanation"],
+  "min_score": 4,
+  "tags": ["bsp-knowledge-mentor", "negative-test", "management-level", "business-impact", "learner-level"]
+}

@@ -1,0 +1,8 @@
+{
+  "id": "case_288",
+  "skill": "bsp-knowledge-mentor",
+  "input": "I'm a junior Android developer who just joined the BSP team. I keep hearing people talk about 'power domains' but I have no idea what they are. In Android app development, I just call PowerManager.WakeLock and the screen stays on. What exactly is a power domain at the hardware level? Why do BSP engineers care about them? And what happens if you turn off the wrong one?\n\nI tried reading the Linux kernel docs but they mention things like 'generic power domain framework' and 'PM domain' and 'power island' and I'm not sure if these are all the same thing.",
+  "expected_topics": ["power-domain", "beginner-explanation", "genpd", "PM-domain", "power-island", "voltage-rail", "power-gating", "WakeLock-vs-domain", "hardware-abstraction", "supply-chain", "PMIC", "consumer-device", "runtime-PM", "Socratic-guidance", "progressive-disclosure"],
+  "min_score": 4,
+  "tags": ["bsp-knowledge-mentor", "negative-test", "beginner-level", "learner-level", "power-domain"]
+}

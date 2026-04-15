@@ -1,0 +1,24 @@
+{
+  "id": "case_307",
+  "skill": "interrupt-virtualization-expert",
+  "input": "We are planning to migrate from Linux pseudo-NMI to architectural NMI on a GICv3.3 platform. Our current pseudo-NMI is used for perf PMU sampling and the hardware watchdog. What are the key differences between pseudo-NMI and architectural GICv3.3 NMI in terms of kernel configuration, GICD_INMIR setup, and PSTATE.ALLINT handling? What regressions should we test for during the migration?",
+  "expected_topics": [
+    "pseudo-NMI",
+    "GICv3.3",
+    "FEAT_NMI",
+    "GICD_INMIR",
+    "ICC_PMR_EL1",
+    "ALLINT",
+    "PMU",
+    "watchdog",
+    "migration",
+    "arm64-nmi-config"
+  ],
+  "min_score": 4,
+  "tags": [
+    "interrupt-virtualization-expert",
+    "nmi-migration",
+    "pseudo-nmi-to-architectural",
+    "gicv3.3"
+  ]
+}

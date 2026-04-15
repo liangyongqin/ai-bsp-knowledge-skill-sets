@@ -1,0 +1,25 @@
+{
+  "id": "case_322",
+  "skill": "multimedia-camera-expert",
+  "input": "We enabled MIPI CSI-2 v4.0 Multi-Pixel Compression (MPC) on our sensor to reduce DDR bandwidth. With MPC enabled, raw captures show visible artifacts \u2014 horizontal color banding every 16 lines and magenta fringing on high-contrast edges.\n\ndmesg:\n  [  20.100] csi2_rx: MPC mode enabled, compression ratio=2:1\n  [  20.101] isp_mpc_decoder: MPC frame received, mode=LOSSLESS\n  [  20.102] isp_mpc_decoder: WARNING: block boundary artifact detected at line 16, 32, 48\n\nThe sensor transmits with MPC 2:1 compression. The ISP MPC decoder reports block boundary artifacts at 16-line intervals. What causes MPC decode artifacts, and is this a sensor-side or ISP-side configuration issue? What is MIPI-CSI2-MPC-Decode-Fail?",
+  "expected_topics": [
+    "MIPI-CSI2-MPC",
+    "MIPI-CSI2-MPC-Decode-Fail",
+    "MPC-compression",
+    "ISP-pipeline",
+    "artifact",
+    "compression-ratio",
+    "CSI-2",
+    "bandwidth-reduction",
+    "MPC-decoder",
+    "sensor-ISP-mismatch"
+  ],
+  "min_score": 4,
+  "tags": [
+    "multimedia-camera-expert",
+    "mipi-csi2-mpc",
+    "mpc-decode-fail",
+    "compression-artifact",
+    "csi2-v4"
+  ]
+}

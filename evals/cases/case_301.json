@@ -1,0 +1,26 @@
+{
+  "id": "case_301",
+  "skill": "interrupt-virtualization-expert",
+  "input": "Our hardware watchdog NMI is not being delivered on a GICv3.3 system. The watchdog is configured to fire a non-maskable interrupt when the CPU lockup is detected, but the NMI handler is never called during a simulated CPU hang.\n\ndmesg (before hang):\n  [  0.500] GICv3: Using GICv3.3 NMI support (FEAT_GICv3_NMI detected)\n  [  0.501] watchdog: nmi_watchdog_setup: marking SPI 32 as NMI via GICD_INMIR0\n  [  0.502] GICv3-NMI: SPI 32 configured as non-maskable in GICD_INMIR0\n  ... (system hangs, no crash dump, no NMI handler invocation)\n\nID_AA64PFR1_EL1 readout:\n  NMI field = 0b0000  (FEAT_NMI NOT implemented on this PE)\n\nThe kernel shows GICv3.3 detected at the GIC level, but the PE itself does not implement FEAT_NMI. How do we diagnose and resolve this NMI delivery failure? What is the relationship between GICv3.3 FEAT_GICv3_NMI and the PE-level FEAT_NMI?",
+  "expected_topics": [
+    "GICv3.3",
+    "FEAT_NMI",
+    "FEAT_GICv3_NMI",
+    "GICD_INMIR",
+    "NMI-masked",
+    "ID_AA64PFR1_EL1",
+    "watchdog",
+    "pseudo-NMI",
+    "ALLINT",
+    "ICC_PMR_EL1"
+  ],
+  "min_score": 4,
+  "tags": [
+    "interrupt-virtualization-expert",
+    "gic-nmi",
+    "gicv3.3",
+    "feat-nmi",
+    "watchdog",
+    "nmi-delivery"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "id": "case_325",
+  "skill": "multimedia-camera-expert",
+  "input": "We are designing a camera subsystem for a wearable AR device. Power budget is critical. The main sensor is 50MP (8192x6144) at 30fps. We want to use MIPI CSI-2 v4.0 features to minimize DDR bandwidth and MIPI link power. Explain how SROI, MPC, and LRTE can work together to reduce the effective data rate from the sensor to the ISP. What is the theoretical maximum bandwidth reduction achievable by combining all three features?",
+  "expected_topics": [
+    "MIPI-CSI2-SROI",
+    "MIPI-CSI2-MPC",
+    "MIPI-CSI2-LRTE",
+    "bandwidth-reduction",
+    "CSI-2-v4.0",
+    "ISP-pipeline",
+    "power-budget",
+    "wearable",
+    "MIPI-bandwidth",
+    "compound-savings"
+  ],
+  "min_score": 4,
+  "tags": [
+    "multimedia-camera-expert",
+    "mipi-csi2-bandwidth",
+    "sroi-mpc-lrte",
+    "csi2-v4-features",
+    "power-optimization"
+  ]
+}

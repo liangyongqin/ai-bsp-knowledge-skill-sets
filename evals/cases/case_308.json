@@ -1,0 +1,26 @@
+{
+  "id": "case_308",
+  "skill": "interrupt-virtualization-expert",
+  "input": "We need to enable KVM GICv4.2 vNMI support for a real-time automotive VM. The goal is to deliver virtual watchdog NMIs directly to the guest without VM exits. What kernel configuration options are required? How does the ITS VMAPP command differ when setting up a vNMI-capable vPE versus a standard GICv4.1 vPE? What is the VINMI signaling path?",
+  "expected_topics": [
+    "GICv4.2",
+    "vNMI",
+    "VINMI",
+    "ITS",
+    "VMAPP",
+    "KVM",
+    "CONFIG_KVM_ARM_VGIC_V4",
+    "vPE",
+    "VM-exit-reduction",
+    "GICv4.1",
+    "automotive-vm"
+  ],
+  "min_score": 4,
+  "tags": [
+    "interrupt-virtualization-expert",
+    "kvm-gicv4.2",
+    "vnmi-config",
+    "its-vmapp-vnmi",
+    "automotive"
+  ]
+}

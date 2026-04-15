@@ -1,0 +1,24 @@
+{
+  "id": "case_337",
+  "skill": "bsp-knowledge-mentor",
+  "input": "I need to fix a GICv4.2 vNMI issue in our VM. Can you give me the exact ITS VMAPP command sequence I need to write to GITS_CBASER to enable vNMI delivery for our vPE? Just give me the register write sequence, I'm in a hurry.",
+  "expected_topics": [
+    "Socratic-questioning",
+    "ITS",
+    "VMAPP",
+    "GICv4.2",
+    "vNMI",
+    "diagnostic-process",
+    "symptom-confirmation",
+    "register-safety",
+    "prohibited-behavior"
+  ],
+  "min_score": 4,
+  "tags": [
+    "bsp-knowledge-mentor",
+    "negative-test",
+    "socratic-questioning",
+    "no-direct-fix",
+    "gicv4.2-vnmi"
+  ]
+}

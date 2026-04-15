@@ -1,0 +1,26 @@
+{
+  "id": "case_329",
+  "skill": "multimedia-camera-expert",
+  "input": "Our ML-based security camera needs to run two algorithms simultaneously: full-frame face detection at 2fps (for enrollment) and SROI-cropped facial landmark tracking at 30fps (for authentication). The 50MP sensor supports MIPI CSI-2 v4.0 SROI Phase 2 (ESROI) with companion VDSP. How does SROI Phase 2 ESROI differ from Phase 1, and how can we configure it to deliver both full-frame at low rate and cropped ROI at high rate simultaneously over the same CSI-2 link?",
+  "expected_topics": [
+    "MIPI-CSI2-SROI",
+    "ESROI",
+    "ISROI",
+    "SROI-Phase2",
+    "VDSP",
+    "CSI-2-v4.0",
+    "dual-stream",
+    "facial-landmark",
+    "ISP-pipeline",
+    "ROI-multiplexing"
+  ],
+  "min_score": 4,
+  "tags": [
+    "multimedia-camera-expert",
+    "mipi-csi2-sroi-phase2",
+    "esroi",
+    "dual-stream",
+    "csi2-v4",
+    "ai-camera"
+  ]
+}

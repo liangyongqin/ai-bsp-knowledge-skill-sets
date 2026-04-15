@@ -1,0 +1,26 @@
+{
+  "id": "case_316",
+  "skill": "gpu-rendering-expert",
+  "input": "Our product has three GPU workloads: UI compositing (latency-sensitive), ML inference (throughput-sensitive), and video decode (background). We are using a Mali-G710 with Panthor driver. How should we configure the Mali CSF Queue Groups to give each workload the right QoS treatment? How many queue groups should we create, and how do group priorities map to CSF firmware scheduling decisions?",
+  "expected_topics": [
+    "mali-csf-queue-group",
+    "mali-csf-firmware",
+    "panthor-drm-driver",
+    "queue-priority",
+    "QoS",
+    "CSF-scheduling",
+    "mali-g710",
+    "compositing",
+    "ML-inference",
+    "group-priority",
+    "drm_sched_entity"
+  ],
+  "min_score": 4,
+  "tags": [
+    "gpu-rendering-expert",
+    "mali-csf-queue-group",
+    "panthor-qos",
+    "mali-g710",
+    "workload-scheduling"
+  ]
+}

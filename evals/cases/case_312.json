@@ -1,0 +1,25 @@
+{
+  "id": "case_312",
+  "skill": "gpu-rendering-expert",
+  "input": "On our Mali-G610 (Panthor driver) system, UI compositing (high priority) stutters during heavy background compute (low priority). Perfetto shows the compositing GPU queue waiting behind compute queue workloads.\n\nPerfetto trace (GPU track):\n  t=0ms:    compute_queue (prio=MEDIUM): job_A dispatch\n  t=4ms:    composite_queue (prio=HIGH): blocked waiting for CSF slot\n  t=12ms:   compute_queue job_A complete\n  t=12.1ms: composite_queue: frame delivered (12ms stall!)\n\ndrm_sched entity priorities:\n  composite_entity: priority=DRM_SCHED_PRIORITY_HIGH\n  compute_entity: priority=DRM_SCHED_PRIORITY_NORMAL\n\nBut both entities are in the same CSF queue group (group_0). What is the panthor-queue-priority-inversion failure mode and how do CSF queue groups need to be configured to prevent it?",
+  "expected_topics": [
+    "mali-csf-queue-group",
+    "panthor-queue-priority-inversion",
+    "drm-sched-framework",
+    "mali-g610",
+    "priority",
+    "compositing",
+    "queue-group-priority",
+    "CSF",
+    "preemption"
+  ],
+  "min_score": 4,
+  "tags": [
+    "gpu-rendering-expert",
+    "panthor",
+    "queue-priority-inversion",
+    "csf-queue-group",
+    "mali-g610",
+    "compositing"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "id": "case_334",
+  "skill": "bsp-knowledge-mentor",
+  "input": "Boot hang investigation: new SoC platform hangs at the 'Starting kernel ...' stage intermittently (1 in 10 boots). When it hangs, the hardware watchdog (configured as GICv3.3 NMI) fires after 30 seconds but no crash dump is captured. The platform has ADIv6 CoreSight debug.\n\nuart log:\n  [    0.000] Booting Linux on physical CPU 0x0000000000 [0x412fd000]\n  [    0.100] GIC: Using GICv3.3 with 512 IRQs\n  [    0.101] GICv3-NMI: FEAT_NMI enabled, SPI 32 = watchdog NMI\n  [    0.200] CPU1: Booting secondary processor\n  (hang \u2014 no further output for 30s, then NMI fires, system reboots)\n\nHow should we use the cross-domain diagnostic approach to investigate the intermittent boot hang? What is the role of NMI in boot hang diagnosis, and how does CoreSight ADIv6 help capture state when the hang occurs?",
+  "expected_topics": [
+    "boot-debug-expert",
+    "GICv3.3",
+    "NMI",
+    "CoreSight",
+    "ADIv6",
+    "watchdog",
+    "secondary-CPU-boot",
+    "PSCI",
+    "boot-hang",
+    "cross-domain"
+  ],
+  "min_score": 4,
+  "tags": [
+    "bsp-knowledge-mentor",
+    "cross-domain",
+    "boot-debug",
+    "nmi-boot-hang",
+    "coresight-adiv6",
+    "secondary-cpu"
+  ]
+}

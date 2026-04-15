@@ -1,0 +1,26 @@
+{
+  "id": "case_304",
+  "skill": "interrupt-virtualization-expert",
+  "input": "How do I configure a specific SPI as non-maskable on a GICv3.3 system? I have SPI 45 (watchdog timer) that should fire even when the CPU is in a critical section with interrupts disabled. I need to understand the GICD_INMIR register layout and the required CPU-side configuration (PSTATE.ALLINT) to correctly enable architectural NMI on arm64.",
+  "expected_topics": [
+    "GICD_INMIR",
+    "GICR_INMIR",
+    "GICv3.3",
+    "NMI",
+    "SPI",
+    "ALLINT",
+    "PSTATE",
+    "ICC_PMR_EL1",
+    "FEAT_NMI",
+    "non-maskable-interrupt",
+    "watchdog-configuration"
+  ],
+  "min_score": 4,
+  "tags": [
+    "interrupt-virtualization-expert",
+    "gicd-inmir",
+    "nmi-configuration",
+    "gicv3.3",
+    "pstate-allint"
+  ]
+}

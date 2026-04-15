@@ -1,0 +1,27 @@
+{
+  "id": "case_315",
+  "skill": "gpu-rendering-expert",
+  "input": "Our MediaTek MT8188 SoC uses a Mali-G57 MC3 GPU. We are selecting a kernel GPU driver. dmesg shows Panfrost is loaded:\n  [  2.100] panfrost: MT8188 Mali-G57 MC3 (Bifrost G7x)\n  [  2.101] panfrost: using drm_sched for job scheduling\n\nWe need OpenGL ES 3.2 and Vulkan 1.1 for our Android-based product. Is Panfrost the right driver for MT8188? What is the Mesa userspace driver pairing? Is Panthor applicable to this hardware, or is Panthor only for CSF-based GPUs?",
+  "expected_topics": [
+    "panfrost-mt8188",
+    "mali-g57",
+    "Bifrost",
+    "panthor-drm-driver",
+    "CSF",
+    "JM",
+    "mesa",
+    "opengl-es",
+    "vulkan",
+    "drm-sched-framework",
+    "mt8188"
+  ],
+  "min_score": 4,
+  "tags": [
+    "gpu-rendering-expert",
+    "panfrost-mt8188",
+    "mali-g57",
+    "mt8188",
+    "driver-selection",
+    "mesa-vulkan"
+  ]
+}

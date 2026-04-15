@@ -1,0 +1,26 @@
+{
+  "id": "case_303",
+  "skill": "interrupt-virtualization-expert",
+  "input": "We are using Linux pseudo-NMI on an arm64 system with GIC-600 (pre-GICv3.3). The 'perf record' command shows missing PMU overflow samples intermittently. We also see spurious 'unexpected NMI' messages in dmesg during heavy CPU load.\n\ndmesg:\n  [  45.100] perf: arm_pmu: PMU overflow NMI handler invoked\n  [  45.101] NMI: Unexpected NMI from unknown source, ignored\n  [  45.102] perf: arm_pmu: missed overflow sample, counter=0x80000000\n\nKernel: 5.15 LTS (before architectural NMI support)\nICC_PMR_EL1 usage: pseudo-NMI via priority masking\n\nThe pseudo-NMI implementation uses ICC_PMR_EL1 to create a superpriority window. What race condition in the interrupt exit path can cause PMR to mask a pending pseudo-NMI, and what is the architectural fix available on GICv3.3+ hardware?",
+  "expected_topics": [
+    "pseudo-NMI",
+    "ICC_PMR_EL1",
+    "GIC-600",
+    "PMU-overflow",
+    "pseudo-NMI-PMR-race",
+    "ALLINT",
+    "GICv3.3",
+    "perf",
+    "arm64-nmi",
+    "interrupt-exit"
+  ],
+  "min_score": 4,
+  "tags": [
+    "interrupt-virtualization-expert",
+    "pseudo-nmi",
+    "pmr-race",
+    "icc-pmr",
+    "perf-pmu",
+    "gic-600"
+  ]
+}

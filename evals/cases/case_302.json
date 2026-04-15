@@ -1,0 +1,27 @@
+{
+  "id": "case_302",
+  "skill": "interrupt-virtualization-expert",
+  "input": "We are running a real-time VM with a hardware watchdog. The VM uses GICv4.2 vNMI to deliver non-maskable virtual interrupts directly without trap-and-emulate. The guest watchdog timer fires but the virtual NMI is never delivered inside the guest.\n\nHost dmesg:\n  [  0.100] GICv4.2 detected, vNMI support enabled\n  [  0.200] kvm: vgic-v4: ITS VMAPP for vPE 0 configured (vNMI=0)\n  [  0.201] kvm: vgic: GICv4.2 vNMI delivery bit NOT set for vPE 0\n\nGuest dmesg:\n  (no NMI received, guest watchdog timeout, soft lockup)\n\nKVM config:\n  CONFIG_KVM_ARM_VGIC_V4=y\n  GIC hardware: GICv4.2 confirmed via GICD_TYPER2.nASSGIcap\n\nThe ITS VMAPP command was issued but the vNMI delivery bit was not set. What is the correct sequence to enable vNMI delivery for a vPE via the ITS VMAPP/VMOVP command interface?",
+  "expected_topics": [
+    "GICv4.2",
+    "vNMI",
+    "ITS",
+    "VMAPP",
+    "VMOVP",
+    "vPE",
+    "KVM",
+    "GICv4.2-vNMI-Not-Injected",
+    "VINMI",
+    "virtual-NMI",
+    "trap-and-emulate"
+  ],
+  "min_score": 4,
+  "tags": [
+    "interrupt-virtualization-expert",
+    "gicv4.2",
+    "vnmi",
+    "its-vmapp",
+    "kvm-vgic",
+    "real-time-vm"
+  ]
+}

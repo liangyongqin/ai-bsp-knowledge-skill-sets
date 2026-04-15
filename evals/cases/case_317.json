@@ -1,0 +1,26 @@
+{
+  "id": "case_317",
+  "skill": "gpu-rendering-expert",
+  "input": "MT8188 Mali-G57 MC3 GPU is not reaching its rated 850 MHz peak frequency. Panfrost reports OPP set failures:\n\ndmesg:\n  [  5.200] panfrost: GPU OPP table has 3 entries\n  [  5.201] panfrost: OPP 850MHz: Failed to set, regulator VGPU at 850mV (required 900mV)\n  [  5.202] panfrost: clamping to max achievable OPP: 700MHz\n\ndevice-tree GPU OPP table shows 850MHz@850mV but the regulator can only deliver up to 850mV. This is the panfrost-mt8188-opp-mismatch failure mode. How do we diagnose whether this is a DT error or a hardware limitation, and what is the proper fix?",
+  "expected_topics": [
+    "panfrost-mt8188",
+    "panfrost-mt8188-opp-mismatch",
+    "OPP",
+    "regulator",
+    "VGPU",
+    "mali-g57",
+    "mt8188",
+    "device-tree",
+    "OPP-table",
+    "gpu-frequency"
+  ],
+  "min_score": 4,
+  "tags": [
+    "gpu-rendering-expert",
+    "panfrost-mt8188",
+    "opp-mismatch",
+    "gpu-regulator",
+    "mt8188",
+    "device-tree"
+  ]
+}

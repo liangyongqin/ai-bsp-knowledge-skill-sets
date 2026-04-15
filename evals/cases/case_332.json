@@ -1,0 +1,27 @@
+{
+  "id": "case_332",
+  "skill": "bsp-knowledge-mentor",
+  "input": "Our Mali-G710 using Panthor driver is crashing with CSF firmware timeout during sustained GPU compute workloads. The crashes correlate with thermal throttling events. The GPU power domain is on the same thermal zone as the CPU cluster.\n\ndmesg:\n  [  90.100] thermal_zone1: temp=87000 (passive trip_point_1)\n  [  90.101] thermal_cooling: gpu_clk capped 900MHz -> 450MHz\n  [  90.102] panthor: CSF firmware MCU clock gated\n  [  90.103] panthor: CSF firmware timeout, group 1\n  [  90.104] panthor: GPU hang recovery initiated\n\nThe thermal framework capped the GPU clock via devfreq, but the MCU inside the GPU was not notified of the frequency change before the cap took effect. How does the Panthor/CSF thermal interaction need to be implemented correctly?",
+  "expected_topics": [
+    "panthor-drm-driver",
+    "mali-csf-firmware",
+    "thermal-throttling",
+    "GPU-MCU",
+    "devfreq",
+    "panthor-csf-fw-timeout",
+    "thermal-zone",
+    "gpu-frequency-cap",
+    "clock-gating",
+    "cross-domain",
+    "power-thermal"
+  ],
+  "min_score": 4,
+  "tags": [
+    "bsp-knowledge-mentor",
+    "cross-domain",
+    "panthor-thermal",
+    "csf-thermal",
+    "gpu-thermal",
+    "devfreq"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "id": "case_310",
+  "skill": "interrupt-virtualization-expert",
+  "input": "I am evaluating a safety-critical RTOS design on Cortex-R82 with GICv3.2 (AArch64-R profile). We need deterministic interrupt latency below 1 microsecond for a hard real-time control loop. How does GICv3.2's support for the AArch64-R profile differ from the standard Cortex-A GICv3.x interrupt path? What GIC features support deterministic delivery for Cortex-R class CPUs?",
+  "expected_topics": [
+    "GICv3.2",
+    "AArch64-R",
+    "Cortex-R82",
+    "GICv3.2-AArch64-R",
+    "real-time",
+    "deterministic-interrupt",
+    "interrupt-latency",
+    "GIC-600",
+    "safety-critical"
+  ],
+  "min_score": 4,
+  "tags": [
+    "interrupt-virtualization-expert",
+    "gicv3.2-aarch64-r",
+    "cortex-r82",
+    "real-time-interrupt",
+    "safety-critical"
+  ]
+}

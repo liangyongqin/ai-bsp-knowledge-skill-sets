@@ -1,0 +1,26 @@
+{
+  "id": "case_338",
+  "skill": "bsp-knowledge-mentor",
+  "input": "Power island interaction with GPU: after entering system suspend (STR), the Mali-G710 GPU fails to resume. The Panthor driver reports firmware not loaded after resume.\n\ndmesg:\n  [1800.100] Suspending...\n  [1800.101] panthor: GPU power domain OFF (suspend)\n  [1800.200] Suspend complete\n  ... (resume) ...\n  [3600.100] Resuming...\n  [3600.101] panthor: GPU power domain ON (resume)\n  [3600.102] panthor: ERROR: CSF firmware not loaded after power cycle\n  [3600.103] panthor: GPU unavailable\n\nThe GPU power domain was collapsed during suspend and the firmware needs to be reloaded. This spans power management and GPU subsystems. What is the correct Panthor/CSF suspend-resume sequence?",
+  "expected_topics": [
+    "panthor-drm-driver",
+    "mali-csf-firmware",
+    "STR",
+    "suspend-resume",
+    "power-domain",
+    "GPU-power",
+    "PSCI",
+    "firmware-reload",
+    "power-island",
+    "cross-domain"
+  ],
+  "min_score": 4,
+  "tags": [
+    "bsp-knowledge-mentor",
+    "cross-domain",
+    "panthor-suspend-resume",
+    "gpu-power-domain",
+    "str",
+    "power-island"
+  ]
+}

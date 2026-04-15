@@ -1,0 +1,26 @@
+{
+  "id": "case_318",
+  "skill": "gpu-rendering-expert",
+  "input": "We have a Mali-G610 on RK3588 with Panthor driver (Linux 6.10+) and Mesa. We want to run Vulkan workloads. The Panthor driver claims to support Vulkan via Mesa's Panfrost/Panthor Vulkan backend. What is the Mesa driver stack for Panthor-based Vulkan? How does the open-source Vulkan path differ from the proprietary Mali DDK path, and what Vulkan extensions are typically missing in the open-source implementation?",
+  "expected_topics": [
+    "mali-g610",
+    "panthor-drm-driver",
+    "Vulkan",
+    "mesa",
+    "RK3588",
+    "open-source-vulkan",
+    "mali-ddk",
+    "CSF",
+    "vulkan-extensions",
+    "conformance"
+  ],
+  "min_score": 4,
+  "tags": [
+    "gpu-rendering-expert",
+    "mali-g610",
+    "panthor-vulkan",
+    "mesa-vulkan",
+    "rk3588",
+    "open-source-gpu"
+  ]
+}

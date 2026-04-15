@@ -1,0 +1,25 @@
+{
+  "id": "case_314",
+  "skill": "gpu-rendering-expert",
+  "input": "Our Mali-G710 GPU crashed with a GPU MMU fault. The kernel captured a devcoredump at /sys/class/devcoredump/devcd0. How do I analyze a Panthor devcoredump? What key fields should I look for in the dump to identify whether the fault was caused by a buffer overflow, use-after-free, or incorrect GPU VA mapping?",
+  "expected_topics": [
+    "gpu-devcoredump",
+    "panthor-drm-driver",
+    "GPU-MMU",
+    "GPU-MMU-fault",
+    "devcoredump",
+    "mali-g710",
+    "VA-fault",
+    "buffer-overflow",
+    "debug-analysis"
+  ],
+  "min_score": 4,
+  "tags": [
+    "gpu-rendering-expert",
+    "panthor",
+    "gpu-devcoredump",
+    "mmu-fault",
+    "mali-g710",
+    "gpu-debug"
+  ]
+}

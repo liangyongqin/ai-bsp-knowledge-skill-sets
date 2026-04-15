@@ -1,0 +1,24 @@
+{
+  "id": "case_330",
+  "skill": "multimedia-camera-expert",
+  "input": "Our hardware team is asking us to choose between a sensor that supports MIPI CSI-2 v4.0 and one that supports v4.2 for our next product. The key use cases are: (1) AI-driven ROI tracking, (2) HDR video at 4K/120fps, (3) always-on presence detection. Give a concise comparison of what v4.0 adds over v3.x and what v4.2 adds over v4.0, focusing on the features relevant to these three use cases.",
+  "expected_topics": [
+    "MIPI-CSI2-SROI",
+    "MIPI-CSI2-MPC",
+    "MIPI-CSI2-Sentinel",
+    "MIPI-CSI2-LRTE",
+    "MIPI-CSI2-ESP",
+    "MIPI-DPHY-ECM",
+    "CSI-2-v4.0",
+    "CSI-2-v4.2",
+    "EVS",
+    "feature-comparison"
+  ],
+  "min_score": 4,
+  "tags": [
+    "multimedia-camera-expert",
+    "csi2-v4-comparison",
+    "csi2-feature-selection",
+    "v4.0-vs-v4.2"
+  ]
+}

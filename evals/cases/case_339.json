@@ -1,0 +1,27 @@
+{
+  "id": "case_339",
+  "skill": "bsp-knowledge-mentor",
+  "input": "We are designing an always-on AI security camera. Requirements:\n  1. Always-on presence detection using EVS (event-based sensor, MIPI CSI-2 v4.2 ESP)\n  2. Wake-on-detection: EVS Sentinel triggers full SoC wake for detailed analysis\n  3. After wake: NMI watchdog protection during heavy ISP+GPU processing\n  4. Power budget: <5mW in always-on mode, <2W in active mode\n\nThis spans three technical domains: MIPI camera (EVS + Sentinel), interrupt architecture (NMI watchdog), and power management (wake path + power island). How would you coordinate the design review across these three BSP domains using the Blackboard pattern? Which domain experts should contribute and in what order?",
+  "expected_topics": [
+    "MIPI-CSI2-ESP",
+    "MIPI-CSI2-Sentinel",
+    "EVS-sensor",
+    "GICv3.3",
+    "NMI",
+    "Blackboard",
+    "power-domain",
+    "wake-path",
+    "PSCI",
+    "cross-domain",
+    "always-on"
+  ],
+  "min_score": 4,
+  "tags": [
+    "bsp-knowledge-mentor",
+    "cross-domain",
+    "blackboard",
+    "evs-sentinel-nmi-power",
+    "always-on-design",
+    "multi-domain"
+  ]
+}

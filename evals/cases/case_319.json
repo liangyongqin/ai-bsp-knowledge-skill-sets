@@ -1,0 +1,25 @@
+{
+  "id": "case_319",
+  "skill": "gpu-rendering-expert",
+  "input": "After a kernel upgrade from 6.10 to 6.12, our Mali-G710 Panthor driver fails to load the CSF firmware:\n\ndmesg:\n  [  2.100] panthor: Loading CSF firmware: mali_csffw.bin\n  [  2.101] panthor: Firmware version: 28.0.4 (minimum required: 29.0.0)\n  [  2.102] panthor: ERROR: Firmware version too old, driver requires >=29.0.0\n  [  2.103] panthor: GPU unavailable\n\nThe firmware binary is the same one that worked with kernel 6.10. Why did the minimum firmware version requirement change? Where is the firmware stored and how do we update it for Panthor-based systems?",
+  "expected_topics": [
+    "mali-csf-firmware",
+    "panthor-drm-driver",
+    "firmware-version",
+    "panthor-csf-fw-timeout",
+    "firmware-binary",
+    "CSF-MCU",
+    "mali-g710",
+    "firmware-update",
+    "kernel-upgrade"
+  ],
+  "min_score": 4,
+  "tags": [
+    "gpu-rendering-expert",
+    "panthor",
+    "csf-firmware-version",
+    "firmware-upgrade",
+    "mali-g710",
+    "kernel-upgrade"
+  ]
+}

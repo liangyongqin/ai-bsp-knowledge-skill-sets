@@ -2,21 +2,21 @@
 
 > **Version:** v1.2
 > **Start Date:** 2026-03-14
-> **Last Updated:** 2026-03-14
+> **Last Updated:** 2026-04-16
 > **Reference:** [BSP_KNOWLEDGE_SKILL_SET_DEV_PLAN.md](./BSP_KNOWLEDGE_SKILL_SET_DEV_PLAN.md)
 
 ---
 
 ## Project Status Summary
 
-**As of 2026-04-12**
+**As of 2026-04-16**
 
 | Phase | Status | Progress |
 |-------|--------|----------|
 | Phase 1 — Knowledge Graph Infrastructure | ✅ Complete | 6/6 milestones done (501 nodes in base graph) |
 | Phase 2 — Domain Expert Skill Development | 🔄 In Progress | ~90% (all 6 skill.md written; 16 log parsers; 180 eval cases; exit criteria pending human review) |
 | Phase 3 — ITS Mentor Engine & Blackboard | 🔄 In Progress | ~90% (all code ✅; 20 multi-domain evals; exit criteria pending human review) |
-| Phase 4 — Knowledge Evolution & Extensibility | 🔄 In Progress | M4.1 post-mortem CLI + knowledge gap detector delivered; M4.2 report template + generator delivered; M4.3 CI/CD integration docs delivered; M4.4 graph maintenance + third orphan remediation complete (0 orphan Components, 0 disconnected FailureModes); **1076 nodes, 1026 relationships** (Phase 4 target ≥1000 ✅); **290 eval cases** |
+| Phase 4 — Knowledge Evolution & Extensibility | 🔄 In Progress | M4.1 post-mortem CLI + knowledge gap detector delivered; M4.2 report template + generator delivered; M4.3 CI/CD integration docs delivered; M4.4 graph maintenance + third orphan remediation complete (0 orphan Components, 0 disconnected FailureModes); **1109 nodes** (Phase 4 target ≥1000 ✅); **340 eval cases** (↑ from 290, added GIC NMI, Panthor DRM, MIPI CSI-2 v4.x domain coverage) |
 
 ### What's Done
 
@@ -339,6 +339,7 @@ skills/<skill-name>/
 - [x] Write `knowledge-graph/base/fix-orphan-connectivity-2.py` — remediate remaining 7 orphan Components, 10 disconnected PowerDomains, 4 unlinked FailureModes; add 4 hardware-spec FailureModes + 1 Component; strengthen sparse relationship types (SUPPLIES, TRANSLATES, SHARED_WITH, TRIGGERS, DEPENDS_ON_CLOCK, AFFECTS_IF_REMOVED)
 - [x] Write `knowledge-graph/base/fix-orphan-connectivity-3.py` — remediate final 2 orphan Components (adaptive-polling-pm, carbon-aware-scheduling) + 5 disconnected FailureModes (SVE2-VL-Mismatch, DSU120-L3-Slice-Leak, GIC700-vSGI-Stale, PCIe-Thermal-Throttle, MIPI-CSI2-ECM-Miscfg); validation down to 1 informational warning (FIQ type); **1076 nodes, 1026 relationships**
 - [x] Write 30 new eval cases (case_261–case_290): 10 cross-domain mentor scenarios, 10 domain edge cases, 10 negative/boundary tests; **290 eval cases total**
+- [x] Write 40 new eval cases (case_301–case_340): 10 GIC NMI/GICv4.2 vNMI (interrupt-virtualization-expert), 10 Panthor DRM/Mali CSF (gpu-rendering-expert), 10 MIPI CSI-2 v4.0/v4.2 (multimedia-camera-expert), 10 cross-domain mentor scenarios; **340 eval cases total**
 - [ ] Set up GitHub Actions: weekly eval regression run on base graph
 
 ---
@@ -382,7 +383,7 @@ M1.1 (scaffold) ✅
 | Single-domain diagnosis accuracy | — | ≥ 90% | ≥ 90% | ≥ 90% |
 | Cross-domain diagnosis accuracy | — | — | ≥ 75% | ≥ 80% |
 | Learner-level detection accuracy | — | — | ≥ 90% | ≥ 90% |
-| Terminology coverage (term pairs) | — | — | ≥ 200 | growing |
+| Terminology coverage (term pairs) | — | — | ≥ 120 achieved | growing |
 | Hallucination rate vs pure RAG | — | — | ≥ 50% reduction | maintained |
 | Server dependencies required | 0 ✅ | 0 | 0 | 0 |
 

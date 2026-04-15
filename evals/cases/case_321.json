@@ -1,0 +1,25 @@
+{
+  "id": "case_321",
+  "skill": "multimedia-camera-expert",
+  "input": "Our 50MP sensor is configured with MIPI CSI-2 v4.0 SROI to transmit only a 12MP region of interest to the ISP. After enabling SROI, the ISP produces corrupted output.\n\ndmesg:\n  [  10.100] csi2_rx: SROI Phase 1 active, crop 4032x3024 from 8192x6144\n  [  10.101] csi2_rx: SROI frame geometry received: 4035x3024\n  [  10.102] isp_fe: ERROR: input crop mismatch (expected 4032x3024, got 4035x3024)\n  [  10.103] isp_fe: frame corrupted, pixel alignment error\n\nThe sensor SROI is configured for a 4032x3024 ROI but the ISP sees 4035x3024. What alignment requirement does MIPI CSI-2 SROI impose on ROI coordinates, and how should the SROI crop be adjusted?",
+  "expected_topics": [
+    "MIPI-CSI2-SROI",
+    "SROI-crop-mismatch",
+    "ISP-pipeline",
+    "pixel-alignment",
+    "ROI",
+    "MIPI-CSI2-SROI-Crop-Mismatch",
+    "CSI-2",
+    "crop-geometry",
+    "V4L2",
+    "alignment-requirement"
+  ],
+  "min_score": 4,
+  "tags": [
+    "multimedia-camera-expert",
+    "mipi-csi2-sroi",
+    "sroi-crop-mismatch",
+    "isp-alignment",
+    "csi2-v4"
+  ]
+}

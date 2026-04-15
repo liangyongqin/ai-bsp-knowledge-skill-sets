@@ -1,0 +1,25 @@
+{
+  "id": "case_306",
+  "skill": "interrupt-virtualization-expert",
+  "input": "Explain the NMI superpriority mechanism in GICv3.3. How does a non-maskable interrupt bypass the ICC_PMR_EL1 priority mask? What are the PSTATE.ALLINT and MSR ALLINT operations, and when does the kernel set or clear ALLINT during NMI handler entry and exit? Provide the interrupt delivery flow for a GICv3.3 NMI from hardware assertion to kernel handler invocation.",
+  "expected_topics": [
+    "NMI-superpriority",
+    "ICC_PMR_EL1",
+    "ALLINT",
+    "PSTATE",
+    "GICv3.3",
+    "NMI-delivery-flow",
+    "interrupt-masking",
+    "FEAT_NMI",
+    "priority-bypass",
+    "handler-entry"
+  ],
+  "min_score": 4,
+  "tags": [
+    "interrupt-virtualization-expert",
+    "nmi-superpriority",
+    "allint",
+    "nmi-delivery-flow",
+    "gicv3.3"
+  ]
+}

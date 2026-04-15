@@ -1,0 +1,27 @@
+{
+  "id": "case_331",
+  "skill": "bsp-knowledge-mentor",
+  "input": "System-level intermittent hang requiring reboot. The hardware watchdog is configured with GICv3.3 NMI but the crash dump is missing intermittently. Simultaneously, thermal sensors show the SoC approaching 90C before hangs. The dmesg shows thermal throttling events 2 seconds before each hang.\n\ndmesg:\n  [120.100] thermal_zone0: temp=89500 (passive trip)\n  [120.101] thermal_cooling: all clusters capped to OPP1\n  [120.200] GICv3-NMI: watchdog SPI 32 configured\n  [121.900] GICv3-NMI: NMI delivered to CPU#0\n  [121.901] watchdog: hardware watchdog timeout, kdump triggered\n  [121.902] kdump: capture failed (memory controller in self-refresh)\n\nThe memory controller enters self-refresh during thermal throttling, which prevents kdump from capturing the crash. How do we architect a solution that handles both the thermal runaway and the NMI/kdump interaction?",
+  "expected_topics": [
+    "GICv3.3",
+    "NMI",
+    "watchdog",
+    "kdump",
+    "thermal-throttling",
+    "DVFS",
+    "memory-self-refresh",
+    "LPDDR5",
+    "crash-dump",
+    "thermal-zone",
+    "cross-domain"
+  ],
+  "min_score": 4,
+  "tags": [
+    "bsp-knowledge-mentor",
+    "cross-domain",
+    "nmi-thermal",
+    "kdump-thermal",
+    "thermal-throttle",
+    "lpddr5"
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "id": "case_313",
+  "skill": "gpu-rendering-expert",
+  "input": "Explain the fundamental difference between Mali Job Manager (JM) scheduling used in Panfrost and the Command Stream Frontend (CSF) scheduling used in Panthor. Which Mali GPU generations use JM vs CSF? What does firmware-assisted scheduling in CSF provide that JM lacks? When should a BSP engineer choose Panthor vs Panfrost for a new SoC platform?",
+  "expected_topics": [
+    "panthor-drm-driver",
+    "panfrost-mt8188",
+    "mali-csf-firmware",
+    "CSF",
+    "JM",
+    "job-manager",
+    "firmware-scheduling",
+    "mali-g710",
+    "mali-g610",
+    "bifrost",
+    "valhall",
+    "drm-sched-framework"
+  ],
+  "min_score": 4,
+  "tags": [
+    "gpu-rendering-expert",
+    "panthor-vs-panfrost",
+    "csf-vs-jm",
+    "firmware-scheduling",
+    "mali-architecture"
+  ]
+}

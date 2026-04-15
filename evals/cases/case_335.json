@@ -1,0 +1,25 @@
+{
+  "id": "case_335",
+  "skill": "bsp-knowledge-mentor",
+  "input": "I'm a product manager for a smart security camera product. Our engineering team says we need to add 'MIPI CSI-2 v4.2 ESP event sensor support' for our next generation. I need to understand what this means for our product roadmap. The engineers mentioned 'neuromorphic sensors', 'microsecond temporal resolution', and 'asynchronous event streams'. What does this actually mean for our camera product's user-facing features and competitive positioning?",
+  "expected_topics": [
+    "MIPI-CSI2-ESP",
+    "EVS-sensor",
+    "terminology-translation",
+    "learner-level",
+    "management",
+    "business-impact",
+    "event-based-vision",
+    "competitive-advantage",
+    "always-on",
+    "power-efficiency"
+  ],
+  "min_score": 4,
+  "tags": [
+    "bsp-knowledge-mentor",
+    "learner-level-detection",
+    "management-level",
+    "terminology-translation",
+    "esp-business-impact"
+  ]
+}

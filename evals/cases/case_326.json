@@ -1,0 +1,25 @@
+{
+  "id": "case_326",
+  "skill": "multimedia-camera-expert",
+  "input": "We need to implement a always-on camera presence detection feature that wakes the main SoC from deep sleep when a person is detected. The sensor supports MIPI CSI-2 v4.0 Always-On Sentinel Conduit. Currently, the full CSI-2 link is kept active for presence detection, consuming 80mW. Explain how the Sentinel Conduit enables low-power wake without full link activation, and what kernel/driver changes are needed to implement the Sentinel wake path.",
+  "expected_topics": [
+    "MIPI-CSI2-Sentinel",
+    "MIPI-CSI2-RX",
+    "always-on",
+    "low-power-wake",
+    "presence-detection",
+    "CSI-2-v4.0",
+    "wake-trigger",
+    "deep-sleep",
+    "power-reduction",
+    "sentinel-conduit"
+  ],
+  "min_score": 4,
+  "tags": [
+    "multimedia-camera-expert",
+    "mipi-csi2-sentinel",
+    "always-on-camera",
+    "low-power-wake",
+    "csi2-v4"
+  ]
+}

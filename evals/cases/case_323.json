@@ -1,0 +1,26 @@
+{
+  "id": "case_323",
+  "skill": "multimedia-camera-expert",
+  "input": "We integrated a MIPI CSI-2 v4.2 Event-Based Vision Sensor (EVS) for our autonomous robot platform. During fast scene motion (high contrast transitions across many pixels simultaneously), the event stream drops events.\n\ndmesg:\n  [  5.100] mipi-csi2: ESP virtual channel 2 overflow, event_count=48000/ms\n  [  5.101] csi2_rx: VC2 FIFO overrun, dropped 1200 events\n  [  5.102] evs_driver: event gap detected at t=5.100s\n\nThe sensor is a Prophesee Metavision at 1MP resolution. The CSI-2 link is D-PHY 4-lane at 2.5Gbps/lane. The event burst rate during the scene transition is estimated at 48,000 events/ms. What causes MIPI-CSI2-ESP-Event-Drop, and how should we configure the CSI-2 virtual channel allocation to handle event bursts?",
+  "expected_topics": [
+    "MIPI-CSI2-ESP",
+    "EVS-sensor",
+    "MIPI-CSI2-ESP-Event-Drop",
+    "event-based-vision",
+    "D-PHY",
+    "virtual-channel",
+    "FIFO-overrun",
+    "bandwidth",
+    "event-burst",
+    "dynamic-vision"
+  ],
+  "min_score": 4,
+  "tags": [
+    "multimedia-camera-expert",
+    "mipi-csi2-esp",
+    "evs-sensor",
+    "event-drop",
+    "csi2-v4.2",
+    "neuromorphic"
+  ]
+}

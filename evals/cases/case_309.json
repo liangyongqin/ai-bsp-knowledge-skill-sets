@@ -1,0 +1,25 @@
+{
+  "id": "case_309",
+  "skill": "interrupt-virtualization-expert",
+  "input": "Production system crash: the CPU lockup watchdog fired but no crash dump was captured. The system rebooted cleanly, which suggests the NMI handler ran but kdump did not trigger. The platform uses GICv3.3 architectural NMI for the watchdog.\n\ndmesg (recovered from pstore):\n  [3600.001] watchdog: BUG: soft lockup - CPU#2 stuck for 23s!\n  [3600.002] GICv3-NMI: NMI delivered to CPU#2 (SPI 32)\n  [3600.003] nmi_handler: watchdog invoked, kdump_crash_setup not called\n\nkdump is configured with crash_kexec_on_nmi=0 (default). How should we configure the kernel to ensure kdump captures a vmcore when the NMI watchdog fires?",
+  "expected_topics": [
+    "GICv3.3",
+    "NMI",
+    "watchdog",
+    "kdump",
+    "crash_kexec_on_nmi",
+    "soft-lockup",
+    "pstore",
+    "vmcore",
+    "nmi-handler",
+    "crash-dump-configuration"
+  ],
+  "min_score": 4,
+  "tags": [
+    "interrupt-virtualization-expert",
+    "nmi-kdump",
+    "watchdog-crash-dump",
+    "gicv3.3",
+    "crash-kexec-on-nmi"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "id": "case_328",
+  "skill": "multimedia-camera-expert",
+  "input": "We are integrating a Sony IMX636 event-based vision sensor (EVS) using MIPI CSI-2 v4.2 ESP protocol alongside our frame-based RGB camera on the same CSI-2 controller with virtual channel multiplexing. The EVS delivers asynchronous events at up to 100M events/sec. How do we design the V4L2 driver architecture to handle the EVS event stream? What are the differences between V4L2 capture for frame-based cameras vs event-based sensors? How do we handle the asynchronous event delivery model in Linux?",
+  "expected_topics": [
+    "EVS-sensor",
+    "MIPI-CSI2-ESP",
+    "V4L2",
+    "virtual-channel",
+    "asynchronous-events",
+    "event-based-vision",
+    "CSI-2-v4.2",
+    "IMX636",
+    "V4L2-driver",
+    "neuromorphic-sensor"
+  ],
+  "min_score": 4,
+  "tags": [
+    "multimedia-camera-expert",
+    "evs-sensor-integration",
+    "mipi-csi2-esp",
+    "v4l2-evs",
+    "csi2-v4.2"
+  ]
+}

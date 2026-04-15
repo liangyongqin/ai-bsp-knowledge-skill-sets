@@ -1,0 +1,25 @@
+{
+  "id": "case_336",
+  "skill": "bsp-knowledge-mentor",
+  "input": "The algorithm team is proposing to use an event-based vision sensor (EVS) for their object tracking algorithm. They claim 'zero motion blur' and 'microsecond latency'. The BSP team says this will 'require MIPI CSI-2 ESP virtual channel allocation and custom V4L2 event buffer management'. Translate between these two perspectives: what does the algorithm team's request mean in BSP terms, and what do the BSP constraints mean in algorithm performance terms?",
+  "expected_topics": [
+    "MIPI-CSI2-ESP",
+    "EVS-sensor",
+    "V4L2",
+    "virtual-channel",
+    "terminology-translation",
+    "algorithm-team",
+    "motion-blur",
+    "event-latency",
+    "asynchronous-events",
+    "bandwidth"
+  ],
+  "min_score": 4,
+  "tags": [
+    "bsp-knowledge-mentor",
+    "terminology-translation",
+    "evs-algorithm-bsp",
+    "cross-team-communication",
+    "v4l2-evs"
+  ]
+}

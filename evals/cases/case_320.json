@@ -1,0 +1,27 @@
+{
+  "id": "case_320",
+  "skill": "gpu-rendering-expert",
+  "input": "A GPU devcoredump was captured after a Panthor crash. The dump includes the following key entries:\n\n  GPU MMU fault: AS=2, FAULT_ADDR=0x7f3a000, TYPE=READ\n  FAULT_STATUS=0x92 (PERMISSION_FAULT, OUTER_FAULT)\n  Active CSF queue group: group_id=3, prio=HIGH, state=RUNNABLE\n  Last dispatched job: job_id=1452, ring_buffer_offset=0x3c80\n  Firmware state: MCU_STATUS=0x01 (ACTIVE)\n\nHow do I interpret the FAULT_STATUS=0x92 PERMISSION_FAULT for an OUTER fault? What does OUTER_FAULT mean in Mali GPU MMU terminology? How do I trace the faulty buffer mapping from the fault address back to the GPU VA allocation in the application?",
+  "expected_topics": [
+    "gpu-devcoredump",
+    "GPU-MMU",
+    "MMU-fault",
+    "PERMISSION_FAULT",
+    "OUTER_FAULT",
+    "panthor-drm-driver",
+    "GPU-VA",
+    "fault-status",
+    "AS",
+    "address-space",
+    "mali-csf-firmware"
+  ],
+  "min_score": 4,
+  "tags": [
+    "gpu-rendering-expert",
+    "panthor",
+    "gpu-mmu-fault",
+    "devcoredump-analysis",
+    "permission-fault",
+    "outer-fault"
+  ]
+}

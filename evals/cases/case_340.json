@@ -1,0 +1,30 @@
+{
+  "id": "case_340",
+  "skill": "bsp-knowledge-mentor",
+  "input": "Complex VM scenario: We run a VM with GPU passthrough (Mali-G710 with Panthor VFIO passthrough) and a real-time control vPE using GICv4.2 vNMI for watchdog. During GPU-intensive ML inference in the VM, the real-time control vPE's watchdog vNMI is intermittently delayed by more than 100 microseconds \u2014 violating our real-time requirement.\n\nSystem topology:\n  Host: Linux 6.12, KVM, GICv4.2 vNMI enabled\n  VM1: ML inference (Mali-G710 passthrough, Panthor in guest)\n  VM2: Real-time control (GICv4.2 vNMI watchdog, 100\u03bcs deadline)\n\nThe vNMI latency spikes correlate with GPU SMMU TLB shootdown events. This is a three-way interaction between GICv4.2 vNMI, GPU SMMU, and KVM vCPU scheduling. Use the Blackboard pattern to diagnose the vNMI latency jitter.",
+  "expected_topics": [
+    "GICv4.2",
+    "vNMI",
+    "SMMU",
+    "KVM",
+    "GPU-passthrough",
+    "panthor-drm-driver",
+    "Blackboard",
+    "TLB-shootdown",
+    "real-time",
+    "vNMI-latency",
+    "cross-domain",
+    "VFIO",
+    "vCPU-scheduling"
+  ],
+  "min_score": 4,
+  "tags": [
+    "bsp-knowledge-mentor",
+    "cross-domain",
+    "blackboard",
+    "gicv4.2-vnmi-gpu",
+    "smmu-tlb",
+    "kvm-real-time",
+    "vfio"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "id": "case_311",
+  "skill": "gpu-rendering-expert",
+  "input": "Our Mali-G710 GPU (Panthor driver, Linux 6.10) is crashing applications with EGL_CONTEXT_LOST. The kernel logs show CSF firmware timeout.\n\ndmesg:\n  [  60.100] panthor: CSF firmware timeout, group 2 (prio=HIGH)\n  [  60.101] panthor: Initiating GPU hang recovery\n  [  60.102] panthor: firmware version: 29.0.2 (expected >=29.0.0)\n  [  60.103] panthor: GPU MCU: clock gated during active queue processing\n  [  60.200] GPU hang recovery complete, context lost\n\nThe firmware version matches the minimum requirement. The log shows 'clock gated during active queue processing'. What causes the CSF MCU clock to gate while GPU queues are active, and how do we prevent this?",
+  "expected_topics": [
+    "panthor-drm-driver",
+    "mali-csf-firmware",
+    "CSF-firmware-timeout",
+    "panthor-csf-fw-timeout",
+    "GPU-MCU",
+    "clock-gating",
+    "hang-recovery",
+    "EGL_CONTEXT_LOST",
+    "mali-g710",
+    "queue-group"
+  ],
+  "min_score": 4,
+  "tags": [
+    "gpu-rendering-expert",
+    "panthor",
+    "csf-firmware-timeout",
+    "gpu-mcu-clock",
+    "mali-g710",
+    "hang-recovery"
+  ]
+}

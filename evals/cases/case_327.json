@@ -1,0 +1,25 @@
+{
+  "id": "case_327",
+  "skill": "multimedia-camera-expert",
+  "input": "Our augmented reality pipeline requires camera frame latency below 5ms from sensor capture to ISP output for motion-to-photon requirements. Currently achieving 8ms. We are using MIPI CSI-2 v4.0. The ISP pipeline processes 4K at 60fps. How does MIPI CSI-2 v4.0 LRTE (Latency Reduction and Transport Efficiency) reduce the capture-to-ISP latency, and what other pipeline stages should we optimize to reach the 5ms target?",
+  "expected_topics": [
+    "MIPI-CSI2-LRTE",
+    "ISP-pipeline",
+    "latency",
+    "CSI-2-v4.0",
+    "motion-to-photon",
+    "packet-scheduling",
+    "pipeline-latency",
+    "AR",
+    "frame-latency",
+    "interleaving"
+  ],
+  "min_score": 4,
+  "tags": [
+    "multimedia-camera-expert",
+    "mipi-csi2-lrte",
+    "latency-reduction",
+    "ar-pipeline",
+    "motion-to-photon"
+  ]
+}

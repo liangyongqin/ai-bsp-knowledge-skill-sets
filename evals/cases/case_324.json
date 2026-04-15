@@ -1,0 +1,26 @@
+{
+  "id": "case_324",
+  "skill": "multimedia-camera-expert",
+  "input": "After enabling MIPI D-PHY v2.1 Error Correction Mode (ECM) on our automotive camera module (CSI-2 v4.2), we see a flood of ECC correction events that was not present before ECM was enabled.\n\ndmesg:\n  [  0.500] mipi-csi2: D-PHY ECM enabled on lanes 0-3\n  [  1.000] mipi-csi2: ECM ECC correction count: 1450 in last 500ms\n  [  1.001] mipi-csi2: ECM ECC threshold exceeded, link degraded\n  [  1.002] mipi-csi2: CSI-2 link reset triggered\n\nThe SoC CSI-2 RX was manufactured in 2022 (pre-CSI-2 v4.2). What causes MIPI-DPHY-ECM-CRC-Storm on an older SoC receiver, and what is the correct approach when the receiver does not support CSI-2 v4.2 ECM?",
+  "expected_topics": [
+    "MIPI-DPHY-ECM",
+    "MIPI-DPHY-ECM-CRC-Storm",
+    "ECM",
+    "D-PHY",
+    "ECC",
+    "CSI-2-v4.2",
+    "link-degradation",
+    "automotive-camera",
+    "receiver-compatibility",
+    "FEC"
+  ],
+  "min_score": 4,
+  "tags": [
+    "multimedia-camera-expert",
+    "mipi-dphy-ecm",
+    "ecm-crc-storm",
+    "csi2-v4.2",
+    "automotive",
+    "d-phy-ecc"
+  ]
+}

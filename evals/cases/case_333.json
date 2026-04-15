@@ -1,0 +1,27 @@
+{
+  "id": "case_333",
+  "skill": "bsp-knowledge-mentor",
+  "input": "Camera pipeline performance degradation under load: ISP \u2192 GPU super-resolution pipeline drops from 30fps to 12fps under sustained operation. The camera uses MIPI CSI-2 v4.0 SROI to crop a 4K ROI from a 50MP sensor. The GPU processes the ISP output via DMA-BUF for AI super-resolution.\n\nSystem observations:\n  - MIPI bandwidth utilization: 42% savings from SROI\n  - ISP processing: 4K@30fps (within spec)\n  - GPU compute: exceeds 16ms budget per frame at 4x upscale\n  - DMA-BUF import latency: 2.3ms (abnormally high)\n  - thermal_zone0: 83C sustained (near passive trip)\n\nThis spans three domains: MIPI/camera, GPU, and thermal. Use the Blackboard pattern to diagnose the root cause of the fps drop.",
+  "expected_topics": [
+    "MIPI-CSI2-SROI",
+    "ISP-pipeline",
+    "GPU",
+    "DMA-BUF",
+    "thermal",
+    "Blackboard",
+    "super-resolution",
+    "devfreq",
+    "panthor-drm-driver",
+    "cross-domain",
+    "frame-drop"
+  ],
+  "min_score": 4,
+  "tags": [
+    "bsp-knowledge-mentor",
+    "cross-domain",
+    "blackboard",
+    "sroi-gpu-thermal",
+    "dma-buf",
+    "super-resolution"
+  ]
+}

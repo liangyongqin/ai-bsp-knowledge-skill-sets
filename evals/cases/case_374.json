@@ -1,0 +1,26 @@
+{
+  "id": "case_374",
+  "skill": "interrupt-virtualization-expert",
+  "input": "Edge case: GICv4.2 vNMI delivery to a vPE that is NOT currently scheduled. The host has the vPE in 'unscheduled' state in the ITS VPENDBASER register.\n\nPer the GICv4.2 architecture spec: \n  - Pending bit is set in vPE's pending table\n  - When vPE is later scheduled (VMOVP), vNMI fires\n  - Latency between physical NMI source and vNMI delivery =     schedule latency (potentially milliseconds)\n\nIs this acceptable for a hard-real-time vNMI watchdog? What pinning strategy (vCPU-to-pCPU affinity) eliminates schedule latency? When should the system fall back to direct NMI delivery to the host (vs vNMI)?",
+  "expected_topics": [
+    "GICv4.2",
+    "vNMI",
+    "vPE",
+    "ITS",
+    "VPENDBASER",
+    "VMOVP",
+    "schedule-latency",
+    "real-time",
+    "vCPU-pinning",
+    "fallback-NMI",
+    "boundary-condition"
+  ],
+  "min_score": 4,
+  "tags": [
+    "interrupt-virtualization-expert",
+    "boundary-test",
+    "gicv4.2-vnmi",
+    "vpe-unscheduled",
+    "real-time"
+  ]
+}

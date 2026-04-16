@@ -1,0 +1,27 @@
+{
+  "id": "case_363",
+  "skill": "bsp-knowledge-mentor",
+  "input": "Cross-domain failure: 'Kernel panic at boot, only on units with the new UFS 4.0 SKU. The same firmware on UFS 3.1 boards boots fine.'\n\nConsole capture (over UART):\n  [0.012] DRAM init: LPDDR5X-7500 OK\n  [0.045] PSCI: CPU1 brought up\n  [0.080] coresight: ROM table walk failed\n  [0.100] BUG: kernel NULL pointer dereference\n  [0.100] PC is at coresight_etm_init+0x44\n\nWhy might enabling UFS 4.0 cause CoreSight init to fail? Hint: think about device-tree clock and power-domain references. Which Blackboard experts (boot-debug, interrupt-virtualization, hardware-spec) should examine which artifacts? Lead the engineer through Socratic discovery.",
+  "expected_topics": [
+    "Blackboard",
+    "UFS-4.0",
+    "CoreSight",
+    "device-tree",
+    "clock-domain",
+    "power-domain",
+    "ROM-table",
+    "kernel-panic",
+    "Socratic",
+    "cross-domain",
+    "boot-debug",
+    "hardware-spec"
+  ],
+  "min_score": 4,
+  "tags": [
+    "bsp-knowledge-mentor",
+    "blackboard",
+    "ufs-coresight",
+    "boot-panic",
+    "dt-clock"
+  ]
+}

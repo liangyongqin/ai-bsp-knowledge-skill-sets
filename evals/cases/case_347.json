@@ -1,0 +1,25 @@
+{
+  "id": "case_347",
+  "skill": "power-thermal-expert",
+  "input": "We need to validate that LPDDR5X DSM (Deep Sleep Mode) is actually being entered during system suspend-to-RAM. Currently suspend power is 50mW above target.\n\nWhat kernel sysfs path exposes LPDDR5X DSM residency counters? What PMIC rail measurement confirms the controller VDD has dropped to retention level? Walk through the verification sequence: \n  1. Enter S2R\n  2. Confirm DSM entry on each channel\n  3. Measure leakage on VDD2H and VDDQ\n  4. Verify wakeup latency stays under 500us\nWhich Linux subsystem owns the DSM transition (devfreq, drivers/memory, or arm-smccc PSCI call)?",
+  "expected_topics": [
+    "LPDDR5X",
+    "DSM",
+    "deep-sleep-mode",
+    "S2R",
+    "VDD2H",
+    "VDDQ",
+    "self-refresh-residency",
+    "wakeup-latency",
+    "PSCI",
+    "suspend-to-ram"
+  ],
+  "min_score": 4,
+  "tags": [
+    "power-thermal-expert",
+    "lpddr5x",
+    "deep-sleep-mode",
+    "s2r-verification",
+    "leakage-measurement"
+  ]
+}

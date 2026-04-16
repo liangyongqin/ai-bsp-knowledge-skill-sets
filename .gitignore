@@ -18,6 +18,11 @@ env/
 *.db
 *.db.wal
 *.db-lock
+knowledge-graph/kuzu_db
+knowledge-graph/kuzu_db.wal
+knowledge-graph/kuzu_db-lock
+knowledge-graph/kuzu_db.shadow
+knowledge-graph/kuzu_db.tmp
 
 # Pytest
 .pytest_cache/

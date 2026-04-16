@@ -1,0 +1,25 @@
+{
+  "id": "case_377",
+  "skill": "gpu-rendering-expert",
+  "input": "Edge case: GPU rendering at 120fps with LPDDR5X-8533 \u2014 sustained memory bandwidth measured at 65 GB/s (close to theoretical peak of 68.3 GB/s). Frame pacing jitters by +/- 2ms.\n\nIs this jitter caused by GPU shader stalls, or by LPDDR5X self-refresh exits during inter-frame gaps? How do you isolate GPU-side vs DRAM-side jitter using Perfetto + memory bus probes? What sysfs knob tunes the self-refresh entry threshold to avoid entering self-refresh during 120fps gaps (if the gap is shorter than self-refresh entry latency)?",
+  "expected_topics": [
+    "GPU-rendering",
+    "LPDDR5X",
+    "self-refresh",
+    "frame-pacing",
+    "120fps",
+    "Perfetto",
+    "memory-jitter",
+    "self-refresh-entry-threshold",
+    "inter-frame-gap",
+    "shader-stall"
+  ],
+  "min_score": 4,
+  "tags": [
+    "gpu-rendering-expert",
+    "boundary-test",
+    "120fps-pacing",
+    "lpddr5x-jitter",
+    "self-refresh"
+  ]
+}

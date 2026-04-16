@@ -1,0 +1,25 @@
+{
+  "id": "case_352",
+  "skill": "boot-debug-expert",
+  "input": "ETM4 trace generation hangs the CPU at activation time. dmesg shows:\n  coresight: TRCPRGCTLR write timeout\n  coresight etm0: failed to enable ETM\n\nROM table walk shows ETM4 at the expected base address. What ADIv6 Q-Channel handshake is required before the ETM can be programmed? Which power domain and clock must be active for ETM4 register access? How does this relate to the CoreSight SoC-600 ATB (AMBA Trace Bus) fabric clock gating?",
+  "expected_topics": [
+    "CoreSight",
+    "ETM4",
+    "ADIv6",
+    "Q-Channel",
+    "TRCPRGCTLR",
+    "ATB-clock",
+    "ROM-table",
+    "power-domain",
+    "trace-fabric",
+    "SoC-600"
+  ],
+  "min_score": 4,
+  "tags": [
+    "boot-debug-expert",
+    "coresight",
+    "etm-activation",
+    "adiv6",
+    "trace-fabric-clock"
+  ]
+}

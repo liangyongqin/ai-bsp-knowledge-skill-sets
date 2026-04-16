@@ -1,0 +1,25 @@
+{
+  "id": "case_364",
+  "skill": "bsp-knowledge-mentor",
+  "input": "Management asks: 'Our smart glasses competitor advertises 8h continuous video recording with 2x our battery capacity. We get 4h on equivalent hardware. What's the physics gap?'\n\nTranslate this into a BSP investigation tree without exposing register addresses. What top-level BSP factors limit continuous-recording battery life on a 1W power budget? How do LPDDR5X DSM residency, UFS 4.0 WriteBooster discipline, ISP-DMA bypass paths, and CoreSight always-on trace overhead each factor in? Frame your answer in business terms first, then surface the BSP investigation steps.",
+  "expected_topics": [
+    "business-impact",
+    "battery-life",
+    "1W-budget",
+    "LPDDR5X-DSM",
+    "UFS-WriteBooster",
+    "ISP-DMA",
+    "CoreSight-overhead",
+    "cross-department",
+    "smart-glasses",
+    "continuous-recording"
+  ],
+  "min_score": 4,
+  "tags": [
+    "bsp-knowledge-mentor",
+    "business-translation",
+    "battery-analysis",
+    "smart-glasses",
+    "continuous-recording"
+  ]
+}

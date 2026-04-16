@@ -1,0 +1,27 @@
+{
+  "id": "case_370",
+  "skill": "bsp-knowledge-mentor",
+  "input": "Field issue post-mortem: 0.3% of devices in production show 'random reboot under heavy network load'. Field returns show no consistent hardware fault. Three teams have proposed root causes:\n  - Kernel team: TCP softirq starvation\n  - BSP team: PMIC transient under WiFi-6 burst load\n  - Driver team: WiFi MAC IRQ storm\n\nEach is plausible. Apply the Blackboard convergence step. How do you design a coordinated diagnostic capture (CoreSight ETM trace + irqbalance stats + PMIC telemetry) that arbitrates between the three hypotheses? What is the success criterion for each test, and what synthesis output would route the fix correctly?",
+  "expected_topics": [
+    "Blackboard",
+    "field-issue",
+    "post-mortem",
+    "TCP-softirq",
+    "PMIC-transient",
+    "WiFi-IRQ-storm",
+    "CoreSight",
+    "irqbalance",
+    "convergence",
+    "arbitration",
+    "diagnostic-capture",
+    "cross-team"
+  ],
+  "min_score": 4,
+  "tags": [
+    "bsp-knowledge-mentor",
+    "blackboard",
+    "field-postmortem",
+    "convergence",
+    "diagnostic-capture"
+  ]
+}

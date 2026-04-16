@@ -1,0 +1,25 @@
+{
+  "id": "case_358",
+  "skill": "boot-debug-expert",
+  "input": "ETE (Embedded Trace Extension, ARMv9) trace into TRBE (Trace Buffer Extension) is producing trace records but they are not decodable by OpenCSD. Errors:\n  decoder: stream sync lost at offset 0x100\n  decoder: I_SYNC packet missing\n\nETE configuration:\n  TRCPRGCTLR.EN = 1\n  TRCSYNCPR = 0x0B  (sync every 4KB)\n  TRCCONFIGR.TS = 1 (timestamps enabled)\n\nWhat is the sync period interaction between TRCSYNCPR and TRBE? Is the OpenCSD decoder version compatible with ETE? How does ETE differ from ETM4 in terms of sync packet generation, and what perf script invocation decodes ETE trace records produced via TRBE?",
+  "expected_topics": [
+    "CoreSight",
+    "ETE",
+    "TRBE",
+    "OpenCSD",
+    "TRCSYNCPR",
+    "I_SYNC",
+    "ARMv9-trace",
+    "perf-script",
+    "sync-period",
+    "ETM4-vs-ETE"
+  ],
+  "min_score": 4,
+  "tags": [
+    "boot-debug-expert",
+    "coresight",
+    "ete-trbe",
+    "opencsd-decode",
+    "armv9-trace"
+  ]
+}

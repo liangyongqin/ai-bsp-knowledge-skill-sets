@@ -1,0 +1,25 @@
+{
+  "id": "case_350",
+  "skill": "boot-debug-expert",
+  "input": "UFS 4.0 host controller reports SCSI sense data 'Logical Unit Not Ready, Cause Not Reportable' during cold boot, intermittently 1 in 200 boots. Other boots work fine.\n\nWhat in the UFS 4.0 boot sequence after VCC ramp could leave the device in 'not ready' state? Walk through: VCC ramp -> reset deassert -> boot LU initialization -> link startup -> Active mode. Where could a marginal timing violation cause intermittent enumeration failure?",
+  "expected_topics": [
+    "UFS-4.0",
+    "VCC-ramp",
+    "reset-deassert",
+    "boot-LU",
+    "link-startup",
+    "active-mode",
+    "logical-unit-not-ready",
+    "JESD220F",
+    "cold-boot",
+    "enumeration-failure"
+  ],
+  "min_score": 4,
+  "tags": [
+    "boot-debug-expert",
+    "ufs-4.0",
+    "boot-lu",
+    "intermittent-enum",
+    "vcc-ramp"
+  ]
+}

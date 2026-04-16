@@ -1,0 +1,25 @@
+{
+  "id": "case_360",
+  "skill": "boot-debug-expert",
+  "input": "Production kernel must support 'always-on' last-trace capture for field crash analysis. Constraints: ETR overhead < 1% CPU, no impact on perf tools, trace ring buffer must survive a kernel panic.\n\nDesign a CoreSight always-on trace pipeline:\n  1. ETM4 with sparse instruction filtering (TRCSSCCRn)\n  2. ETR scatter-gather to a reserved DMA pool\n  3. pstore integration so trace is preserved across reboot\n  4. Recovery path: read trace from /sys/fs/pstore on next boot\nWhat kernel command-line options enable this, and what is the upstream status (Linux 6.x) of pstore-coresight integration?",
+  "expected_topics": [
+    "CoreSight",
+    "ETM4",
+    "ETR",
+    "TRCSSCCRn",
+    "pstore",
+    "always-on-trace",
+    "scatter-gather",
+    "DMA-pool",
+    "kernel-panic",
+    "field-crash"
+  ],
+  "min_score": 4,
+  "tags": [
+    "boot-debug-expert",
+    "coresight",
+    "always-on-trace",
+    "pstore",
+    "production-tracing"
+  ]
+}

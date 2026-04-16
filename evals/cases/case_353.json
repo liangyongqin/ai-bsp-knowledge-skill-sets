@@ -1,0 +1,25 @@
+{
+  "id": "case_353",
+  "skill": "boot-debug-expert",
+  "input": "We need software-level event correlation with hardware ETM trace. How do we use CoreSight STM (System Trace Macrocell) channels to log kernel scheduler decisions alongside ETM instruction trace?\n\nWhat MIPI STP (System Trace Protocol) records map to STM channels, and how does the Linux drivers/hwtracing/stm/ subsystem expose stimulus ports to user-space via /dev/stm0? How does the kernel correlate STM and ETM timestamps into a unified trace view?",
+  "expected_topics": [
+    "CoreSight",
+    "STM",
+    "MIPI-STP",
+    "stimulus-port",
+    "stm-policy",
+    "scheduler-trace",
+    "trace-correlation",
+    "ETM4",
+    "perf-trace",
+    "/dev/stm0"
+  ],
+  "min_score": 4,
+  "tags": [
+    "boot-debug-expert",
+    "coresight",
+    "stm",
+    "stp-protocol",
+    "trace-correlation"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "id": "case_367",
+  "skill": "bsp-knowledge-mentor",
+  "input": "Real-world cross-team incident: \n  - QA team: 'video preview shows tearing every 30 seconds'\n  - GPU team: 'frame deadline met, no overdraw issues'\n  - BSP team: 'thermal not throttling, PMIC stable'\n  - Camera team: 'V4L2 stats show no buffer underrun'\n\nEach team's measurement is correct in isolation, but tearing is reproducible. Apply the Blackboard pattern. What single root cause could simultaneously appear invisible to all four teams? Hint: think about LPDDR5X self-refresh exit latency synchronization across the ISP-GPU-Display data path. How do you frame the convergence step?",
+  "expected_topics": [
+    "Blackboard",
+    "video-tearing",
+    "LPDDR5X",
+    "self-refresh-exit",
+    "ISP-GPU-Display",
+    "convergence",
+    "cross-team",
+    "DMA-synchronization",
+    "memory-bus-contention",
+    "frame-pacing"
+  ],
+  "min_score": 4,
+  "tags": [
+    "bsp-knowledge-mentor",
+    "blackboard",
+    "video-tearing",
+    "cross-team",
+    "memory-contention"
+  ]
+}

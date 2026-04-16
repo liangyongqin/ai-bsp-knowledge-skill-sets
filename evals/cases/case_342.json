@@ -1,0 +1,25 @@
+{
+  "id": "case_342",
+  "skill": "power-thermal-expert",
+  "input": "LPDDR5X-7500 thermal runaway during sustained 4K60 video capture. After 5 minutes the DRAM die temperature reaches 95C and the controller drops from HS-G5 to LPDDR5-6400 mode. Frame drops follow.\n\nThermal log:\n  [00:00] dram_temp=72C, gear=HS-G5\n  [04:30] dram_temp=88C, gear=HS-G5, refresh_rate=2x\n  [05:01] dram_temp=95C, gear demoted to LPDDR5-6400\n  [05:01] camera_pipeline: dropped frames=12 in 1s\n\nWhat thermal feedback path does the LPDDR5X controller use to demote speed gears? What is the MR (Mode Register) used to signal die temperature, and how does temperature-compensated self-refresh (TCSR) interact with thermal demotion?",
+  "expected_topics": [
+    "LPDDR5X",
+    "thermal-demotion",
+    "MR4",
+    "TCSR",
+    "refresh-rate-doubling",
+    "die-temperature",
+    "HS-G5",
+    "speed-gear-demotion",
+    "camera-frame-drop",
+    "thermal-zone"
+  ],
+  "min_score": 4,
+  "tags": [
+    "power-thermal-expert",
+    "lpddr5x",
+    "thermal-demotion",
+    "dram-thermal",
+    "speed-gear"
+  ]
+}

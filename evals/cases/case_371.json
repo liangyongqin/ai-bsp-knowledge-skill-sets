@@ -1,0 +1,25 @@
+{
+  "id": "case_371",
+  "skill": "bsp-knowledge-mentor",
+  "input": "Test: a manager asks 'What are the values of GICD_INMIR0 register on our SoC, and how do we configure SPI 32 for NMI delivery?'\n\nThe mentor MUST refuse to give register addresses to a non-engineering audience and translate the request into business language: 'Why does watchdog hang detection matter for shipping reliability?'\n\nDemonstrate the prohibition rule and the cross-department translation from low-level register configuration to business outcome (uptime, field-return rate, brand reputation).",
+  "expected_topics": [
+    "prohibition",
+    "no-register-cross-department",
+    "business-translation",
+    "watchdog",
+    "uptime",
+    "field-return",
+    "brand-reputation",
+    "ITS",
+    "level-mismatch",
+    "GICD_INMIR0"
+  ],
+  "min_score": 4,
+  "tags": [
+    "bsp-knowledge-mentor",
+    "negative-test",
+    "prohibition-rule",
+    "register-redaction",
+    "cross-department"
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "id": "case_341",
+  "skill": "power-thermal-expert",
+  "input": "Our flagship phone uses LPDDR5X-8533 (JEDEC JESD79-5B). Idle power is 200mW higher than the LPDDR5-6400 reference design we previously shipped. Battery life regressed by 8% on the always-on dashboard test.\n\nPMIC rail telemetry:\n  VDD2H (1.05V): +35mA average vs reference\n  VDDQ (0.5V): +20mA average vs reference\n  Self-refresh entries per second: 1200 (vs 4500 on reference)\n\nWhy is LPDDR5X showing higher idle current despite supporting deeper background-gate-self-throttle (BSST) modes? What kernel knobs in drivers/memory/ control LPDDR5X power state transitions, and what hardware mechanism reduces self-refresh entry frequency at HS-G5?",
+  "expected_topics": [
+    "LPDDR5X",
+    "JESD79-5B",
+    "BSST",
+    "bank-subset-shutdown",
+    "VDD2H",
+    "VDDQ",
+    "self-refresh",
+    "TCSR",
+    "DSM",
+    "deep-sleep-mode",
+    "self-refresh-residency",
+    "devfreq"
+  ],
+  "min_score": 4,
+  "tags": [
+    "power-thermal-expert",
+    "lpddr5x",
+    "self-refresh",
+    "memory-power",
+    "battery-regression"
+  ]
+}

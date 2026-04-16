@@ -1,0 +1,26 @@
+{
+  "id": "case_345",
+  "skill": "boot-debug-expert",
+  "input": "Cold boot fails intermittently with LPDDR5X-7500. The bootloader reports DRAM training success but kernel panics 200ms into boot with random memory corruption.\n\nBootloader log:\n  [pmic] VDD2H ramp to 1.05V: OK (sequence step 4/6)\n  [pmic] VDDQ ramp to 0.5V: OK (sequence step 5/6)\n  [dram] LPDDR5X DQS training: PASS (margin=18%)\n  [dram] CA training: PASS (margin=22%)\n  [dram] ZQ calibration done\n  [boot] kernel handoff at 145ms\nKernel:\n  [200ms] BUG: KASAN out-of-bounds at random addresses\n\nThe training margins look healthy. What in the LPDDR5X power-up sequence could complete training successfully but still cause random corruption shortly after? Consider VDD2H/VDDQ ordering, ZQ calibration timing, and RDQS strobe stability requirements at 7500 Mbps.",
+  "expected_topics": [
+    "LPDDR5X",
+    "VDD2H",
+    "VDDQ",
+    "power-sequencing",
+    "DQS-training",
+    "RDQS",
+    "ZQ-calibration",
+    "memory-corruption",
+    "KASAN",
+    "DRAM-training",
+    "boot-failure"
+  ],
+  "min_score": 4,
+  "tags": [
+    "boot-debug-expert",
+    "lpddr5x",
+    "power-sequencing",
+    "dram-training",
+    "memory-corruption"
+  ]
+}

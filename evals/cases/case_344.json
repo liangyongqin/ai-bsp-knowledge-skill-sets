@@ -1,0 +1,25 @@
+{
+  "id": "case_344",
+  "skill": "multimedia-camera-expert",
+  "input": "UFS 4.0 latency outliers during burst camera capture. Frame deadline is 16.6ms (60fps) but every ~2 minutes a single write takes 220ms, causing missed frames.\n\nblktrace excerpt:\n  [120.012] write 4MB queued\n  [120.013] WB enabled (write booster)\n  [120.234] write 4MB completed (221ms!)\n  [120.235] dmesg: ufs: turbo write buffer flush triggered\n\nWhat internal UFS 4.0 device state transition causes a 200+ms outlier? How does the WriteBooster turbo buffer flush interact with foreground I/O? What `ufs-bsg` knob can clamp WB buffer size to bound worst-case latency?",
+  "expected_topics": [
+    "UFS-4.0",
+    "WriteBooster",
+    "WB-flush",
+    "turbo-write-buffer",
+    "latency-outlier",
+    "ufs-bsg",
+    "background-ops",
+    "frame-deadline",
+    "burst-capture",
+    "WB-shared-buffer"
+  ],
+  "min_score": 4,
+  "tags": [
+    "multimedia-camera-expert",
+    "ufs-4.0",
+    "writebooster-flush",
+    "latency-outlier",
+    "burst-capture"
+  ]
+}

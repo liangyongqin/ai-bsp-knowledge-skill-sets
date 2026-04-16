@@ -1,0 +1,25 @@
+{
+  "id": "case_379",
+  "skill": "interrupt-virtualization-expert",
+  "input": "Negative test: a junior driver engineer proposes 'increase GIC ITS ITT (Interrupt Translation Table) size to 1GB to support more MSIs'. The current ITT is 16MB and the system has 8GB DRAM total.\n\nWhy is 1GB an unreasonable ITT size, even with abundant DRAM? What is the ITT entry size (per LPI), and what is the upper bound on number of LPIs in GICv3/v4 architecture? How would you Socratically guide the engineer to size ITT correctly based on platform LPI count?",
+  "expected_topics": [
+    "GIC-ITS",
+    "ITT",
+    "Interrupt-Translation-Table",
+    "LPI",
+    "ITT-entry-size",
+    "GICv3",
+    "GICv4",
+    "Socratic",
+    "negative-test",
+    "platform-sizing"
+  ],
+  "min_score": 4,
+  "tags": [
+    "interrupt-virtualization-expert",
+    "negative-test",
+    "its-itt-sizing",
+    "lpi-count",
+    "socratic"
+  ]
+}

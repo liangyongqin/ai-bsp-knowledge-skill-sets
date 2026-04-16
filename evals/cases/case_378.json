@@ -1,0 +1,25 @@
+{
+  "id": "case_378",
+  "skill": "hardware-spec-extractor",
+  "input": "Edge case: a vendor TRM provides UFS 4.0 controller registers as a non-standard XML format (not Accellera IP-XACT 2022). The XML uses different field names (offset vs address, bit_range vs bit_field). How does the spec extractor handle non-standard XML?\n\nWalk through the validation pipeline: \n  1. Detect XML schema (IP-XACT 2014 vs 2022 vs custom)\n  2. Apply field-name mapping (custom -> canonical)\n  3. Validate against the Kuzu Register schema\n  4. Report any fields that cannot be mapped\nWhat is the recommended workflow when 30% of register fields cannot be auto-mapped \u2014 manual annotation, template extension, or refusal?",
+  "expected_topics": [
+    "IP-XACT",
+    "Accellera",
+    "non-standard-XML",
+    "field-mapping",
+    "schema-detection",
+    "validation",
+    "Kuzu-Register-schema",
+    "manual-annotation",
+    "boundary-condition",
+    "extractor"
+  ],
+  "min_score": 4,
+  "tags": [
+    "hardware-spec-extractor",
+    "boundary-test",
+    "non-standard-xml",
+    "field-mapping",
+    "validation"
+  ]
+}

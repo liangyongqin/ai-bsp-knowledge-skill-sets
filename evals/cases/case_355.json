@@ -1,0 +1,25 @@
+{
+  "id": "case_355",
+  "skill": "boot-debug-expert",
+  "input": "ETR is configured to route trace into a 32MB DRAM region but we observe trace overrun (TMC_STS.Full) within 200ms of enabling. The same workload fits in the 64KB ETF without overflow.\n\nHow does AXI bandwidth between the ATB-AXI bridge and DRAM limit sustainable trace bandwidth? What ETR scatter-gather (SG) mode allows non-contiguous DRAM regions, and how does its use of DMA SMMU translation tables interact with normal device DMA traffic? When does Catch-Up mode in TMC_CTL help vs hurt overflow conditions?",
+  "expected_topics": [
+    "CoreSight",
+    "ETR",
+    "TMC",
+    "AXI-bandwidth",
+    "scatter-gather",
+    "TMC_STS",
+    "Catch-Up-mode",
+    "trace-overrun",
+    "SMMU-translation",
+    "ATB-AXI-bridge"
+  ],
+  "min_score": 4,
+  "tags": [
+    "boot-debug-expert",
+    "coresight",
+    "etr-overrun",
+    "axi-bandwidth",
+    "scatter-gather"
+  ]
+}

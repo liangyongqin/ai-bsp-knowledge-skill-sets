@@ -1,0 +1,25 @@
+{
+  "id": "case_357",
+  "skill": "boot-debug-expert",
+  "input": "We added an off-chip trace probe via TPIU (Trace Port Interface Unit) but trace data is corrupted. Trace probe captures bytes but the decoder fails to align frames.\n\nTPIU configuration:\n  TPIU_CSPSR = 0x10  (16-bit data port width)\n  TPIU_SPPR = 0x00   (parallel mode)\n  Trace probe sample rate: 200MHz\n  ATB clock from SoC: 600MHz\n\nWhy does the probe sample rate mismatch with the ATB clock cause frame misalignment? What is the role of the formatter (FFCR) in interleaving ETM/STM/ITM trace, and how does enabling FFCR.EnFCont help vs hurt frame alignment?",
+  "expected_topics": [
+    "CoreSight",
+    "TPIU",
+    "TPIU_CSPSR",
+    "TPIU_SPPR",
+    "ATB-clock",
+    "FFCR",
+    "trace-formatter",
+    "frame-alignment",
+    "off-chip-trace",
+    "interleaving"
+  ],
+  "min_score": 4,
+  "tags": [
+    "boot-debug-expert",
+    "coresight",
+    "tpiu",
+    "off-chip-trace",
+    "formatter-frame"
+  ]
+}

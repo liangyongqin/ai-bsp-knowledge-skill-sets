@@ -1,0 +1,26 @@
+{
+  "id": "case_368",
+  "skill": "bsp-knowledge-mentor",
+  "input": "Senior engineer pushback: 'CoreSight trace is overhead I don't want in production. Just give me ftrace.'\n\nUse ITS to validate the engineer's expertise (don't talk down) but build the case for a hybrid: ftrace for software-level events, always-on CoreSight ETM for last-N-cycles instruction trace at panic. How do you frame the trade-off in driver-engineer language without being preachy? What concrete kernel configuration delivers both, and what production overhead measurements should the engineer collect to validate the hybrid approach?",
+  "expected_topics": [
+    "ITS",
+    "senior-engineer",
+    "ftrace",
+    "CoreSight",
+    "ETM4",
+    "always-on-trace",
+    "hybrid-tracing",
+    "production-overhead",
+    "panic-trace",
+    "driver-language",
+    "trade-off-framing"
+  ],
+  "min_score": 4,
+  "tags": [
+    "bsp-knowledge-mentor",
+    "its-teaching",
+    "senior-engineer",
+    "ftrace-vs-coresight",
+    "hybrid-tracing"
+  ]
+}

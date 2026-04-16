@@ -1,0 +1,25 @@
+{
+  "id": "case_373",
+  "skill": "power-thermal-expert",
+  "input": "Boundary test: LPDDR5X-8533 minimum self-refresh entry latency. The JEDEC spec requires tCKESR (CKE-low setup before SRE) of 5ns at 8533. Our board measures tCKESR_actual=4.8ns under high temperature.\n\nIs 4.8ns within the spec margin? What is the consequence of marginal tCKESR violation: data corruption, missed self-refresh entry, or both? Which DDR PHY register exposes the actual measured timing for this parameter, and what is the recommended margin to add for thermal compensation?",
+  "expected_topics": [
+    "LPDDR5X",
+    "tCKESR",
+    "self-refresh-entry",
+    "JEDEC-spec",
+    "thermal-compensation",
+    "PHY-register",
+    "marginal-timing",
+    "data-corruption",
+    "JESD79-5B",
+    "boundary-condition"
+  ],
+  "min_score": 4,
+  "tags": [
+    "power-thermal-expert",
+    "boundary-test",
+    "lpddr5x-timing",
+    "tckesr",
+    "marginal-spec"
+  ]
+}

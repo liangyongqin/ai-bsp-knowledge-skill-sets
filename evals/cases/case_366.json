@@ -1,0 +1,26 @@
+{
+  "id": "case_366",
+  "skill": "bsp-knowledge-mentor",
+  "input": "Diagnose a complex device-tree issue spanning UFS 4.0, LPDDR5X, and CoreSight: 'After upgrading from kernel 6.6 to 6.12, the bootloader successfully passes DT to the kernel, but the kernel logs cascading probe failures: ufshcd-pltfrm probe defer, lpddr5x-mc probe defer, coresight-etm probe failure. Reverting to 6.6 works.'\n\nUse the Blackboard pattern. What kernel 6.7-6.12 device-tree binding changes could cascade into these three subsystems? Which agents (boot-debug, multimedia-camera, hardware-spec) should engage? How would you instrument 'probe defer chain' debugging across subsystems?",
+  "expected_topics": [
+    "Blackboard",
+    "device-tree",
+    "kernel-6.12",
+    "UFS-4.0",
+    "LPDDR5X",
+    "CoreSight",
+    "probe-defer",
+    "ufshcd-pltfrm",
+    "binding-change",
+    "cross-domain",
+    "subsystem-cascade"
+  ],
+  "min_score": 4,
+  "tags": [
+    "bsp-knowledge-mentor",
+    "blackboard",
+    "kernel-upgrade",
+    "probe-defer",
+    "dt-cascade"
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "id": "case_369",
+  "skill": "bsp-knowledge-mentor",
+  "input": "Coordination scenario: 'Our team is integrating a new camera sensor (CSI-2 v4.2 with EVS). Before we cut a tape-out, we want a Blackboard review across BSP domains.'\n\nSchedule the multi-agent review: \n  1. multimedia-camera-expert: V4L2/MIPI binding readiness\n  2. power-thermal-expert: LPDDR5X bandwidth headroom for EVS streaming\n  3. interrupt-virtualization-expert: GIC-700 SPI assignment for sensor IRQs\n  4. boot-debug-expert: device-tree review and CoreSight trace plan\nWhat is the synthesis output format? How does the mentor weight conflicting recommendations (e.g., camera asks for 8533 Mbps DRAM, power says cap at 7500 for thermal)?",
+  "expected_topics": [
+    "Blackboard",
+    "multi-agent-review",
+    "tape-out",
+    "MIPI-CSI-2",
+    "EVS",
+    "LPDDR5X",
+    "GIC-700",
+    "device-tree",
+    "CoreSight",
+    "synthesis",
+    "conflict-resolution",
+    "cross-domain"
+  ],
+  "min_score": 4,
+  "tags": [
+    "bsp-knowledge-mentor",
+    "blackboard",
+    "tape-out-review",
+    "multi-agent",
+    "design-review"
+  ]
+}

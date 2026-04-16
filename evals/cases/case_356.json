@@ -1,0 +1,26 @@
+{
+  "id": "case_356",
+  "skill": "boot-debug-expert",
+  "input": "We are bringing up a new SoC and the CoreSight ROM table walk fails \u2014 the kernel cannot enumerate any debug components. The DAP (Debug Access Port) responds to SWD/JTAG queries but the ROM table base register at 0x800000 returns 0xDEADBEEF.\n\nWalk through CoreSight ROM table debug: \n  1. Verify DAP idcode and version (ADIv5 vs ADIv6)\n  2. Confirm CoreSight power and clock domains are ungated\n  3. Check authentication signals (DBGEN, NIDEN, SPIDEN, SPNIDEN)\n  4. Verify the ROM table base in the integration manual matches\nWhat is the difference between an 'authenticated' debug session and self-hosted (Linux-driven) trace, and how do the authentication signals differ for each mode?",
+  "expected_topics": [
+    "CoreSight",
+    "ROM-table",
+    "DAP",
+    "ADIv5",
+    "ADIv6",
+    "DBGEN",
+    "NIDEN",
+    "SPIDEN",
+    "authentication-signals",
+    "debug-power-domain",
+    "self-hosted-trace"
+  ],
+  "min_score": 4,
+  "tags": [
+    "boot-debug-expert",
+    "coresight",
+    "rom-table",
+    "dap-debug",
+    "authentication-signals"
+  ]
+}

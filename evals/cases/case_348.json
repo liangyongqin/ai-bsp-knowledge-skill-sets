@@ -1,0 +1,26 @@
+{
+  "id": "case_348",
+  "skill": "multimedia-camera-expert",
+  "input": "UFS 4.0 ZNS (Zoned Namespace) is enabled to extend NAND endurance during video recording. F2FS is configured for the streaming zone but we see Zone Append failures every few hours.\n\nF2FS log:\n  ufs_zone_append: zone 0x42 write_pointer=0x100000\n  ufs_zone_append: write 0x10000 bytes failed (-EIO)\n  ufs: device reports zone state TRANSITIONING\n  f2fs: GC bypass attempted, fallback to copy GC\n\nWhy does a zone in TRANSITIONING state reject Zone Append? What is the F2FS interaction model with UFS 4.0 ZNS, and how does explicit zone RESET differ from implicit zone management? Should we configure a different segment size in F2FS to align with the UFS zone capacity?",
+  "expected_topics": [
+    "UFS-4.0",
+    "ZNS",
+    "Zone-Append",
+    "F2FS",
+    "zone-state",
+    "TRANSITIONING",
+    "implicit-zone-mgmt",
+    "F2FS-GC",
+    "segment-size",
+    "zone-capacity",
+    "JESD220F"
+  ],
+  "min_score": 4,
+  "tags": [
+    "multimedia-camera-expert",
+    "ufs-4.0-zns",
+    "f2fs",
+    "zone-append",
+    "video-recording"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "id": "case_365",
+  "skill": "bsp-knowledge-mentor",
+  "input": "A new BSP engineer (1 week experience) asks: 'The system hangs when I enable CoreSight ETM trace. Should I just disable trace?'\n\nApply ITS Socratic teaching at the application/driver boundary. The engineer is at the driver-engineer level (mentions kernel ETM driver). Do not give the answer. Lead them through:\n  1. Symptom restatement (what exactly hangs?)\n  2. Resource state probe (what does dmesg say?)\n  3. Hypothesis (what does ETM need to operate?)\n  4. Tool verification (which sysfs files reveal CoreSight power state?)\nAvoid giving the answer (clock/power domain ungated). Build the engineer's diagnostic thinking.",
+  "expected_topics": [
+    "Socratic",
+    "ITS",
+    "driver-engineer-level",
+    "CoreSight",
+    "ETM",
+    "clock-domain",
+    "power-domain",
+    "sysfs-probe",
+    "diagnostic-thinking",
+    "no-direct-answer"
+  ],
+  "min_score": 4,
+  "tags": [
+    "bsp-knowledge-mentor",
+    "socratic",
+    "its-teaching",
+    "junior-engineer",
+    "coresight-debug"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "id": "case_376",
+  "skill": "boot-debug-expert",
+  "input": "Edge case: CoreSight ETR is configured but the system has only 1MB of DRAM available for trace (extreme low-memory device). The recommended ETR buffer is 16-32MB.\n\nIs ETR usable with 1MB? What is the worst-case trace overrun behavior? Should we fall back to ETF-only configuration (64KB on-chip), and what trace-capture-window length does that limit us to under typical CPU instruction rate?\n\nWalk through the math: at 2GHz CPU, ~3 IPC, 1 byte per instruction encoded ETM4 trace, what trace-window does 64KB ETF buffer?",
+  "expected_topics": [
+    "CoreSight",
+    "ETR",
+    "ETF",
+    "low-memory",
+    "trace-overrun",
+    "ETF-only",
+    "trace-window",
+    "instruction-rate",
+    "IPC",
+    "boundary-condition"
+  ],
+  "min_score": 4,
+  "tags": [
+    "boot-debug-expert",
+    "boundary-test",
+    "coresight",
+    "low-memory-trace",
+    "etf-only"
+  ]
+}

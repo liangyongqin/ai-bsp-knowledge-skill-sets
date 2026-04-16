@@ -1,0 +1,26 @@
+{
+  "id": "case_354",
+  "skill": "interrupt-virtualization-expert",
+  "input": "When a watchdog NMI fires we need to halt all 8 CPU cores simultaneously and dump per-CPU ETM trace. We use CTI (Cross Trigger Interface) to broadcast halt across the cluster.\n\nWhat is the relationship between the per-CPU CTI, the cluster-level CTM (Cross Trigger Matrix), and external debug halt requests? How are trigger channels (input vs output) configured in CTICONTROL, CTITRIGINEN, CTITRIGOUTEN registers? What sequence enables 'halt on NMI' across all PEs in a Linux production kernel?",
+  "expected_topics": [
+    "CoreSight",
+    "CTI",
+    "CTM",
+    "cross-trigger",
+    "CTICONTROL",
+    "CTITRIGINEN",
+    "CTITRIGOUTEN",
+    "halt-on-nmi",
+    "external-debug",
+    "cluster-halt",
+    "NMI"
+  ],
+  "min_score": 4,
+  "tags": [
+    "interrupt-virtualization-expert",
+    "coresight",
+    "cti-ctm",
+    "cluster-halt",
+    "nmi-debug"
+  ]
+}

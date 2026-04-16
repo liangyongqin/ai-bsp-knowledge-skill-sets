@@ -1,0 +1,26 @@
+{
+  "id": "case_375",
+  "skill": "multimedia-camera-expert",
+  "input": "Edge case: UFS 4.0 with a single LU (Logical Unit) versus the typical 4-LU partition layout (boot/main/RPMB/well-known). On a single-LU device, can we achieve the JEDEC theoretical 23 Gbps per lane HS-G5 throughput, or is multi-LU partitioning required for queue parallelism?\n\nWhat is the host-side queue depth limit per LU vs total host queue depth in UFSHCI v4.0? How does the multi-circular queue (MCQ) feature interact with single-LU configurations?",
+  "expected_topics": [
+    "UFS-4.0",
+    "Logical-Unit",
+    "single-LU",
+    "queue-depth",
+    "MCQ",
+    "multi-circular-queue",
+    "HS-G5",
+    "JEDEC",
+    "JESD220F",
+    "UFSHCI-v4.0",
+    "boundary-condition"
+  ],
+  "min_score": 4,
+  "tags": [
+    "multimedia-camera-expert",
+    "boundary-test",
+    "ufs-4.0",
+    "single-lu",
+    "mcq"
+  ]
+}

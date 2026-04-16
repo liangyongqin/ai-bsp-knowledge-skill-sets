@@ -1,0 +1,25 @@
+{
+  "id": "case_346",
+  "skill": "boot-debug-expert",
+  "input": "UFS 4.0 device fails to enumerate during cold boot on 1 in 50 units. Failure mode: M-PHY Gen4 link initialization succeeds at HS-G3 but fails to negotiate HS-G5 boost.\n\nBootloader UFS log:\n  [ufs] UIC link startup: OK\n  [ufs] HS-G3 negotiation: OK\n  [ufs] HS-G5 boost request sent\n  [ufs] DME_GET PA_PWRMODE timeout (200ms)\n  [ufs] fallback to HS-G3, performance mode degraded\n\nWhat in the M-PHY Gen4 link training would cause HS-G5 boost negotiation to fail intermittently? What role does RX squelch detection and CLK lane termination play in HS-G5 negotiation? Which UFSHCI v4.0 register exposes the PA_PWRMODE state machine?",
+  "expected_topics": [
+    "UFS-4.0",
+    "M-PHY-Gen4",
+    "HS-G5",
+    "DME_GET",
+    "PA_PWRMODE",
+    "UIC-link-startup",
+    "RX-squelch",
+    "boost-mode",
+    "boot-enumeration",
+    "UFSHCI-v4.0"
+  ],
+  "min_score": 4,
+  "tags": [
+    "boot-debug-expert",
+    "ufs-4.0",
+    "m-phy-gen4",
+    "hs-g5-boost",
+    "cold-boot-failure"
+  ]
+}

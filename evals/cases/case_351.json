@@ -1,0 +1,26 @@
+{
+  "id": "case_351",
+  "skill": "boot-debug-expert",
+  "input": "We are debugging an intermittent kernel hang during heavy I/O. We want to capture an instruction trace of the last few hundred microseconds before the hang using CoreSight ETM4 + ETF + ETR. The ETF has 64KB; the ETR is configured to write to a 16MB DRAM buffer.\n\nWalk through the configuration sequence: \n  1. CTI cross-trigger to halt all CPUs simultaneously\n  2. Stop ETM trace generation\n  3. Drain the ETF\n  4. Decode the ETR DRAM buffer using perf script\nWhich Linux Documentation/trace/coresight/ files describe the sysfs configuration interface, and what is the role of TRBE in modern ARMv9 cores when capturing self-hosted trace?",
+  "expected_topics": [
+    "CoreSight",
+    "ETM4",
+    "ETF",
+    "ETR",
+    "CTI",
+    "TRBE",
+    "perf-script",
+    "self-hosted-trace",
+    "cross-trigger",
+    "DRAM-buffer",
+    "instruction-trace"
+  ],
+  "min_score": 4,
+  "tags": [
+    "boot-debug-expert",
+    "coresight",
+    "etm-etf-etr",
+    "trace-capture",
+    "kernel-hang-debug"
+  ]
+}

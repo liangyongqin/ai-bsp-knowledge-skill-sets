@@ -1,0 +1,26 @@
+{
+  "id": "case_343",
+  "skill": "multimedia-camera-expert",
+  "input": "UFS 4.0 (HS-G5) storage subsystem stalls during 8K60 RAW recording. The UFS host controller (UFSHCI v4.0) reports queue full, and the camera pipeline drops to RAW10 from RAW12.\n\niostat -x 1:\n  /dev/sda  rkB/s=0  wkB/s=2300000  await=85ms  %util=100\n  ufs_qdepth: max=32, in_flight=32 sustained\n  ufs_temp: 78C (host), 82C (device)\n  HPB hits: 12% (cold cache, recording pattern)\n\nWhy is the UFS 4.0 sustained write throughput collapsing despite HS-G5 advertising 23 Gbps per lane? What is the role of WriteBooster in UFS 4.0, and how does HPB (Host Performance Booster) factor into sequential write performance? What thermal interaction exists between the M-PHY Gen4 PHY and the NAND die?",
+  "expected_topics": [
+    "UFS-4.0",
+    "UFSHCI-v4.0",
+    "HS-G5",
+    "M-PHY-Gen4",
+    "WriteBooster",
+    "HPB",
+    "ufs-thermal",
+    "queue-depth",
+    "8K-recording",
+    "JESD220F",
+    "host-queue-depth"
+  ],
+  "min_score": 4,
+  "tags": [
+    "multimedia-camera-expert",
+    "ufs-4.0",
+    "writebooster",
+    "8k-recording",
+    "storage-stall"
+  ]
+}

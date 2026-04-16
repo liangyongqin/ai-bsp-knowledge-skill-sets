@@ -1,0 +1,26 @@
+{
+  "id": "case_362",
+  "skill": "bsp-knowledge-mentor",
+  "input": "An algorithm engineer reports: 'Inference latency on the on-device LLM spikes from 80ms to 350ms intermittently. Memory bandwidth profiling shows we are not bound on bandwidth. NPU utilization stays at 95%.'\n\nHow do you translate this complaint into a BSP investigation? Walk through your Socratic guidance: \n  1. What hypotheses span across the BSP / algorithm boundary?\n  2. Which Blackboard agents should engage (power-thermal? interrupt-virt?)?\n  3. How do you re-frame 'inference latency spike' in terms of LPDDR5X self-refresh exits, NPU IRQ coalescing, or SCP firmware preemption?",
+  "expected_topics": [
+    "Blackboard",
+    "Socratic",
+    "algorithm-engineer",
+    "inference-latency",
+    "LPDDR5X",
+    "self-refresh-exit",
+    "NPU-IRQ",
+    "SCP-preemption",
+    "cross-department",
+    "terminology-translation",
+    "BSP-translation"
+  ],
+  "min_score": 4,
+  "tags": [
+    "bsp-knowledge-mentor",
+    "socratic",
+    "algo-translation",
+    "inference-latency",
+    "cross-department"
+  ]
+}

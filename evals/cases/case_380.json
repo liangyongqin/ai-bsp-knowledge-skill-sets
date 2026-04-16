@@ -1,0 +1,29 @@
+{
+  "id": "case_380",
+  "skill": "bsp-knowledge-mentor",
+  "input": "Cross-domain end-to-end exercise: a new BSP team member is given this incomplete bug report: \n  'Phone gets warm. Performance feels sluggish. Sometimes camera doesn't open. We think it's the kernel.'\n\nApply the full mentor workflow: \n  1. Symptom restatement (what 'warm' means measurably)\n  2. Resource probe (what telemetry to capture)\n  3. Hypothesis fan-out (which Blackboard agents to engage)\n  4. Convergence (how to narrow from 'kernel issue' to specific subsystem)\n  5. Cross-department output (what to tell PM / QA in business terms)\n\nDemonstrate the full ITS+Blackboard+terminology-translation flow on this vague-but-realistic bug report. Do not solve the bug \u2014 teach the engineer the diagnostic process.",
+  "expected_topics": [
+    "ITS",
+    "Blackboard",
+    "Socratic",
+    "symptom-restatement",
+    "resource-probe",
+    "hypothesis-fanout",
+    "convergence",
+    "business-translation",
+    "diagnostic-process",
+    "thermal",
+    "performance",
+    "camera-open",
+    "cross-domain",
+    "end-to-end"
+  ],
+  "min_score": 4,
+  "tags": [
+    "bsp-knowledge-mentor",
+    "end-to-end",
+    "full-workflow",
+    "vague-bug-report",
+    "teaching"
+  ]
+}

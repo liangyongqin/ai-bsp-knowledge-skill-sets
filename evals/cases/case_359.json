@@ -1,0 +1,25 @@
+{
+  "id": "case_359",
+  "skill": "interrupt-virtualization-expert",
+  "input": "We need to capture a virtualized guest's instruction trace from the host using CoreSight ETE + TRBE. The host runs Linux 6.10 with KVM, and the guest runs an unmodified RTOS.\n\nWhat is the host-side ETE configuration to filter trace to a specific vCPU thread? How does ETE.EXLEVEL_NS_S (exception level filter) interact with EL1/EL2 boundaries? Does TRBE need EL2 access mode for cross-VM trace, and what is the role of HCR_EL2.TID4 trap configuration?",
+  "expected_topics": [
+    "CoreSight",
+    "ETE",
+    "TRBE",
+    "KVM",
+    "EXLEVEL_NS_S",
+    "EL2",
+    "HCR_EL2",
+    "vCPU-trace",
+    "exception-level-filter",
+    "guest-trace"
+  ],
+  "min_score": 4,
+  "tags": [
+    "interrupt-virtualization-expert",
+    "coresight",
+    "ete-kvm",
+    "trbe-el2",
+    "guest-trace"
+  ]
+}

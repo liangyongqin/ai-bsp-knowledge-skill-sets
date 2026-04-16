@@ -1,0 +1,27 @@
+{
+  "id": "case_361",
+  "skill": "bsp-knowledge-mentor",
+  "input": "We are debugging a flagship phone that reboots when the user records 8K60 RAW video for >3 minutes. The reboot is silent \u2014 no kernel panic in /proc/last_kmsg, no dmesg trail. Three subsystems are involved: LPDDR5X-8533 (peak bandwidth), UFS 4.0 HS-G5 (sustained writes), and the camera ISP pipeline (8K RAW capture).\n\nInitial telemetry:\n  PMIC: VDD2H droop to 0.95V (target 1.05V) at minute 2:30\n  UFS: WriteBooster turbo flush at minute 2:45 (220ms stall)\n  Camera: V4L2 buffer queue empty at minute 2:46\n  Last sample: thermal_zone0=98C\n\nApply the Blackboard pattern. Which domain experts should activate? What hypothesis ordering makes physical sense given the telemetry? How would you use CoreSight ETR with pstore to capture the next occurrence's instruction trace across the silent reboot?",
+  "expected_topics": [
+    "Blackboard",
+    "LPDDR5X",
+    "UFS-4.0",
+    "8K-recording",
+    "VDD2H-droop",
+    "WriteBooster",
+    "thermal",
+    "silent-reboot",
+    "pstore",
+    "CoreSight",
+    "cross-domain",
+    "PMIC-transient"
+  ],
+  "min_score": 4,
+  "tags": [
+    "bsp-knowledge-mentor",
+    "blackboard",
+    "8k-reboot",
+    "lpddr5x-ufs",
+    "cross-domain"
+  ]
+}

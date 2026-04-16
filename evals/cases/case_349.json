@@ -1,0 +1,25 @@
+{
+  "id": "case_349",
+  "skill": "power-thermal-expert",
+  "input": "During graphics-heavy gameplay we measured LPDDR5X bandwidth at 51.2 GB/s (theoretical peak for HS-G5). The thermal envelope can only sustain 32 GB/s without ambient cooling. We need a runtime cap that pegs LPDDR5X to a lower speed gear when the SoC die temperature exceeds 65C.\n\nWhere does the Linux memory devfreq governor sit in the LPDDR5X clock tree? Can we dynamically demote the LPDDR5X data rate from HS-G5 (8533) to HS-G4 (7500) without re-training? What is the latency impact of an in-flight gear demotion vs a full re-train?",
+  "expected_topics": [
+    "LPDDR5X",
+    "devfreq",
+    "memory-bandwidth",
+    "speed-gear",
+    "thermal-envelope",
+    "HS-G5",
+    "HS-G4",
+    "in-flight-demotion",
+    "re-training-latency",
+    "clock-tree"
+  ],
+  "min_score": 4,
+  "tags": [
+    "power-thermal-expert",
+    "lpddr5x",
+    "devfreq",
+    "thermal-cap",
+    "speed-gear-demotion"
+  ]
+}

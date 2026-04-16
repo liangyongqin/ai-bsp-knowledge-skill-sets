@@ -1,0 +1,27 @@
+{
+  "id": "case_382",
+  "skill": "power-thermal-expert",
+  "input": "LPDDR6 on-die ECC (ODECC) is mandatory per JESD209-6 (unlike LPDDR5 where it was optional). Our EDAC driver is logging a rising count of correctable single-bit errors concentrated on one sub-channel:\n\n  EDAC DRAM: Correctable ECC error, page=0x123456, syndrome=0x42\n  EDAC DRAM: Correctable ECC error count 5000 in 60s, sub-channel=2\n\nNo uncorrectable errors yet. Is this a warranty-return indicator? What MR (mode register) exposes the error counter, and how should the driver integrate with Linux drivers/edac/ to support page offlining before UEs occur? When does LPDDR6 differ from LPDDR5X handling here?",
+  "expected_topics": [
+    "LPDDR6",
+    "ODECC",
+    "on-die-ECC",
+    "EDAC",
+    "SECDED",
+    "MR30",
+    "page-offlining",
+    "correctable-errors",
+    "sub-channel",
+    "mandatory-vs-optional",
+    "LPDDR5-comparison",
+    "warranty-indicator"
+  ],
+  "min_score": 4,
+  "tags": [
+    "power-thermal-expert",
+    "lpddr6",
+    "edac",
+    "odecc",
+    "memory-reliability"
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "id": "case_388",
+  "skill": "boot-debug-expert",
+  "input": "Vendor query commands to a UFS 4.1 device are suddenly failing after the device went through a factory RMA and was re-flashed:\n\n  ufs: vendor query rejected, RPMB authentication failure, result=0x0007\n\nUFS 4.1 extends RPMB authentication to all vendor-specific commands (was previously limited to RPMB block writes). What HMAC-SHA256 key mechanism is involved, where is the key stored on the HLOS side, and why does factory refurbishment often break it? What is the provisioning remediation path if the original RPMB key blob was not preserved?",
+  "expected_topics": [
+    "UFS-4.1",
+    "RPMB",
+    "RPMB-Auth",
+    "HMAC-SHA256",
+    "vendor-query",
+    "HLOS-keyring",
+    "factory-refurbishment",
+    "key-provisioning",
+    "fuse-burn",
+    "keyblob",
+    "JESD220G",
+    "security-extension"
+  ],
+  "min_score": 4,
+  "tags": [
+    "boot-debug-expert",
+    "ufs-4-1",
+    "rpmb",
+    "security",
+    "factory-rma"
+  ]
+}

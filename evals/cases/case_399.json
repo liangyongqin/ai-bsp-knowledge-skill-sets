@@ -1,0 +1,27 @@
+{
+  "id": "case_399",
+  "skill": "multimedia-camera-expert",
+  "input": "(BOUNDARY TEST) UFS 4.1 HID (Host-Initiated Defragmentation) is idle-triggered in our BSP. The camera app is in foreground and recording 4K60 video while HID starts in background. We observe:\n\n  Frame drop bursts ~every 200ms during first 30s of HID\n\nIs it correct to run HID concurrently with an active video recording? What is the proper hid_enable gating policy vs camera-HAL state? Should the block layer I/O scheduler have an HID-aware priority policy? If HID must be interrupted mid-progress, what is the resumption contract?",
+  "expected_topics": [
+    "UFS-4.1",
+    "HID",
+    "4K60-video",
+    "recording-concurrency",
+    "hid_enable",
+    "camera-HAL-state",
+    "io-scheduler",
+    "priority-policy",
+    "HID-interruption",
+    "resumption",
+    "frame-drop",
+    "idle-gate"
+  ],
+  "min_score": 4,
+  "tags": [
+    "multimedia-camera-expert",
+    "ufs-4-1",
+    "hid",
+    "boundary-test",
+    "recording-concurrency"
+  ]
+}

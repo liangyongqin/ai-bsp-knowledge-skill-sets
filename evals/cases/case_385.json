@@ -1,0 +1,27 @@
+{
+  "id": "case_385",
+  "skill": "multimedia-camera-expert",
+  "input": "Our flagship camera app does burst capture at 30 fps RAW-16 to UFS. On an engineering prototype with UFS 4.1 (JESD220G), we see a new pattern: every ~3 seconds, write latency spikes to ~40ms on a single IO, causing the burst to drop 2-3 frames.\n\nUFS 4.0 WriteBooster would fully stall the pipeline on full-flush. UFS 4.1 adds WriteBooster Partial Flush (WBPF). The sysfs for WBPF is unfamiliar to us. How does WBPF differ semantically from UFS 4.0's flush model, what UFSHCI 4.1 register controls it (UFSHCI-41-WB-CFG), and how should the camera HAL coordinate with the block layer to avoid the periodic spike?",
+  "expected_topics": [
+    "UFS-4.1",
+    "JESD220G",
+    "WBPF",
+    "WriteBooster-Partial-Flush",
+    "WriteBooster-Buffer-Resize",
+    "WBBR",
+    "UFSHCI-4.1",
+    "camera-burst",
+    "write-latency-spike",
+    "sysfs",
+    "camera-HAL",
+    "block-layer"
+  ],
+  "min_score": 4,
+  "tags": [
+    "multimedia-camera-expert",
+    "ufs-4-1",
+    "wbpf",
+    "camera-burst",
+    "write-latency"
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "id": "case_389",
+  "skill": "power-thermal-expert",
+  "input": "We are upgrading a BSP from Linux 6.12 to Linux 6.18 LTS (released Nov 2025). The 6.18 thermal framework step-wise governor was updated to reduce the cooling level earlier when the thermal zone temperature is dropping. Post-upgrade, our sustained-heavy-load test reveals NEW behavior:\n\n  Cooling clamp drops faster, but we see frame-rate judder under 60 fps gaming.\n\nWe suspect governor oscillation. How does the updated step_wise behavior interact with thermal-zone trip-point hysteresis width, and what device-tree property should we tune to smooth the bursty-workload case? Which thermal trip-point hysteresis range is recommended?",
+  "expected_topics": [
+    "Linux-6.18",
+    "step-wise-governor",
+    "thermal-zone",
+    "trip-point",
+    "hysteresis",
+    "cooling-level",
+    "frame-rate-judder",
+    "sustained-load",
+    "governor-oscillation",
+    "device-tree",
+    "drivers/thermal/gov_step_wise.c",
+    "bursty-workload"
+  ],
+  "min_score": 4,
+  "tags": [
+    "power-thermal-expert",
+    "linux-6.18",
+    "step-wise-governor",
+    "hysteresis",
+    "oscillation"
+  ]
+}

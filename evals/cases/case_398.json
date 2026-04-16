@@ -1,0 +1,27 @@
+{
+  "id": "case_398",
+  "skill": "power-thermal-expert",
+  "input": "(NEGATIVE TEST) A colleague asks: 'On LPDDR6, can we disable on-die ECC (ODECC) to get more usable DRAM bandwidth? The mode-register bit is there, so we should be able to flip it.'\n\nWhy is this request incorrect per JESD209-6? What is the difference between 'mandatory feature per spec' and 'enable bit exists in MR30'? What warranty, reliability, and JEDEC compliance implications follow? Should the mentor approve an experimental disable for a lab-only triage session, and if so, what gate conditions are required?",
+  "expected_topics": [
+    "LPDDR6",
+    "ODECC",
+    "JESD209-6",
+    "mandatory-feature",
+    "MR30",
+    "JEDEC-compliance",
+    "warranty",
+    "reliability",
+    "triage-disable",
+    "lab-only-gating",
+    "negative-guidance",
+    "refuse-with-reason"
+  ],
+  "min_score": 4,
+  "tags": [
+    "power-thermal-expert",
+    "lpddr6",
+    "odecc",
+    "negative-test",
+    "compliance"
+  ]
+}

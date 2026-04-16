@@ -1,0 +1,27 @@
+{
+  "id": "case_392",
+  "skill": "power-thermal-expert",
+  "input": "On a big.LITTLE SoC (4× prime + 4× big + 4× little), after enabling a sched_ext BPF scheduler on Linux 6.18 with allowed_cpus masks, we see:\n\n  Regression: ML inference throughput -22% on camera inference path\n  Regression: Frame-pacing p99 +15 ms on game launch\n\nThe BPF scheduler is using plain CPU masks without cluster topology awareness. Which bpf_cpumask_* helpers and cpu_capacity_orig reads are needed to make a topology-aware select_cpu hook? Why does the naive mask-only approach regress on heterogeneous clusters, and which in-tree reference scheduler demonstrates the correct pattern?",
+  "expected_topics": [
+    "sched_ext",
+    "allowed_cpus",
+    "big.LITTLE",
+    "bpf_cpumask",
+    "cpu_capacity_orig",
+    "cluster-topology",
+    "select_cpu",
+    "heterogeneous-cluster",
+    "scx_rusty",
+    "scx_lavd",
+    "energy-model",
+    "topology-awareness"
+  ],
+  "min_score": 4,
+  "tags": [
+    "power-thermal-expert",
+    "sched_ext",
+    "topology",
+    "big.LITTLE",
+    "bpf"
+  ]
+}

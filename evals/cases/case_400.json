@@ -1,0 +1,34 @@
+{
+  "id": "case_400",
+  "skill": "bsp-knowledge-mentor",
+  "input": "(END-TO-END EXERCISE — MILESTONE CASE) A BSP team lead hands you this summary after a hard on-call week:\n\n  'We stabilized LPDDR6 on our new SoC. Two weeks in, we hit:\n    1. ECC counter spike on sub-channel 2 (tracked to VDD2H ripple during DVFS)\n    2. UFS 4.1 WBPF flush that caused a camera burst drop (tracked to HAL integration gap)\n    3. sched_ext BPF watchdog trip on prime cluster (tracked to a select_cpu infinite loop)\n    4. Qualcomm Glymur TSENS bias (tracked to missing nvmem-cell propagation in BL2).\n\n  All four are fixed. Management wants a post-mortem + lessons-learned meeting. Please guide us through writing it.'\n\nApply the full mentor workflow. Structure the post-mortem: symptom-restatement per issue, resource-probe chain, hypothesis-fanout across domains, convergence, and a cross-department summary. Recommend what to sediment into the BSP knowledge graph (FailureModes, new eval cases) so next team doesn't repeat the same path.",
+  "expected_topics": [
+    "LPDDR6",
+    "UFS-4.1",
+    "sched_ext",
+    "Glymur",
+    "ECC-spike",
+    "WBPF",
+    "watchdog-trip",
+    "TSENS-bias",
+    "post-mortem",
+    "lessons-learned",
+    "knowledge-sedimentation",
+    "FailureMode-nodes",
+    "eval-case-creation",
+    "cross-department-summary",
+    "mentor-workflow"
+  ],
+  "min_score": 4,
+  "tags": [
+    "bsp-knowledge-mentor",
+    "end-to-end",
+    "post-mortem",
+    "sedimentation",
+    "lpddr6",
+    "ufs-4-1",
+    "sched_ext",
+    "glymur",
+    "milestone"
+  ]
+}

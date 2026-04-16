@@ -1,0 +1,27 @@
+{
+  "id": "case_396",
+  "skill": "boot-debug-expert",
+  "input": "On a Renesas RZ/G3E platform on Linux 6.18, the new rcar-gen4-thermal driver is not probing. dmesg shows:\n\n  rcar-gen4-thermal: probe failed; no compatible TSC found\n  rcar-gen4-thermal: probed 0 sensors out of expected 2\n\nThe RZ/G3E has 2 TSC instances per SoC. What device-tree compatible string matches the RZ/G3 family binding, and what clocks / power-domain entries must the DT node contain? Which upstream commit added RZ/G3E support, and how do we compare against a known-good RZ/G3S DT as a reference?",
+  "expected_topics": [
+    "Linux-6.18",
+    "Renesas",
+    "RZ/G3E",
+    "RZ/G3S",
+    "rcar-gen4-thermal",
+    "TSC",
+    "thermal-sensor-controller",
+    "device-tree",
+    "compatible-string",
+    "clocks",
+    "power-domains",
+    "probe-failure"
+  ],
+  "min_score": 4,
+  "tags": [
+    "boot-debug-expert",
+    "linux-6.18",
+    "renesas",
+    "rz-g3e",
+    "device-tree"
+  ]
+}

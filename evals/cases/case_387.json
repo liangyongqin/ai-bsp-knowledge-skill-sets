@@ -1,0 +1,27 @@
+{
+  "id": "case_387",
+  "skill": "multimedia-camera-expert",
+  "input": "UFS 4.1 introduces Host-Initiated Defragmentation (HID). After 6 months of heavy recording + deletion on a long-soak device, the read-tail latency has grown:\n\n  p99 random-read latency: 2.1 ms → 8.7 ms\n\nWe want to trigger HID periodically during device idle. What sysfs controls enable and trigger HID (hid_enable, hid_progress), what are the failure modes (FM-UFS41-HID-Timeout) if the device refuses, and how do we avoid running HID on a device already in a critically worn state? Is HID safe to run while the camera is recording?",
+  "expected_topics": [
+    "UFS-4.1",
+    "HID",
+    "Host-Initiated-Defragmentation",
+    "hid_enable",
+    "hid_progress",
+    "read-tail-latency",
+    "p99-latency",
+    "idle-window",
+    "wear-state",
+    "media-health",
+    "defrag-safety",
+    "camera-recording-concurrency"
+  ],
+  "min_score": 4,
+  "tags": [
+    "multimedia-camera-expert",
+    "ufs-4-1",
+    "hid",
+    "defragmentation",
+    "read-tail-latency"
+  ]
+}

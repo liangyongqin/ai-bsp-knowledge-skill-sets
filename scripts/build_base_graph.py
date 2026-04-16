@@ -67,6 +67,9 @@ INGEST_SCRIPTS = [
     "arm-gic-nmi-v42.py",
     "arm-coresight-full.py",       # CoreSight trace: ETF/ETR/ETS/STM/TPIU/CTI
     "linux-lpddr5x-ufs4.py",       # LPDDR5X (JESD79-5B) + UFS 4.0 (JESD220F)
+    "jedec-lpddr6.py",             # LPDDR6 (JESD209-6, Jul 2025)
+    "jedec-ufs4-1.py",             # UFS 4.1 (JESD220G, Jan 2025) + UFSHCI 4.1
+    "linux-6-18-lts-updates.py",   # Linux 6.18 LTS: sched_ext, Glymur, Renesas thermal
     "fix-orphan-connectivity.py",  # links orphan nodes from all prior scripts
     "fix-orphan-connectivity-2.py",  # remaining orphans + sparse rels + hw-spec FMs
     "fix-orphan-connectivity-3.py",  # must run last — final 2 orphan Components + 5 disconnected FMs

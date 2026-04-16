@@ -1,0 +1,27 @@
+{
+  "id": "case_390",
+  "skill": "power-thermal-expert",
+  "input": "Snapdragon X2 Elite ('Glymur') BSP on Linux 6.18 shows the thermal zone temperatures reading ~15-20°C higher than an IR-camera measurement of the die surface:\n\n  thermal_zone7 temp: 97000 (i.e. 97°C)   # IR camera: 79°C\n  thermal_zone9 temp: 102000 (i.e. 102°C)  # IR camera: 82°C\n\nThis aggressive TSENS bias is causing the governor to clamp CPU freq too early. The qcom-tsens driver on 6.18 added Glymur support. What manufacturing-time calibration mechanism is used, and why does the bootloader's failure to propagate calibration data make the TSENS readings raw ADC counts instead of °C? What device-tree property is involved?",
+  "expected_topics": [
+    "qcom-tsens",
+    "Glymur",
+    "Snapdragon-X2-Elite",
+    "Linux-6.18",
+    "TSENS-calibration",
+    "nvmem-cells",
+    "device-tree",
+    "fuse-calibration",
+    "bootloader",
+    "raw-ADC",
+    "temperature-bias",
+    "thermal-clamp"
+  ],
+  "min_score": 4,
+  "tags": [
+    "power-thermal-expert",
+    "qcom-tsens",
+    "glymur",
+    "calibration",
+    "linux-6.18"
+  ]
+}

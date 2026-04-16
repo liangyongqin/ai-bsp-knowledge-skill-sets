@@ -1,0 +1,30 @@
+{
+  "id": "case_393",
+  "skill": "bsp-knowledge-mentor",
+  "input": "A junior driver-level engineer reports: 'We moved to LPDDR6 + UFS 4.1 + Linux 6.18 on one SoC as a triple-feature uplift. Now we see random-looking issues: occasional ECC errors, camera burst stutter, and a few sched_ext watchdog trips. PM wants to know ETA.'\n\nApply the Blackboard convergence approach. How do you decompose this into single-subsystem diagnostic workstreams (LPDDR6 MC, UFS 4.1 WB, sched_ext), what Socratic questions separate 'related issues' from 'coincident issues', and how do you communicate uncertainty to PM without overcommitting to an ETA?",
+  "expected_topics": [
+    "Blackboard",
+    "LPDDR6",
+    "UFS-4.1",
+    "sched_ext",
+    "Linux-6.18",
+    "Socratic",
+    "decomposition",
+    "workstreams",
+    "triple-feature-uplift",
+    "PM-communication",
+    "ETA-uncertainty",
+    "multi-domain",
+    "convergence"
+  ],
+  "min_score": 4,
+  "tags": [
+    "bsp-knowledge-mentor",
+    "blackboard",
+    "multi-domain",
+    "lpddr6",
+    "ufs-4-1",
+    "sched_ext",
+    "linux-6.18"
+  ]
+}

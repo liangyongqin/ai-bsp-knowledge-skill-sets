@@ -1,0 +1,27 @@
+{
+  "id": "case_395",
+  "skill": "bsp-knowledge-mentor",
+  "input": "An algorithm-level engineer asks: 'Our on-device LLM inference throughput regressed 8% after LPDDR6 bring-up. Is there a LPDDR6 parameter I should tune?'\n\nApply the learner-level detection rule. Respond at the algorithm level (not driver-level). What Roofline-style reasoning connects LPDDR6's 4×24-bit sub-channel concurrency to inference memory-access patterns? What telemetry (perf counters, ftrace, pmu events) would let the algorithm engineer tell whether the regression is memory-bound or compute-bound? Do NOT jump into MC / PHY register tuning.",
+  "expected_topics": [
+    "LPDDR6",
+    "LLM-inference",
+    "algorithm-level",
+    "learner-level-detection",
+    "Roofline",
+    "memory-bound",
+    "compute-bound",
+    "sub-channel-concurrency",
+    "perf-counters",
+    "ftrace",
+    "pmu-events",
+    "no-register-tuning"
+  ],
+  "min_score": 4,
+  "tags": [
+    "bsp-knowledge-mentor",
+    "learner-level",
+    "algorithm-layer",
+    "lpddr6",
+    "llm-inference"
+  ]
+}

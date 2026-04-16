@@ -1,0 +1,27 @@
+{
+  "id": "case_381",
+  "skill": "power-thermal-expert",
+  "input": "We are bringing up LPDDR6 (JEDEC JESD209-6, July 2025) on a next-gen flagship SoC, running at 14400 MT/s. During PHY training the bootloader logs:\n\n  [boot] LPDDR6 PHY training failed at 14.4 GT/s; fallback to 12.0 GT/s\n\nThe fallback succeeds but we lose 20% memory bandwidth, which hurts AI inference throughput. VDD2H is 1.00V and VDD2L is 0.95V per JEDEC. What are the likely root-cause categories? Which JEDEC-mandated supplies and per-sub-channel signals should we verify? How does LPDDR6's 4×24-bit sub-channel topology constrain PCB trace-length matching vs LPDDR5X?",
+  "expected_topics": [
+    "LPDDR6",
+    "JESD209-6",
+    "PHY-training",
+    "14400-MT/s",
+    "sub-channel",
+    "24-bit",
+    "VDD2H",
+    "VDD2L",
+    "ZQ-calibration",
+    "trace-length-matching",
+    "PCB-signal-integrity",
+    "speed-bin-fallback"
+  ],
+  "min_score": 4,
+  "tags": [
+    "power-thermal-expert",
+    "lpddr6",
+    "phy-training",
+    "pcb-si",
+    "memory-bringup"
+  ]
+}

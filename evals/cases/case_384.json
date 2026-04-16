@@ -1,0 +1,27 @@
+{
+  "id": "case_384",
+  "skill": "power-thermal-expert",
+  "input": "LPDDR6 introduces Command/Address parity (CAPAR) checking as a NEW feature vs LPDDR5X. Under heavy CPU DVFS ramp-up (big cluster jumping from 700 MHz to 2.8 GHz in ~200 µs), we see:\n\n  [LPDDR6 MC] CA parity error count 1024 in 1s; replaying\n  [LPDDR6 MC] CA parity error count 3200 in 1s; replaying\n\nThe system does not crash (MC replays the commands), but memory bandwidth degrades measurably. What PDN (Power Distribution Network) characteristic typically correlates with CAPAR storms during DVFS transitions? How is MR31 used to enable/disable the replay-on-error feature, and when would you temporarily disable it for triage?",
+  "expected_topics": [
+    "LPDDR6",
+    "CAPAR",
+    "CA-parity",
+    "MR31",
+    "DVFS-transient",
+    "PDN-ripple",
+    "VDD1-noise",
+    "command-replay",
+    "MC-replay",
+    "bandwidth-degradation",
+    "PCB-impedance",
+    "slew-rate"
+  ],
+  "min_score": 4,
+  "tags": [
+    "power-thermal-expert",
+    "lpddr6",
+    "capar",
+    "pdn",
+    "dvfs"
+  ]
+}

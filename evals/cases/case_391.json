@@ -1,0 +1,27 @@
+{
+  "id": "case_391",
+  "skill": "power-thermal-expert",
+  "input": "We want to deploy a custom sched_ext BPF scheduler on Linux 6.18 LTS for a flagship mobile SoC with big/little/prime clusters. On first load test we see:\n\n  [scx] sched_ext: BPF scheduler watchdog timeout; ejecting scx_sched\n  [scx] Reverting to CFS\n\nThe kernel auto-recovers but the scheduler drops off. What SCX_WATCHDOG_MAX_TIMEOUT constraint must the BPF program honor? What is the recommended bring-up pattern (compare against scx_rusty / scx_lavd reference implementations), and what ftrace / bpftool commands capture the last dispatched state before watchdog trip?",
+  "expected_topics": [
+    "sched_ext",
+    "scx_sched",
+    "Linux-6.18",
+    "BPF-scheduler",
+    "SCX_WATCHDOG_MAX_TIMEOUT",
+    "watchdog-panic",
+    "scx_rusty",
+    "scx_lavd",
+    "bpftool",
+    "select_cpu",
+    "dispatch",
+    "CFS-fallback"
+  ],
+  "min_score": 4,
+  "tags": [
+    "power-thermal-expert",
+    "sched_ext",
+    "linux-6.18",
+    "bpf-scheduler",
+    "watchdog"
+  ]
+}

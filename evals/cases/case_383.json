@@ -1,0 +1,27 @@
+{
+  "id": "case_383",
+  "skill": "boot-debug-expert",
+  "input": "On an LPDDR6-based SoC with TrustZone, we see this EL3 abort in the boot log:\n\n  [EL3] DRAM access fault, VA=0x80100000, MRI region=2, op=Normal-World-write\n  [EL3] Panic: MRI violation; halting\n\nLPDDR6 introduces Memory Region Isolation (MRI). The bootloader (ATF BL2) programs the MRI table before handing off to BL33. Walk through the diagnostic flow: where is the MRI table configured, how does it interact with the device-tree /reserved-memory ranges, and what common misconfigurations cause overlap between Secure-World and Normal-World ranges?",
+  "expected_topics": [
+    "LPDDR6",
+    "MRI",
+    "Memory-Region-Isolation",
+    "JESD209-6",
+    "EL3",
+    "ATF",
+    "BL2",
+    "TrustZone",
+    "reserved-memory",
+    "device-tree",
+    "MR40",
+    "secure-boot-chain"
+  ],
+  "min_score": 4,
+  "tags": [
+    "boot-debug-expert",
+    "lpddr6",
+    "trustzone",
+    "mri",
+    "atf"
+  ]
+}

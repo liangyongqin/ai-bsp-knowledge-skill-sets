@@ -1,0 +1,27 @@
+{
+  "id": "case_386",
+  "skill": "boot-debug-expert",
+  "input": "Our device uses UFS 4.1 (JESD220G) with the Permanent Bootable Logical Unit feature. A factory-reset attempt after a botched OTA leaves the device unable to re-partition:\n\n  ufs: bConfigDescrLock=0xff, bBootLunEn=0xff\n  fastboot: FAILED (remote: 'bootable LU is permanently locked')\n\nIs there any software recovery path? What is the JEDEC-specified intent of this feature, why does it differ from UFS 4.0, and what factory provisioning flow error leads to premature lock? What should our field-return policy be for devices in this state?",
+  "expected_topics": [
+    "UFS-4.1",
+    "JESD220G",
+    "Permanent-Bootable-LU",
+    "bConfigDescrLock",
+    "bBootLunEn",
+    "fastboot",
+    "one-way-transition",
+    "secure-boot-chain",
+    "factory-provisioning",
+    "field-return",
+    "UFS-4.0-comparison",
+    "irreversible"
+  ],
+  "min_score": 4,
+  "tags": [
+    "boot-debug-expert",
+    "ufs-4-1",
+    "permanent-boot-lu",
+    "factory-reset",
+    "irreversible"
+  ]
+}

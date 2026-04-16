@@ -1,0 +1,27 @@
+{
+  "id": "case_394",
+  "skill": "bsp-knowledge-mentor",
+  "input": "Management asks: 'Why did we spend two months validating LPDDR6 sub-channel refresh policy when LPDDR5X already worked? Cross-department output needed.'\n\nApply the terminology translation layer. Produce a business-level explanation of:\n  1. Why LPDDR6's 4×24-bit sub-channel architecture is qualitatively different from LPDDR5X's 4×16-bit (without register addresses)\n  2. What the business impact is (AI inference throughput, battery life)\n  3. Why validation time is NOT churn but is required for field reliability\n  4. What the remaining risks are at launch\n\nDo not include raw register values or kernel debug details. The audience is PM + engineering director.",
+  "expected_topics": [
+    "terminology-translation",
+    "business-language",
+    "LPDDR6",
+    "LPDDR5X",
+    "sub-channel",
+    "AI-inference",
+    "battery-life",
+    "validation-time",
+    "field-reliability",
+    "cross-department",
+    "no-register-addresses",
+    "launch-risks"
+  ],
+  "min_score": 4,
+  "tags": [
+    "bsp-knowledge-mentor",
+    "business-impact",
+    "terminology-translation",
+    "lpddr6",
+    "management-communication"
+  ]
+}

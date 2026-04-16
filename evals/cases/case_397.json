@@ -1,0 +1,29 @@
+{
+  "id": "case_397",
+  "skill": "interrupt-virtualization-expert",
+  "input": "(EDGE CASE) A junior engineer proposes: 'Since LPDDR6 adds Memory Region Isolation (MRI), and we already run a type-1 hypervisor with Stage-2 translation via SMMUv3, can we skip the MRI table programming in ATF BL2 and rely on Stage-2 instead?'\n\nIs this safe? What is the architectural layering of DRAM-controller-level MRI vs SMMU Stage-2 vs EL2 Stage-2 page tables? Do they overlap in function, and if one fails (e.g., hypervisor bug), which is the last-line defense for secure memory? Walk through the correct threat model.",
+  "expected_topics": [
+    "LPDDR6",
+    "MRI",
+    "SMMUv3",
+    "Stage-2-translation",
+    "EL2",
+    "hypervisor",
+    "layering",
+    "threat-model",
+    "defense-in-depth",
+    "ATF",
+    "BL2",
+    "Secure-World",
+    "architectural-redundancy"
+  ],
+  "min_score": 4,
+  "tags": [
+    "interrupt-virtualization-expert",
+    "lpddr6",
+    "mri",
+    "smmu",
+    "hypervisor",
+    "defense-in-depth"
+  ]
+}
